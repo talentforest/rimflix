@@ -5,8 +5,6 @@ const Footer = () => {
 };
 
 const Foot = styled.footer`
-  position: absolute;
-  bottom: 0;
   width: 100%;
   background-color: ${(props) => props.theme.black.darker};
   color: ${(props) => props.theme.white.darker};

@@ -40,7 +40,11 @@ footer, header, hgroup, main, menu, nav, section {
   box-sizing: border-box;
 }
 body {
-  line-height: 1;
+  line-height: 1.2;
+  background-color: ${(props) => props.theme.black.veryDark};
+  color: ${(props) => props.theme.white.lighter};
+  overflow-x: hidden;
+  font-family: 'Source Sans Pro', sans-serif;
 }
 menu, ol, ul {
   list-style: none;
@@ -56,15 +60,6 @@ q:before, q:after {
 table {
   border-collapse: collapse;
   border-spacing: 0;
-}
-* {
-  box-sizing: border-box;
-}
-body {
-  font-weight: 300;
-  font-family: 'Source Sans Pro', sans-serif;
-  color:black;
-  line-height: 1.2;
 }
 a {
   text-decoration:none;
