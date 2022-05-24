@@ -8,13 +8,13 @@ import { v4 as uuidv4 } from "uuid";
 
 const rowVariants = {
   hidden: (back: boolean) => ({
-    x: back ? -window.outerWidth - 10 : window.outerWidth + 10,
+    x: back ? -window.outerWidth + 100 : window.outerWidth - 100,
   }),
   visible: {
     x: 0,
   },
   exit: (back: boolean) => ({
-    x: back ? window.outerWidth + 10 : -window.outerWidth - 10,
+    x: back ? window.outerWidth - 100 : -window.outerWidth + 100,
   }),
 };
 const boxVariants = {
@@ -22,8 +22,8 @@ const boxVariants = {
     scale: 1,
   },
   hover: {
-    scale: 1.5,
-    y: -80,
+    scale: 1.2,
+    y: -60,
     transition: {
       delay: 0.2,
       duration: 0.3,
@@ -85,160 +85,183 @@ const MoviesRow = ({ data }: PropsType) => {
     );
 
   return (
-    <>
-      <Slider>
-        <svg
-          onClick={decreaseIndex}
-          width="20px"
-          height="100px"
-          fill="#fff"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 320 512"
-        >
-          <path d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z" />
-        </svg>
-        <AnimatePresence
-          custom={back}
-          initial={false}
-          onExitComplete={toggleLeaving}
-        >
-          <Row
-            variants={rowVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ type: "tween", duration: 1 }}
-            key={index}
+    <Container>
+      <svg
+        onClick={decreaseIndex}
+        width="20px"
+        height="100px"
+        fill="#fff"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 320 512"
+      >
+        <path d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z" />
+      </svg>
+      <SliderContainer>
+        <Slider>
+          <AnimatePresence
             custom={back}
+            initial={false}
+            onExitComplete={toggleLeaving}
           >
-            {data?.results
-              ?.slice(1)
-              .slice(offset * index, offset * index + offset)
-              .map((movie_tv) => (
-                <Box
-                  layoutId={`${movie_tv.id}/${uuidv4()}`}
-                  key={movie_tv.id}
-                  onClick={() => onBoxClicked(movie_tv.id)}
-                  variants={boxVariants}
-                  whileHover="hover"
-                  initial="normal"
-                  transition={{ type: "tween" }}
-                  $bgPhoto={makeImagePath(
-                    movie_tv.backdrop_path || movie_tv.poster_path,
-                    "w500"
-                  )}
-                >
-                  <Info variants={infoVariants}>
-                    <h4>
-                      {movie_tv.title
-                        ? +`${movie_tv.title?.length}` > 28
-                          ? `${movie_tv.title?.slice(0, 28)}...`
-                          : movie_tv.title
-                        : +`${movie_tv.name?.length}` > 28
-                        ? `${movie_tv.name?.slice(0, 28)}...`
-                        : movie_tv.name}
-                    </h4>
-                    <div>
-                      <span>
-                        {movie_tv.release_date
-                          ? movie_tv.release_date
-                          : movie_tv.first_air_date}
-                      </span>
-                      <span>{movie_tv.vote_average}</span>
-                    </div>
-                  </Info>
-                </Box>
-              ))}
-          </Row>
+            <Row
+              variants={rowVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{ type: "tween", duration: 1 }}
+              key={index}
+              custom={back}
+            >
+              {data?.results
+                ?.slice(1)
+                .slice(offset * index, offset * index + offset)
+                .map((movie_tv) => (
+                  <Box
+                    layoutId={`${movie_tv.id}/${uuidv4()}`}
+                    key={movie_tv.id}
+                    onClick={() => onBoxClicked(movie_tv.id)}
+                    variants={boxVariants}
+                    whileHover="hover"
+                    initial="normal"
+                    transition={{ type: "tween" }}
+                    $bgPhoto={makeImagePath(
+                      movie_tv.backdrop_path || movie_tv.poster_path,
+                      "w500"
+                    )}
+                  >
+                    <Info variants={infoVariants}>
+                      <h4>
+                        {movie_tv.title
+                          ? +`${movie_tv.title?.length}` > 28
+                            ? `${movie_tv.title?.slice(0, 28)}...`
+                            : movie_tv.title
+                          : +`${movie_tv.name?.length}` > 28
+                          ? `${movie_tv.name?.slice(0, 28)}...`
+                          : movie_tv.name}
+                      </h4>
+                      <div>
+                        <span>
+                          {movie_tv.release_date
+                            ? movie_tv.release_date
+                            : movie_tv.first_air_date}
+                        </span>
+                        <span>{movie_tv.vote_average}</span>
+                      </div>
+                    </Info>
+                  </Box>
+                ))}
+            </Row>
+          </AnimatePresence>
+        </Slider>
+        <AnimatePresence>
+          {ModalMovieMatch ? (
+            <>
+              <Overlay
+                onClick={() => onOverlayClicked("movie")}
+                exit={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              />
+              <BigMovie
+                style={{ top: scrollY.get() + 100 }}
+                layoutId={ModalMovieMatch.params.movieId}
+              >
+                {clickedMovie && (
+                  <>
+                    <BigCover
+                      style={{
+                        backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
+                          clickedMovie.backdrop_path,
+                          "w500"
+                        )})`,
+                      }}
+                    />
+                    <BigTitle>{clickedMovie.title}</BigTitle>
+                    <BigOverview>{clickedMovie.overview}</BigOverview>
+                  </>
+                )}
+              </BigMovie>
+            </>
+          ) : null}
+          {ModalTvShowMatch ? (
+            <>
+              <Overlay
+                onClick={() => onOverlayClicked("tv")}
+                exit={{ opacity: 0 }}
+                animate={{ opacity: 1 }}
+              />
+              <BigMovie
+                style={{ top: scrollY.get() + 100 }}
+                layoutId={ModalTvShowMatch?.params.tvShowId}
+              >
+                {clickedTvShow && (
+                  <>
+                    <BigCover
+                      style={{
+                        backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
+                          clickedTvShow.backdrop_path,
+                          "w500"
+                        )})`,
+                      }}
+                    />
+                    <BigTitle>{clickedTvShow.title}</BigTitle>
+                    <BigOverview>{clickedTvShow.overview}</BigOverview>
+                  </>
+                )}
+              </BigMovie>
+            </>
+          ) : null}
         </AnimatePresence>
-        <svg
-          onClick={increaseIndex}
-          width="20px"
-          height="100px"
-          xmlns="http://www.w3.org/2000/svg"
-          viewBox="0 0 320 512"
-        >
-          <path
-            fill="#fff"
-            d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"
-          />
-        </svg>
-      </Slider>
-      <AnimatePresence>
-        {ModalMovieMatch ? (
-          <>
-            <Overlay
-              onClick={() => onOverlayClicked("movie")}
-              exit={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            />
-            <BigMovie
-              style={{ top: scrollY.get() + 100 }}
-              layoutId={ModalMovieMatch.params.movieId}
-            >
-              {clickedMovie && (
-                <>
-                  <BigCover
-                    style={{
-                      backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-                        clickedMovie.backdrop_path,
-                        "w500"
-                      )})`,
-                    }}
-                  />
-                  <BigTitle>{clickedMovie.title}</BigTitle>
-                  <BigOverview>{clickedMovie.overview}</BigOverview>
-                </>
-              )}
-            </BigMovie>
-          </>
-        ) : null}
-        {ModalTvShowMatch ? (
-          <>
-            <Overlay
-              onClick={() => onOverlayClicked("tv")}
-              exit={{ opacity: 0 }}
-              animate={{ opacity: 1 }}
-            />
-            <BigMovie
-              style={{ top: scrollY.get() + 100 }}
-              layoutId={ModalTvShowMatch?.params.tvShowId}
-            >
-              {clickedTvShow && (
-                <>
-                  <BigCover
-                    style={{
-                      backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-                        clickedTvShow.backdrop_path,
-                        "w500"
-                      )})`,
-                    }}
-                  />
-                  <BigTitle>{clickedTvShow.title}</BigTitle>
-                  <BigOverview>{clickedTvShow.overview}</BigOverview>
-                </>
-              )}
-            </BigMovie>
-          </>
-        ) : null}
-      </AnimatePresence>
-    </>
+      </SliderContainer>
+      <svg
+        onClick={increaseIndex}
+        width="20px"
+        height="100px"
+        xmlns="http://www.w3.org/2000/svg"
+        viewBox="0 0 320 512"
+      >
+        <path
+          fill="#fff"
+          d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"
+        />
+      </svg>
+    </Container>
   );
 };
 
-const Slider = styled.div`
-  position: relative;
+const Container = styled.div`
   display: flex;
-  align-items: center;
-  margin-bottom: 30px;
+  width: 100%;
+
   svg {
-    margin: 0 10px;
+    margin: 0 20px;
     height: 150px;
     cursor: pointer;
   }
 `;
 
+const SliderContainer = styled.div`
+  overflow: hidden;
+  width: 100%;
+  margin: -80px auto 0;
+  display: flex;
+  align-items: center;
+  padding: 80px 0 140px;
+  > svg {
+    padding-bottom: 10px;
+  }
+`;
+
+const Slider = styled.div`
+  position: relative;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  margin: 0 auto 50px;
+`;
+
 const Row = styled(motion.div)`
+  position: absolute;
+  top: 5px;
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
@@ -260,11 +283,6 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
   &:last-child {
     transform-origin: center right;
   }
-`;
-
-const Img = styled(motion.img)`
-  width: 100%;
-  height: 150px;
 `;
 
 const Info = styled(motion.div)`
