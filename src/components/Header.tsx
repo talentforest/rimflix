@@ -1,7 +1,8 @@
 import styled from "styled-components";
-import { Link, useMatch } from "react-router-dom";
+import { Link, useMatch, useNavigate } from "react-router-dom";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 
 const logoVariants = {
   start: { pathLength: 0, fill: "rgba(255, 255, 255, 0)" },
@@ -20,10 +21,14 @@ const navVariants = {
   },
 };
 
+interface IForm {
+  keyword: string;
+}
+
 function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
   const homeMatch = useMatch("/");
-  const tvMatch = useMatch("/tv-shows");
+  const tvMatch = useMatch("/tv");
 
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
@@ -49,6 +54,12 @@ function Header() {
       }
     });
   }, [scrollY, navAnimation]);
+  const navigate = useNavigate();
+
+  const { register, handleSubmit } = useForm<IForm>();
+  const onValid = (data: IForm) => {
+    navigate(`/search?keyword=${data.keyword}`);
+  };
 
   return (
     <Nav variants={navVariants} animate={navAnimation} initial={"top"}>
@@ -76,13 +87,13 @@ function Header() {
           <Link to="/">
             <Item>Home {homeMatch && <Circle layoutId="circle" />}</Item>
           </Link>
-          <Link to="/tv-shows">
+          <Link to="/tv">
             <Item>Tv Shows {tvMatch && <Circle layoutId="circle" />}</Item>
           </Link>
         </Items>
       </Col>
       <Col>
-        <Search>
+        <Search onSubmit={handleSubmit(onValid)}>
           <motion.svg
             onClick={toggleSearch}
             animate={{ x: searchOpen ? -175 : 0, scale: searchOpen ? 0.7 : 1 }}
@@ -98,6 +109,7 @@ function Header() {
             ></path>
           </motion.svg>
           <Input
+            {...register("keyword", { required: true, minLength: 2 })}
             autoFocus
             transition={{ type: "linear" }}
             animate={inputAnimation}
@@ -169,7 +181,7 @@ const Circle = styled(motion.span)`
   background-color: ${(props) => props.theme.red};
 `;
 
-const Search = styled.span`
+const Search = styled.form`
   color: white;
   display: flex;
   align-items: center;
@@ -184,6 +196,7 @@ const Input = styled(motion.input)`
   display: flex;
   align-items: center;
   transform-origin: right center;
+
   position: absolute;
   right: 0px;
   padding: 5px;

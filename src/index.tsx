@@ -40,10 +40,10 @@ footer, header, hgroup, main, menu, nav, section {
   box-sizing: border-box;
 }
 body {
-  line-height: 1.2;
-  background-color: ${(props) => props.theme.black.veryDark};
-  color: ${(props) => props.theme.white.lighter};
   overflow-x: hidden;
+  line-height: 1.2;
+  background-color: #000;
+  color: ${(props) => props.theme.white.lighter};
   font-family: 'Source Sans Pro', sans-serif;
 }
 menu, ol, ul {
