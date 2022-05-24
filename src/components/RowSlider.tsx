@@ -5,6 +5,9 @@ import { useLocation, useMatch, useNavigate } from "react-router-dom";
 import { IGetMovieTvResult } from "../api/api";
 import { makeImagePath } from "../utils/makeImagePath";
 import { v4 as uuidv4 } from "uuid";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import device from "../theme/mediaQueries";
+import useWindowSize from "../hook/useWindowSize";
 
 const rowVariants = {
   hidden: (back: boolean) => ({
@@ -47,12 +50,14 @@ interface PropsType {
   data?: IGetMovieTvResult;
 }
 
-const MoviesRow = ({ data }: PropsType) => {
+const RowSlider = ({ data }: PropsType) => {
   const location = useLocation().pathname;
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
   const { offset, back, index, toggleLeaving, increaseIndex, decreaseIndex } =
     useSlide(data);
+
+  const { windowSize } = useWindowSize();
 
   const ModalMovieMatch = useMatch("/movies/:movieId");
   const ModalTvShowMatch = useMatch("/tv/:tvShowId");
@@ -86,16 +91,7 @@ const MoviesRow = ({ data }: PropsType) => {
 
   return (
     <Container>
-      <svg
-        onClick={decreaseIndex}
-        width="20px"
-        height="100px"
-        fill="#fff"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 320 512"
-      >
-        <path d="M34.52 239.03L228.87 44.69c9.37-9.37 24.57-9.37 33.94 0l22.67 22.67c9.36 9.36 9.37 24.52.04 33.9L131.49 256l154.02 154.75c9.34 9.38 9.32 24.54-.04 33.9l-22.67 22.67c-9.37 9.37-24.57 9.37-33.94 0L34.52 272.97c-9.37-9.37-9.37-24.57 0-33.94z" />
-      </svg>
+      <ArrowBackIos sx={{ width: "3%" }} onClick={decreaseIndex} />
       <SliderContainer>
         <Slider>
           <AnimatePresence
@@ -124,10 +120,15 @@ const MoviesRow = ({ data }: PropsType) => {
                     whileHover="hover"
                     initial="normal"
                     transition={{ type: "tween" }}
-                    $bgPhoto={makeImagePath(
-                      movie_tv.backdrop_path || movie_tv.poster_path,
-                      "w500"
-                    )}
+                    $bgPhoto={
+                      windowSize.width > 500
+                        ? makeImagePath(
+                            movie_tv.backdrop_path || movie_tv.poster_path
+                          )
+                        : makeImagePath(
+                            movie_tv.poster_path || movie_tv.backdrop_path
+                          )
+                    }
                   >
                     <Info variants={infoVariants}>
                       <h4>
@@ -212,18 +213,8 @@ const MoviesRow = ({ data }: PropsType) => {
           ) : null}
         </AnimatePresence>
       </SliderContainer>
-      <svg
-        onClick={increaseIndex}
-        width="20px"
-        height="100px"
-        xmlns="http://www.w3.org/2000/svg"
-        viewBox="0 0 320 512"
-      >
-        <path
-          fill="#fff"
-          d="M285.476 272.971L91.132 467.314c-9.373 9.373-24.569 9.373-33.941 0l-22.667-22.667c-9.357-9.357-9.375-24.522-.04-33.901L188.505 256 34.484 101.255c-9.335-9.379-9.317-24.544.04-33.901l22.667-22.667c9.373-9.373 24.569-9.373 33.941 0L285.475 239.03c9.373 9.372 9.373 24.568.001 33.941z"
-        />
-      </svg>
+
+      <ArrowForwardIos sx={{ width: "3%" }} onClick={increaseIndex} />
     </Container>
   );
 };
@@ -231,11 +222,15 @@ const MoviesRow = ({ data }: PropsType) => {
 const Container = styled.div`
   display: flex;
   width: 100%;
-
+  padding: 0 10px;
+  margin-bottom: 20px;
   svg {
-    margin: 0 20px;
+    margin: 0 10px;
     height: 150px;
     cursor: pointer;
+  }
+  @media ${device.mobile} {
+    padding: 0;
   }
 `;
 
@@ -262,10 +257,16 @@ const Slider = styled.div`
 const Row = styled(motion.div)`
   position: absolute;
   top: 5px;
+  width: 100%;
   display: grid;
   gap: 5px;
   grid-template-columns: repeat(6, 1fr);
-  width: 100%;
+  @media ${device.tablet} {
+    grid-template-columns: repeat(4, 1fr);
+  }
+  @media ${device.mobile} {
+    grid-template-columns: repeat(3, 1fr);
+  }
 `;
 
 const Box = styled(motion.div)<{ $bgPhoto: string }>`
@@ -276,12 +277,15 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
   height: 150px;
   width: auto;
   font-size: 66px;
+  border-radius: 3px;
   cursor: pointer;
   &:first-child {
     transform-origin: center left;
   }
   &:last-child {
     transform-origin: center right;
+  }
+  @media ${device.mobile} {
   }
 `;
 
@@ -314,6 +318,7 @@ const Info = styled(motion.div)`
 const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
+  left: 0;
   width: 100%;
   height: 100%;
   background-color: rgba(0, 0, 0, 0.5);
@@ -354,4 +359,4 @@ const BigOverview = styled.p`
   color: ${(props) => props.theme.white.lighter};
 `;
 
-export default MoviesRow;
+export default RowSlider;

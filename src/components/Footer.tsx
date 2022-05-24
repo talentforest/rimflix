@@ -9,8 +9,9 @@ const Foot = styled.footer`
   background-color: ${(props) => props.theme.black.darker};
   color: ${(props) => props.theme.white.darker};
   font-size: 10px;
-  padding: 15px 45px 80px;
-  height: 50px;
+  padding: 30px 45px 0px;
+  height: 200px;
+  margin-top: 80px;
 `;
 
 export default Footer;

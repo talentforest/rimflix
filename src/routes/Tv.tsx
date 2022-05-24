@@ -7,7 +7,7 @@ import {
   IGetMovieTvResult,
 } from "../api/api";
 import MovieBanner from "../components/Banner";
-import MoviesRow from "../components/MoviesRow";
+import RowSlider from "../components/RowSlider";
 import RowTitle from "../components/RowTitle";
 
 const Tv = () => {
@@ -20,15 +20,32 @@ const Tv = () => {
 
   return (
     <Wrapper>
-      <MovieBanner data={topTvShow} />
-      <RowTitle title={"Top Ranked Tv Shows"} />
-      <MoviesRow data={topTvShow} />
+      {topShowLoading && popularShowLoading && onAirShowLoading ? (
+        <Loader>Loading...</Loader>
+      ) : (
+        <>
+          <MovieBanner data={topTvShow} />
+          <RowTitle title={"Top Ranked Tv Shows"} />
+          <RowSlider data={topTvShow} />
+          <RowTitle title={"Popular Tv Shows"} />
+          <RowSlider data={popularTvShow} />
+          <RowTitle title={"On Air Tv Shows"} />
+          <RowSlider data={onAirTvShow} />
+        </>
+      )}
     </Wrapper>
   );
 };
 
 const Wrapper = styled.div`
   overflow-x: hidden;
+`;
+
+const Loader = styled.div`
+  height: 20vh;
+  display: flex;
+  justify-content: center;
+  align-items: center;
 `;
 
 export default Tv;

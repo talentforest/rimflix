@@ -1,11 +1,21 @@
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { IGetMovieTvResult } from "../api/api";
+import useWindowSize from "./useWindowSize";
 
 const useSlide = (data: IGetMovieTvResult) => {
-  const offset = 6;
   const [back, setBack] = useState(false);
   const [index, setIndex] = useState(0);
   const [leaving, setLeaving] = useState(false);
+
+  const { windowSize } = useWindowSize();
+
+  let offset = 6;
+
+  if (windowSize.width < 501) {
+    offset = 3;
+  } else if (windowSize.width < 1025) {
+    offset = 4;
+  }
 
   const toggleLeaving = () => setLeaving((prev) => !prev);
 

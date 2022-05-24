@@ -8,7 +8,7 @@ import {
   IGetMovieTvResult,
 } from "../api/api";
 import RowTitle from "../components/RowTitle";
-import MoviesRow from "../components/MoviesRow";
+import MoviesRow from "../components/RowSlider";
 import MovieBanner from "../components/Banner";
 
 const Home = () => {

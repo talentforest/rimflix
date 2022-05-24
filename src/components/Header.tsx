@@ -3,6 +3,7 @@ import { Link, useMatch, useNavigate } from "react-router-dom";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
+import device from "../theme/mediaQueries";
 
 const logoVariants = {
   start: { pathLength: 0, fill: "rgba(255, 255, 255, 0)" },
@@ -134,6 +135,9 @@ const Nav = styled(motion.nav)`
   padding: 20px 60px;
   color: white;
   z-index: 99;
+  @media ${device.mobile} {
+    padding: 15px 20px 12px;
+  }
 `;
 
 const Logo = styled(motion.svg)`
@@ -144,6 +148,11 @@ const Logo = styled(motion.svg)`
   cursor: pointer;
   path {
     stroke: white;
+  }
+  @media ${device.mobile} {
+    width: 70px;
+    height: 15px;
+    margin-right: 30px;
   }
 `;
 
@@ -167,6 +176,9 @@ const Item = styled.li`
   &:hover {
     color: ${(props) => props.theme.white.lighter};
   }
+  @media ${device.mobile} {
+    font-size: 13px;
+  }
 `;
 
 const Circle = styled(motion.span)`
@@ -188,6 +200,12 @@ const Search = styled.form`
   position: relative;
   svg {
     height: 26px;
+  }
+  @media ${device.mobile} {
+    svg {
+      height: 20px;
+      margin-bottom: 3px;
+    }
   }
 `;
 
