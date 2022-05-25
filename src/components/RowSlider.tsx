@@ -11,13 +11,13 @@ import useWindowSize from "../hook/useWindowSize";
 
 const rowVariants = {
   hidden: (back: boolean) => ({
-    x: back ? -window.outerWidth + 100 : window.outerWidth - 100,
+    x: back ? -window.outerWidth + 40 : window.outerWidth - 40,
   }),
   visible: {
     x: 0,
   },
   exit: (back: boolean) => ({
-    x: back ? window.outerWidth - 100 : -window.outerWidth + 100,
+    x: back ? window.outerWidth - 40 : -window.outerWidth + 40,
   }),
 };
 const boxVariants = {
@@ -54,13 +54,12 @@ const RowSlider = ({ data }: PropsType) => {
   const location = useLocation().pathname;
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
+  const { windowSize } = useWindowSize();
   const { offset, back, index, toggleLeaving, increaseIndex, decreaseIndex } =
     useSlide(data);
 
-  const { windowSize } = useWindowSize();
-
   const ModalMovieMatch = useMatch("/movies/:movieId");
-  const ModalTvShowMatch = useMatch("/tv/:tvShowId");
+  const ModalTvShowMatch = useMatch("tv/:tvShowId");
 
   const onBoxClicked = (id: number) => {
     if (location === "/") {
@@ -83,6 +82,7 @@ const RowSlider = ({ data }: PropsType) => {
     data?.results?.find(
       (movie) => movie.id + "" === ModalMovieMatch.params.movieId
     );
+
   const clickedTvShow =
     ModalTvShowMatch?.params.tvShowId &&
     data?.results.find(
@@ -164,20 +164,20 @@ const RowSlider = ({ data }: PropsType) => {
               />
               <BigMovie
                 style={{ top: scrollY.get() + 100 }}
-                layoutId={ModalMovieMatch.params.movieId}
+                layoutId={ModalMovieMatch?.params.movieId}
               >
                 {clickedMovie && (
                   <>
                     <BigCover
                       style={{
                         backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-                          clickedMovie.backdrop_path,
+                          clickedMovie?.backdrop_path,
                           "w500"
                         )})`,
                       }}
                     />
-                    <BigTitle>{clickedMovie.title}</BigTitle>
-                    <BigOverview>{clickedMovie.overview}</BigOverview>
+                    <BigTitle>{clickedMovie?.title}</BigTitle>
+                    <BigOverview>{clickedMovie?.overview}</BigOverview>
                   </>
                 )}
               </BigMovie>
@@ -199,12 +199,14 @@ const RowSlider = ({ data }: PropsType) => {
                     <BigCover
                       style={{
                         backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-                          clickedTvShow.backdrop_path,
+                          clickedTvShow.backdrop_path
+                            ? clickedTvShow.backdrop_path
+                            : clickedTvShow.poster_path,
                           "w500"
                         )})`,
                       }}
                     />
-                    <BigTitle>{clickedTvShow.title}</BigTitle>
+                    <BigTitle>{clickedTvShow.name}</BigTitle>
                     <BigOverview>{clickedTvShow.overview}</BigOverview>
                   </>
                 )}
@@ -213,7 +215,6 @@ const RowSlider = ({ data }: PropsType) => {
           ) : null}
         </AnimatePresence>
       </SliderContainer>
-
       <ArrowForwardIos sx={{ width: "3%" }} onClick={increaseIndex} />
     </Container>
   );
@@ -285,25 +286,26 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
   &:last-child {
     transform-origin: center right;
   }
-  @media ${device.mobile} {
-  }
 `;
 
 const Info = styled(motion.div)`
   background-color: ${(props) => props.theme.black.lighter};
-  padding: 10px;
   opacity: 0;
+  border-bottom-left-radius: 3px;
+  border-bottom-right-radius: 3px;
   position: absolute;
   bottom: -40px;
   width: 100%;
   height: 50px;
+  display: flex;
   flex-direction: column;
   justify-content: center;
-  align-items: flex-start;
+  align-items: start;
   font-size: 12px;
-  padding: 10px;
-  h4 {
-    margin-bottom: 5px;
+  padding: 8px 10px;
+  > h4 {
+    font-weight: 700;
+    margin-bottom: 8px;
   }
   > div {
     display: flex;
@@ -312,6 +314,13 @@ const Info = styled(motion.div)`
     span {
       margin-right: 5px;
     }
+  }
+  @media ${device.tablet} {
+    bottom: -38px;
+  }
+  @media ${device.mobile} {
+    height: 60px;
+    bottom: -48px;
   }
 `;
 
@@ -328,13 +337,21 @@ const Overlay = styled(motion.div)`
 const BigMovie = styled(motion.div)`
   position: absolute;
   width: 500px;
-  height: 80vh;
+  height: 70vh;
   left: 0;
   right: 0;
   margin: 0 auto;
   border-radius: 15px;
   overflow: hidden;
   background-color: ${(props) => props.theme.black.lighter};
+  @media ${device.tablet} {
+    width: 60vw;
+    height: 60vh;
+  }
+  @media ${device.mobile} {
+    width: 80vw;
+    height: 60vh;
+  }
 `;
 
 const BigCover = styled.div`

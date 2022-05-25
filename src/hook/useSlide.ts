@@ -1,4 +1,4 @@
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import { IGetMovieTvResult } from "../api/api";
 import useWindowSize from "./useWindowSize";
 
@@ -11,9 +11,9 @@ const useSlide = (data: IGetMovieTvResult) => {
 
   let offset = 6;
 
-  if (windowSize.width < 501) {
+  if (windowSize.width <= 500) {
     offset = 3;
-  } else if (windowSize.width < 1025) {
+  } else if (windowSize.width <= 1023) {
     offset = 4;
   }
 

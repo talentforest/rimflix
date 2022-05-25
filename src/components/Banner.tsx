@@ -18,11 +18,15 @@ const Banner = ({ data }: PropsType) => {
       <Container
         $bgPhoto={
           windowSize.width > 500
-            ? makeImagePath(data?.results[0].backdrop_path || "")
-            : makeImagePath(data?.results[0].poster_path || "")
+            ? makeImagePath(
+                data?.results[0].backdrop_path || data?.results[0].poster_path
+              )
+            : makeImagePath(
+                data?.results[0].poster_path || data?.results[0].backdrop_path
+              )
         }
       >
-        {data.results[0].title ? (
+        {data?.results[0].title ? (
           <Title>{data?.results[0].title}</Title>
         ) : (
           <Title>{data?.results[0].name}</Title>
