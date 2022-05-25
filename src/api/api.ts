@@ -36,14 +36,20 @@ interface IGenres {
 }
 
 export interface IDetail {
-  genres: IGenres[];
-  homepage: string;
+  genres?: IGenres[];
+  homepage?: string;
   original_title?: string;
   original_name?: string;
-  tagline: string;
+  tagline?: string;
   runtime: number;
   number_of_episodes?: number;
   number_of_seasons?: number;
+  adult?: boolean;
+  backdrop_path?: string;
+  release_data: string;
+  vote_average: number;
+  overview: string;
+  title: string;
 }
 
 // Movie Api

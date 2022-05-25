@@ -198,6 +198,7 @@ const Search = styled.form`
   display: flex;
   align-items: center;
   position: relative;
+  cursor: pointer;
   svg {
     height: 26px;
   }

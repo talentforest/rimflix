@@ -1,13 +1,14 @@
 import styled from "styled-components";
 import useSlide from "../hook/useSlide";
-import { AnimatePresence, motion, useViewportScroll } from "framer-motion";
-import { useLocation, useMatch, useNavigate } from "react-router-dom";
+import { AnimatePresence, motion } from "framer-motion";
+import { useLocation, useNavigate } from "react-router-dom";
 import { IGetMovieTvResult } from "../api/api";
 import { makeImagePath } from "../utils/makeImagePath";
 import { v4 as uuidv4 } from "uuid";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import device from "../theme/mediaQueries";
 import useWindowSize from "../hook/useWindowSize";
+import Modal from "./Modal";
 
 const rowVariants = {
   hidden: (back: boolean) => ({
@@ -53,13 +54,10 @@ interface PropsType {
 const RowSlider = ({ data }: PropsType) => {
   const location = useLocation().pathname;
   const navigate = useNavigate();
-  const { scrollY } = useViewportScroll();
+
   const { windowSize } = useWindowSize();
   const { offset, back, index, toggleLeaving, increaseIndex, decreaseIndex } =
     useSlide(data);
-
-  const ModalMovieMatch = useMatch("/movies/:movieId");
-  const ModalTvShowMatch = useMatch("tv/:tvShowId");
 
   const onBoxClicked = (id: number) => {
     if (location === "/") {
@@ -68,26 +66,6 @@ const RowSlider = ({ data }: PropsType) => {
       navigate(`/tv/${id}`);
     }
   };
-
-  const onOverlayClicked = (content: string) => {
-    if (content === "movie") {
-      navigate("/");
-    } else if (content === "tv") {
-      navigate("/tv");
-    }
-  };
-
-  const clickedMovie =
-    ModalMovieMatch?.params.movieId &&
-    data?.results?.find(
-      (movie) => movie.id + "" === ModalMovieMatch.params.movieId
-    );
-
-  const clickedTvShow =
-    ModalTvShowMatch?.params.tvShowId &&
-    data?.results.find(
-      (tvShow) => tvShow.id + "" === ModalTvShowMatch.params.tvShowId
-    );
 
   return (
     <Container>
@@ -155,64 +133,7 @@ const RowSlider = ({ data }: PropsType) => {
           </AnimatePresence>
         </Slider>
         <AnimatePresence>
-          {ModalMovieMatch ? (
-            <>
-              <Overlay
-                onClick={() => onOverlayClicked("movie")}
-                exit={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              />
-              <BigMovie
-                style={{ top: scrollY.get() + 100 }}
-                layoutId={ModalMovieMatch?.params.movieId}
-              >
-                {clickedMovie && (
-                  <>
-                    <BigCover
-                      style={{
-                        backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-                          clickedMovie?.backdrop_path,
-                          "w500"
-                        )})`,
-                      }}
-                    />
-                    <BigTitle>{clickedMovie?.title}</BigTitle>
-                    <BigOverview>{clickedMovie?.overview}</BigOverview>
-                  </>
-                )}
-              </BigMovie>
-            </>
-          ) : null}
-          {ModalTvShowMatch ? (
-            <>
-              <Overlay
-                onClick={() => onOverlayClicked("tv")}
-                exit={{ opacity: 0 }}
-                animate={{ opacity: 1 }}
-              />
-              <BigMovie
-                style={{ top: scrollY.get() + 100 }}
-                layoutId={ModalTvShowMatch?.params.tvShowId}
-              >
-                {clickedTvShow && (
-                  <>
-                    <BigCover
-                      style={{
-                        backgroundImage: `linear-gradient(to top, black, transparent), url(${makeImagePath(
-                          clickedTvShow.backdrop_path
-                            ? clickedTvShow.backdrop_path
-                            : clickedTvShow.poster_path,
-                          "w500"
-                        )})`,
-                      }}
-                    />
-                    <BigTitle>{clickedTvShow.name}</BigTitle>
-                    <BigOverview>{clickedTvShow.overview}</BigOverview>
-                  </>
-                )}
-              </BigMovie>
-            </>
-          ) : null}
+          <Modal data={data} />
         </AnimatePresence>
       </SliderContainer>
       <ArrowForwardIos sx={{ width: "3%" }} onClick={increaseIndex} />
@@ -322,58 +243,6 @@ const Info = styled(motion.div)`
     height: 60px;
     bottom: -48px;
   }
-`;
-
-const Overlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.5);
-  opacity: 0;
-`;
-
-const BigMovie = styled(motion.div)`
-  position: absolute;
-  width: 500px;
-  height: 70vh;
-  left: 0;
-  right: 0;
-  margin: 0 auto;
-  border-radius: 15px;
-  overflow: hidden;
-  background-color: ${(props) => props.theme.black.lighter};
-  @media ${device.tablet} {
-    width: 60vw;
-    height: 60vh;
-  }
-  @media ${device.mobile} {
-    width: 80vw;
-    height: 60vh;
-  }
-`;
-
-const BigCover = styled.div`
-  width: 100%;
-  background-size: cover;
-  background-position: center center;
-  height: 400px;
-`;
-
-const BigTitle = styled.h3`
-  color: ${(props) => props.theme.white.lighter};
-  padding: 20px;
-  font-size: 46px;
-  position: relative;
-  top: -80px;
-`;
-
-const BigOverview = styled.p`
-  padding: 20px;
-  position: relative;
-  top: -80px;
-  color: ${(props) => props.theme.white.lighter};
 `;
 
 export default RowSlider;
