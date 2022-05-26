@@ -46,10 +46,25 @@ export interface IDetail {
   number_of_seasons?: number;
   adult?: boolean;
   backdrop_path?: string;
+  poster_path: string;
   release_data: string;
   vote_average: number;
   overview: string;
   title: string;
+  first_air_date: string;
+  last_air_date: string;
+  name: string;
+  seasons: ISeason[];
+}
+
+interface ISeason {
+  air_date: string;
+  episode_count: number;
+  id: number;
+  name: string;
+  overview: string;
+  poster_path: string;
+  season_number: number;
 }
 
 // Movie Api
@@ -117,7 +132,9 @@ export function getSearchTvShows(query: string | null) {
 
 // Detail Api
 export function getDetail(category?: string, movieId?: string) {
-  return fetch(`${BASE_PATH}/${category}/${movieId}?api_key=${API_KEY}`).then(
-    (response) => response.json()
-  );
+  if (movieId === undefined) return;
+  if (movieId)
+    return fetch(`${BASE_PATH}/${category}/${movieId}?api_key=${API_KEY}`).then(
+      (response) => response.json()
+    );
 }

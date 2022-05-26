@@ -26,11 +26,11 @@ const Tv = () => {
         <>
           <MovieBanner data={topTvShow} />
           <RowTitle title={"Top Ranked Tv Shows"} />
-          <RowSlider data={topTvShow} />
+          <RowSlider sliceData={topTvShow} />
           <RowTitle title={"Popular Tv Shows"} />
-          <RowSlider data={popularTvShow} />
+          <RowSlider wholeData={popularTvShow} />
           <RowTitle title={"On Air Tv Shows"} />
-          <RowSlider data={onAirTvShow} />
+          <RowSlider wholeData={onAirTvShow} />
         </>
       )}
     </Wrapper>

@@ -8,13 +8,14 @@ import { v4 as uuidv4 } from "uuid";
 import { makeImagePath } from "../utils/makeImagePath";
 
 interface PropsType {
-  data?: IGetMovieTvResult;
+  sliceData?: IGetMovieTvResult;
+  wholeData?: IGetMovieTvResult;
 }
 
-const Modal = ({ data }: PropsType) => {
+const Modal = ({ sliceData, wholeData }: PropsType) => {
   const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
-  const ModalMovieMatch = useMatch("/movies/:movieId");
+  const ModalMovieMatch = useMatch(`/movie/:movieId`);
   const ModalTvShowMatch = useMatch("tv/:tvShowId");
 
   const onOverlayClicked = (content: string) => {
@@ -25,24 +26,15 @@ const Modal = ({ data }: PropsType) => {
     }
   };
 
-  const clickedMovie =
-    ModalMovieMatch?.params.movieId &&
-    data?.results?.find(
-      (movie) => +movie.id === +ModalMovieMatch?.params?.movieId
-    );
-
-  const clickedTvShow =
-    ModalTvShowMatch?.params.tvShowId &&
-    data?.results.find(
-      (tvShow) => +tvShow.id === +ModalTvShowMatch.params.tvShowId
-    );
-
   const { data: detail, isLoading: detailIsLoading } = useQuery<IDetail>(
     ["detail", `detail_${ModalMovieMatch?.params.movieId}`],
     () => getDetail("movie", ModalMovieMatch?.params.movieId)
   );
 
-  console.log(detail);
+  const { data: detailTv, isLoading: detailTvIsLoading } = useQuery<IDetail>(
+    ["detail", `detail_${ModalTvShowMatch?.params.tvShowId}`],
+    () => getDetail("tv", ModalTvShowMatch?.params.tvShowId)
+  );
 
   return (
     <>
@@ -63,6 +55,8 @@ const Modal = ({ data }: PropsType) => {
                   style={{
                     backgroundImage: `linear-gradient(to top, #181818, transparent), url(${makeImagePath(
                       detail.backdrop_path
+                        ? detail.backdrop_path
+                        : detail.poster_path
                     )})`,
                   }}
                 />
@@ -73,7 +67,7 @@ const Modal = ({ data }: PropsType) => {
                     <h5>Genre : </h5>
                     <div>
                       {detail.genres.slice(0, 3).map((item) => (
-                        <span>{item.name}</span>
+                        <span key={item.id}>{item.name}</span>
                       ))}
                     </div>
                   </Info>
@@ -81,24 +75,81 @@ const Modal = ({ data }: PropsType) => {
                     <h5>Running Time : </h5>
                     <span>{detail.runtime} min</span>
                   </Info>
-                  <Info>
-                    <h5>Release Date : </h5>
-                    <span>{detail.release_data}</span>
-                  </Info>
                   <p>
                     <span>Overview</span>
                     {detail?.overview.length > 330
                       ? `${detail?.overview.slice(0, 330)}...`
                       : detail.overview}
                   </p>
-                  <span>{detail.release_data}</span>
-                  <a
-                    href={`${detail.homepage}`}
-                    target="_blank"
-                    rel="noreferrer"
-                  >
-                    <span>Go Official Page</span>
-                  </a>
+                  {detail.homepage ? (
+                    <a
+                      href={`${detail.homepage}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <span>Go Official Page</span>
+                    </a>
+                  ) : (
+                    <></>
+                  )}
+                </MovieDetail>
+              </>
+            )}
+          </BigMovie>
+        </>
+      ) : null}
+      {ModalTvShowMatch ? (
+        <>
+          <Overlay
+            onClick={() => onOverlayClicked("tv")}
+            exit={{ opacity: 0 }}
+            animate={{ opacity: 1 }}
+          />
+          <BigMovie
+            style={{ top: scrollY.get() + 100 }}
+            layoutId={`${ModalTvShowMatch?.params.tvShowId}${uuidv4}`}
+          >
+            {!detailTvIsLoading && detailTv && (
+              <>
+                <BigCover
+                  style={{
+                    backgroundImage: `linear-gradient(to top, #181818, transparent), url(${makeImagePath(
+                      detailTv.backdrop_path
+                    )})`,
+                  }}
+                />
+                <BigTitle>{detailTv?.name}</BigTitle>
+                <Tagline>{detailTv?.tagline}</Tagline>
+                <MovieDetail>
+                  <Info>
+                    <h5>Genre : </h5>
+                    <div>
+                      {detailTv.genres.slice(0, 3).map((item) => (
+                        <span key={item.id}>{item.name}</span>
+                      ))}
+                    </div>
+                  </Info>
+                  <Info>
+                    <h5>Last air date : </h5>
+                    <span>{detailTv.last_air_date}</span>
+                  </Info>
+                  <p>
+                    <span>Overview</span>
+                    {detailTv?.overview.length > 330
+                      ? `${detailTv?.overview.slice(0, 330)}...`
+                      : detailTv.overview}
+                  </p>
+                  {detailTv.homepage ? (
+                    <a
+                      href={`${detailTv.homepage}`}
+                      target="_blank"
+                      rel="noreferrer"
+                    >
+                      <span>Go Official Page</span>
+                    </a>
+                  ) : (
+                    <></>
+                  )}
                 </MovieDetail>
               </>
             )}
@@ -182,7 +233,7 @@ const Tagline = styled.p`
   color: ${(props) => props.theme.white.lighter};
   @media ${device.mobile} {
     font-size: 14px;
-    top: -70px;
+    top: -80px;
   }
 `;
 

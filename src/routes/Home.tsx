@@ -8,8 +8,8 @@ import {
   IGetMovieTvResult,
 } from "../api/api";
 import RowTitle from "../components/RowTitle";
-import MoviesRow from "../components/RowSlider";
 import MovieBanner from "../components/Banner";
+import RowSlider from "../components/RowSlider";
 
 const Home = () => {
   const { data: nowPlaying, isLoading: nowPlayingLoading } =
@@ -33,11 +33,23 @@ const Home = () => {
           <MovieBanner data={nowPlaying} />
           <>
             <RowTitle title={"Now Playing"} />
-            <MoviesRow data={nowPlaying} />
+            <RowSlider
+              sliceData={nowPlaying}
+              type="nowPlaying"
+              category="movie"
+            />
             <RowTitle title={"Top Rated Movies"} />
-            <MoviesRow data={topRatedMovie} />
+            <RowSlider
+              wholeData={topRatedMovie}
+              type="topRatedMovie"
+              category="movie"
+            />
             <RowTitle title={"Upcoming Movies"} />
-            <MoviesRow data={upcomingMovie} />
+            <RowSlider
+              wholeData={upcomingMovie}
+              type="upcomingMovie"
+              category="movie"
+            />
           </>
         </>
       )}
