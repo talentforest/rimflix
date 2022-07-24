@@ -4,7 +4,6 @@ import App from "./App";
 import { createGlobalStyle, ThemeProvider } from "styled-components";
 import { theme } from "./theme/theme";
 import { QueryClient, QueryClientProvider } from "react-query";
-import { RecoilRoot } from "recoil";
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -75,12 +74,10 @@ const root = ReactDOM.createRoot(
   document.getElementById("root") as HTMLElement
 );
 root.render(
-  <RecoilRoot>
-    <QueryClientProvider client={client}>
-      <ThemeProvider theme={theme}>
-        <GlobalStyle />
-        <App />
-      </ThemeProvider>
-    </QueryClientProvider>
-  </RecoilRoot>
+  <QueryClientProvider client={client}>
+    <ThemeProvider theme={theme}>
+      <GlobalStyle />
+      <App />
+    </ThemeProvider>
+  </QueryClientProvider>
 );
