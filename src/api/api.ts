@@ -56,6 +56,7 @@ export interface IDetail {
   last_air_date: string;
   name: string;
   seasons: ISeason[];
+  episode_run_time: number[];
 }
 
 interface ISeason {

@@ -77,10 +77,6 @@ const Banner = ({ data }: PropsType) => {
     </Container>
   ) : (
     <Video>
-      <TrailerCloseButton onClick={handlePlayClick}>
-        <span>Close</span>
-        <Close />
-      </TrailerCloseButton>
       {pathname.includes("/tv") ? (
         <iframe
           width="100%"
@@ -88,7 +84,7 @@ const Banner = ({ data }: PropsType) => {
           src={`https://www.youtube.com/embed/${tvTrailer?.results[0].key}?controls=&autoplay=1&loop=1&mute=1&playlist=${tvTrailer?.results[0].key}`}
           title="YouTube video player"
           allowFullScreen
-          aria-controls="0"
+          allow="accelerometer; autoplay"
         ></iframe>
       ) : (
         <iframe
@@ -97,9 +93,13 @@ const Banner = ({ data }: PropsType) => {
           src={`https://www.youtube.com/embed/${movieTrailer?.results[0]?.key}?controls=&autoplay=1&loop=1&mute=1&playlist=${movieTrailer?.results[0]?.key}`}
           title="YouTube video player"
           allowFullScreen
-          aria-controls="0"
+          allow="accelerometer; autoplay"
         ></iframe>
       )}
+      <TrailerCloseButton onClick={handlePlayClick}>
+        <span>Close</span>
+        <Close />
+      </TrailerCloseButton>
     </Video>
   );
 };
@@ -165,8 +165,8 @@ const InfoButton = styled.button`
   border: none;
   border-radius: 5px;
   width: 130px;
-  height: 35px;
-  font-size: 17px;
+  height: 45px;
+  font-size: 18px;
   font-weight: 700;
   cursor: pointer;
   > span {
@@ -199,8 +199,16 @@ const TrailerButton = styled(InfoButton)`
 
 const TrailerCloseButton = styled(TrailerButton)`
   position: absolute;
-  bottom: 40px;
-  right: 20px;
+  right: 0;
+  margin: 20px 40px 0 0;
+  @media ${device.tablet} {
+    margin-right: 40px;
+    margin-top: 0;
+  }
+  @media ${device.mobile} {
+    margin-right: 20px;
+    margin-top: 0;
+  }
 `;
 
 export default Banner;

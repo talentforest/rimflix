@@ -117,7 +117,6 @@ const Info = styled(motion.div)`
   border-bottom-right-radius: 3px;
   position: absolute;
   bottom: -40px;
-  width: 100%;
   height: 50px;
   display: flex;
   flex-direction: column;

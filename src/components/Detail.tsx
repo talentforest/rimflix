@@ -52,8 +52,12 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
                 </div>
               </Info>
               <Info>
-                <h5>Running Time : </h5>
-                <span>{data.runtime} min</span>
+                <h5>
+                  {data?.runtime ? "Running Time :" : "episode_run_time : "}
+                </h5>
+                <span>
+                  {data?.runtime ? data.runtime : data.episode_run_time[0]} min
+                </span>
               </Info>
               <p>
                 <span>Overview</span>

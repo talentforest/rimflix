@@ -38,7 +38,6 @@ footer, header, hgroup, main, menu, nav, section {
 * {
   box-sizing: border-box;
 }
-
 body {
   width: 100%;
   overflow-x: hidden;
