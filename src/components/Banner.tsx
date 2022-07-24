@@ -1,59 +1,106 @@
 import styled from "styled-components";
 import device from "../theme/mediaQueries";
 import { Link, useLocation } from "react-router-dom";
-import { IGetMovieTvResult } from "../api/api";
+import { getMovieTrailer, getTvTrailer, IGetMovieTvResult } from "../api/api";
 import { makeImagePath } from "../utils/makeImagePath";
+import { Close, Info, PlayCircle } from "@mui/icons-material";
+import { useQuery } from "react-query";
+import { useState } from "react";
 import useWindowSize from "../hook/useWindowSize";
-import { Info, PlayCircle } from "@mui/icons-material";
 
 interface PropsType {
   data?: IGetMovieTvResult;
 }
 
 const Banner = ({ data }: PropsType) => {
-  const pathname = useLocation().pathname;
+  const [videoClick, setVideoClick] = useState(false);
   const { windowSize } = useWindowSize();
-  return (
-    <>
-      <Container
-        $bgPhoto={
-          windowSize.width > 500
-            ? makeImagePath(
-                data?.results[0].backdrop_path || data?.results[0].poster_path
-              )
-            : makeImagePath(
-                data?.results[0].poster_path || data?.results[0].backdrop_path
-              )
-        }
-      >
-        {data?.results[0].title ? (
-          <Title>{data?.results[0].title}</Title>
-        ) : (
-          <Title>{data?.results[0].name}</Title>
-        )}
-        {windowSize.width > 1023 ? (
-          <Overview>{data?.results[0].overview}</Overview>
-        ) : null}
-        <div>
-          <Link
-            to={
-              pathname === "/tv"
-                ? `/tv/${data?.results[0].id}`
-                : `/movies/${data?.results[0].id}`
-            }
-          >
-            <InfoButton>
-              <span>More Info</span>
-              <Info />
-            </InfoButton>
-          </Link>
-          <TrailerButton>
-            <span>Trailer</span>
-            <PlayCircle />
-          </TrailerButton>
-        </div>
-      </Container>
-    </>
+  const pathname = useLocation().pathname;
+  const videoId = data?.results[0].id;
+
+  const { data: movieTrailer } = useQuery<IGetMovieTvResult>(
+    ["movies", videoId],
+    () => getMovieTrailer(videoId)
+  );
+
+  const { data: tvTrailer } = useQuery<IGetMovieTvResult>(
+    ["tv", videoId],
+    () => getTvTrailer(videoId),
+    {
+      enabled: pathname.includes("/tv"),
+    }
+  );
+
+  const handlePlayClick = (event: React.MouseEvent<HTMLButtonElement>) => {
+    event.preventDefault();
+    setVideoClick((prev) => !prev);
+  };
+
+  return !videoClick ? (
+    <Container
+      $bgPhoto={
+        windowSize.width > 500
+          ? makeImagePath(
+              data?.results[0].backdrop_path || data?.results[0].poster_path
+            )
+          : makeImagePath(
+              data?.results[0].poster_path || data?.results[0].backdrop_path
+            )
+      }
+    >
+      {data?.results[0].title ? (
+        <Title>{data?.results[0].title}</Title>
+      ) : (
+        <Title>{data?.results[0].name}</Title>
+      )}
+      {windowSize.width > 1023 ? (
+        <Overview>{data?.results[0].overview}</Overview>
+      ) : null}
+      <div>
+        <Link
+          to={
+            pathname === "/tv"
+              ? `/tv/${data?.results[0].id}`
+              : `/movie/${data?.results[0].id}`
+          }
+        >
+          <InfoButton>
+            <span>More Info</span>
+            <Info />
+          </InfoButton>
+        </Link>
+        <TrailerButton onClick={handlePlayClick}>
+          <span>Trailer</span>
+          <PlayCircle />
+        </TrailerButton>
+      </div>
+    </Container>
+  ) : (
+    <Video>
+      <TrailerCloseButton onClick={handlePlayClick}>
+        <span>Close</span>
+        <Close />
+      </TrailerCloseButton>
+      {pathname.includes("/tv") ? (
+        <iframe
+          width="100%"
+          height="400"
+          src={`https://www.youtube.com/embed/${tvTrailer?.results[0].key}?controls=&autoplay=1&loop=1&mute=1&playlist=${tvTrailer?.results[0].key}`}
+          title="YouTube video player"
+          allowFullScreen
+          aria-controls="0"
+        ></iframe>
+      ) : (
+        <iframe
+          width="100%"
+          height="400"
+          src={`https://www.youtube.com/embed/${movieTrailer?.results[0]?.key}?controls=&autoplay=1&loop=1&mute=1&playlist=${movieTrailer?.results[0]?.key}`}
+          title="YouTube video player"
+          allowFullScreen
+          aria-controls="0"
+        ></iframe>
+      )}
+    </Video>
   );
 };
 
@@ -139,10 +186,21 @@ const InfoButton = styled.button`
   }
 `;
 
+const Video = styled.div`
+  position: relative;
+  margin: 60px 0;
+`;
+
 const TrailerButton = styled(InfoButton)`
   background-color: #fe5151;
   color: #fff;
   margin-left: 10px;
+`;
+
+const TrailerCloseButton = styled(TrailerButton)`
+  position: absolute;
+  bottom: 40px;
+  right: 20px;
 `;
 
 export default Banner;

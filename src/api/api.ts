@@ -6,10 +6,10 @@ export interface IGetMovieTvResult {
     maximum: string;
     minimum: string;
   };
-  page: number;
+  page?: number;
   results: IGetMovieTv[];
-  total_pages: number;
-  total_results: number;
+  total_pages?: number;
+  total_results?: number;
 }
 
 export interface IGetMovieTv {
@@ -28,6 +28,7 @@ export interface IGetMovieTv {
   url?: string;
   type?: string;
   category?: string;
+  key?: string;
 }
 
 interface IGenres {
@@ -74,18 +75,6 @@ export function getMovies() {
   );
 }
 
-export function getLatestMovie() {
-  return fetch(`${BASE_PATH}/movie/latest?api_key=${API_KEY}`).then(
-    (response) => response.json()
-  );
-}
-
-export function getPopularMovie() {
-  return fetch(`${BASE_PATH}/movie/popular?api_key=${API_KEY}`).then(
-    (response) => response.json()
-  );
-}
-
 export function getTopRatedMovie() {
   return fetch(`${BASE_PATH}/movie/top_rated?api_key=${API_KEY}`).then(
     (response) => response.json()
@@ -94,6 +83,12 @@ export function getTopRatedMovie() {
 
 export function getUpcomingMovie() {
   return fetch(`${BASE_PATH}/movie/upcoming?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
+}
+
+export function getMovieTrailer(movieId: number) {
+  return fetch(`${BASE_PATH}/movie/${movieId}/videos?api_key=${API_KEY}`).then(
     (response) => response.json()
   );
 }
@@ -113,6 +108,12 @@ export function getPopularTvShows() {
 
 export function getAiringTodayTvShows() {
   return fetch(`${BASE_PATH}/tv/airing_today?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
+}
+
+export function getTvTrailer(tvId: number) {
+  return fetch(`${BASE_PATH}/tv/${tvId}/videos?api_key=${API_KEY}`).then(
     (response) => response.json()
   );
 }

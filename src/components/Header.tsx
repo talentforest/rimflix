@@ -1,8 +1,7 @@
-import styled from "styled-components";
-import { Link, useMatch, useNavigate } from "react-router-dom";
+import { Link, useLocation, useMatch, useNavigate } from "react-router-dom";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import styled from "styled-components";
 import device from "../theme/mediaQueries";
 
 const logoVariants = {
@@ -22,18 +21,22 @@ const navVariants = {
   },
 };
 
-interface IForm {
-  keyword: string;
-}
-
 function Header() {
   const [searchOpen, setSearchOpen] = useState(false);
-  const homeMatch = useMatch("/");
-  const tvMatch = useMatch("/tv");
+  const [movieName, setMovieName] = useState("");
+  const navigate = useNavigate();
+  const location = useLocation().pathname;
+  const tvMatch = useMatch("/tv/*");
+  const homeMovieMatch = location === "/" || location.includes("movie");
 
   const inputAnimation = useAnimation();
   const navAnimation = useAnimation();
   const { scrollY } = useViewportScroll();
+
+  const onOverlayClicked = () => {
+    setSearchOpen((prev) => !prev);
+    inputAnimation.start({ scaleX: 0 });
+  };
 
   const toggleSearch = () => {
     if (searchOpen) {
@@ -41,9 +44,13 @@ function Header() {
         scaleX: 0,
       });
     } else {
-      inputAnimation.start({ scaleX: 1 });
+      inputAnimation.start({ scaleX: 1.0 });
     }
     setSearchOpen((prev) => !prev);
+  };
+
+  const onChange = (event: React.FormEvent<HTMLInputElement>) => {
+    setMovieName(event.currentTarget.value);
   };
 
   useEffect(() => {
@@ -55,11 +62,13 @@ function Header() {
       }
     });
   }, [scrollY, navAnimation]);
-  const navigate = useNavigate();
 
-  const { register, handleSubmit } = useForm<IForm>();
-  const onValid = (data: IForm) => {
-    navigate(`/search?keyword=${data.keyword}`);
+  const onSubmit = (event: React.FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    navigate(`/search?keyword=${movieName}`);
+    inputAnimation.start({ scaleX: 0 });
+    setSearchOpen(false);
+    setMovieName("");
   };
 
   return (
@@ -86,18 +95,27 @@ function Header() {
         </Link>
         <Items>
           <Link to="/">
-            <Item>Home {homeMatch && <Circle layoutId="circle" />}</Item>
+            <Item>Home {homeMovieMatch && <Circle layoutId="circle" />}</Item>
           </Link>
           <Link to="/tv">
             <Item>Tv Shows {tvMatch && <Circle layoutId="circle" />}</Item>
           </Link>
         </Items>
       </Col>
+      {searchOpen ? (
+        <Overlay
+          onClick={() => onOverlayClicked()}
+          exit={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+        />
+      ) : (
+        <></>
+      )}
       <Col>
-        <Search onSubmit={handleSubmit(onValid)}>
+        <Search onSubmit={onSubmit}>
           <motion.svg
             onClick={toggleSearch}
-            animate={{ x: searchOpen ? -175 : 0, scale: searchOpen ? 0.7 : 1 }}
+            animate={{ x: searchOpen ? -268 : 0, scale: searchOpen ? 0.7 : 1 }}
             transition={{ type: "linear" }}
             fill="currentColor"
             viewBox="0 0 20 20"
@@ -110,12 +128,13 @@ function Header() {
             ></path>
           </motion.svg>
           <Input
-            {...register("keyword", { required: true, minLength: 2 })}
             autoFocus
             transition={{ type: "linear" }}
             animate={inputAnimation}
             initial={{ scaleX: 0 }}
-            placeholder="Search for movie or tv show..."
+            placeholder="Search for your movies..."
+            value={movieName}
+            onChange={onChange}
           />
         </Search>
       </Col>
@@ -123,12 +142,24 @@ function Header() {
   );
 }
 
+const Overlay = styled(motion.div)`
+  position: fixed;
+  top: 0;
+  left: 0;
+  width: 100%;
+  height: 100%;
+  background-color: rgba(0, 0, 0, 0.6);
+  opacity: 0;
+  cursor: pointer;
+`;
+
 const Nav = styled(motion.nav)`
+  overflow-x: hidden;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: fixed;
-  width: 100%;
+  width: 100vw;
   top: 0;
   background-color: black;
   font-size: 14px;
@@ -165,6 +196,7 @@ const Items = styled.ul`
   display: flex;
   align-items: center;
 `;
+
 const Item = styled.li`
   margin-right: 20px;
   color: ${(props) => props.theme.white.darker};
@@ -200,31 +232,32 @@ const Search = styled.form`
   position: relative;
   cursor: pointer;
   svg {
+    /* width: 26px; */
     height: 26px;
+    z-index: 2;
+    cursor: pointer;
+    margin-top: 2px;
   }
   @media ${device.mobile} {
-    svg {
-      height: 20px;
-      margin-bottom: 3px;
-    }
+    width: 20px;
+    height: 20px;
   }
 `;
 
 const Input = styled(motion.input)`
-  border-radius: 3px;
   display: flex;
   align-items: center;
   transform-origin: right center;
-
   position: absolute;
-  right: 0px;
-  padding: 5px;
-  padding-left: 30px;
-  z-index: -1;
+  right: 0;
+  padding: 5px 5px 5px 30px;
+  z-index: 1;
   color: white;
   font-size: 16px;
-  background-color: transparent;
+  background-color: #000;
   border: 1px solid ${(props) => props.theme.white.lighter};
+  border-radius: 3px;
+  width: 300px;
   &::placeholder {
     font-size: 14px;
   }

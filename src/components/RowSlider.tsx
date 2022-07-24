@@ -6,7 +6,6 @@ import device from "../theme/mediaQueries";
 import { AnimatePresence, motion } from "framer-motion";
 import { IGetMovieTvResult } from "../api/api";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
-import { useMatch } from "react-router-dom";
 
 const rowVariants = {
   hidden: (back: boolean) => ({
@@ -31,15 +30,6 @@ interface PropsType {
 const RowSlider = ({ sliceData, wholeData, type, category }: PropsType) => {
   const { offset, back, index, toggleLeaving, increaseIndex, decreaseIndex } =
     useSlide(sliceData || wholeData);
-
-  const modalMovieMatch = useMatch("/movie/:id");
-  const modalTvShowMatch = useMatch("/tv/:tvShowId");
-
-  const clickedMovie =
-    modalMovieMatch?.params.id &&
-    sliceData?.results.find((movie) => movie.id === +modalMovieMatch.params.id);
-
-  console.log(clickedMovie);
 
   return (
     <Container>
@@ -93,7 +83,7 @@ const RowSlider = ({ sliceData, wholeData, type, category }: PropsType) => {
           </AnimatePresence>
         </Slider>
         <AnimatePresence>
-          <Modal sliceData={sliceData} wholeData={wholeData} />
+          <Modal />
         </AnimatePresence>
       </SliderContainer>
       <ArrowForwardIos sx={{ width: "3%" }} onClick={increaseIndex} />

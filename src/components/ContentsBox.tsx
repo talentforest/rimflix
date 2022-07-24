@@ -1,11 +1,11 @@
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
-import useWindowSize from "../hook/useWindowSize";
-import device from "../theme/mediaQueries";
 import { makeImagePath } from "../utils/makeImagePath";
 import { v4 as uuidv4 } from "uuid";
 import { IGetMovieTv } from "../api/api";
 import styled from "styled-components";
+import useWindowSize from "../hook/useWindowSize";
+import device from "../theme/mediaQueries";
 
 const boxVariants = {
   normal: {
@@ -38,8 +38,8 @@ const infoVariants = {
 
 interface PropsType {
   contents: IGetMovieTv;
-  type: string;
-  category: string;
+  type?: string;
+  category?: string;
 }
 
 const ContentsBox = ({ contents }: PropsType) => {
@@ -49,11 +49,9 @@ const ContentsBox = ({ contents }: PropsType) => {
   const { windowSize } = useWindowSize();
 
   const onBoxClicked = (id: number) => {
-    if (location === "/") {
-      navigate(`/movie/${id}`);
-    } else if (location === "/tv") {
-      navigate(`/tv/${id}`);
-    }
+    if (location === "/") return navigate(`/movie/${id}`);
+    if (location === "/search") return navigate(`/movie/${id}`);
+    if (location === "/tv") return navigate(`/tv/${id}`);
   };
 
   return (

@@ -1,7 +1,6 @@
 import styled from "styled-components";
 import { useQuery } from "react-query";
 import {
-  getLatestMovie,
   getMovies,
   getTopRatedMovie,
   getUpcomingMovie,
@@ -14,8 +13,6 @@ import RowSlider from "../components/RowSlider";
 const Home = () => {
   const { data: nowPlaying, isLoading: nowPlayingLoading } =
     useQuery<IGetMovieTvResult>(["movies", "nowPlaying"], getMovies);
-  const { data: latestMovie, isLoading: latestMovieLoading } =
-    useQuery<IGetMovieTvResult>(["movies", "latestMovie"], getLatestMovie);
   const { data: topRatedMovie, isLoading: topRatedMovieLoading } =
     useQuery<IGetMovieTvResult>(["movies", "topRatedMovie"], getTopRatedMovie);
   const { data: upcomingMovie, isLoading: upcomingMovieLoading } =
@@ -23,34 +20,29 @@ const Home = () => {
 
   return (
     <Wrapper>
-      {nowPlayingLoading &&
-      latestMovieLoading &&
-      topRatedMovieLoading &&
-      upcomingMovieLoading ? (
+      {nowPlayingLoading && topRatedMovieLoading && upcomingMovieLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
           <MovieBanner data={nowPlaying} />
-          <>
-            <RowTitle title={"Now Playing"} />
-            <RowSlider
-              sliceData={nowPlaying}
-              type="nowPlaying"
-              category="movie"
-            />
-            <RowTitle title={"Top Rated Movies"} />
-            <RowSlider
-              wholeData={topRatedMovie}
-              type="topRatedMovie"
-              category="movie"
-            />
-            <RowTitle title={"Upcoming Movies"} />
-            <RowSlider
-              wholeData={upcomingMovie}
-              type="upcomingMovie"
-              category="movie"
-            />
-          </>
+          <RowTitle title={"Now Playing"} />
+          <RowSlider
+            sliceData={nowPlaying}
+            type="nowPlaying"
+            category="movie"
+          />
+          <RowTitle title={"Top Rated Movies"} />
+          <RowSlider
+            wholeData={topRatedMovie}
+            type="topRatedMovie"
+            category="movie"
+          />
+          <RowTitle title={"Upcoming Movies"} />
+          <RowSlider
+            wholeData={upcomingMovie}
+            type="upcomingMovie"
+            category="movie"
+          />
         </>
       )}
     </Wrapper>
