@@ -1,0 +1,10 @@
+{
+  "files": {
+    "main.js": "/rimflix/static/js/main.78ffcd77.js",
+    "index.html": "/rimflix/index.html",
+    "main.78ffcd77.js.map": "/rimflix/static/js/main.78ffcd77.js.map"
+  },
+  "entrypoints": [
+    "static/js/main.78ffcd77.js"
+  ]
+}
