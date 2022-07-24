@@ -169,6 +169,7 @@ const InfoButton = styled.button`
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
+  background-color: #fff;
   > span {
     margin-right: 5px;
   }
@@ -179,7 +180,7 @@ const InfoButton = styled.button`
   }
   @media ${device.mobile} {
     font-size: 12px;
-    height: 30px;
+    height: 40px;
     width: 100px;
     font-weight: 700;
     padding-left: 10px;
