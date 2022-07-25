@@ -97,7 +97,7 @@ const Container = styled.div`
   height: 280px;
   padding: 0 10px;
   box-sizing: border-box;
-  svg {
+  > svg {
     margin: 0 10px;
     height: 220px;
     width: 30px;
@@ -105,7 +105,7 @@ const Container = styled.div`
   }
   @media ${device.tablet} {
     height: 280px;
-    svg {
+    > svg {
       width: 20px;
       height: 220px;
     }
@@ -113,7 +113,7 @@ const Container = styled.div`
   @media ${device.mobile} {
     padding: 0;
     height: 240px;
-    svg {
+    > svg {
       width: 10px;
       height: 180px;
     }

@@ -92,7 +92,7 @@ const Banner = ({ data }: PropsType) => {
             width="100%"
             height="100%"
             config={{
-              youtube: { playerVars: { origin: "https://www.youtube.com" } },
+              youtube: { playerVars: { origin: "http://localhost:3000" } },
             }}
           />
         ) : (
@@ -105,7 +105,7 @@ const Banner = ({ data }: PropsType) => {
             width="100%"
             height="100%"
             config={{
-              youtube: { playerVars: { origin: "https://www.youtube.com" } },
+              youtube: { playerVars: { origin: "http://localhost:3000" } },
             }}
           />
         )}

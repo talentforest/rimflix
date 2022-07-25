@@ -1,8 +1,12 @@
 import { motion, useViewportScroll } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useMatch, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { makeImagePath } from "../utils/makeImagePath";
 import { IDetail } from "../api/api";
+import { Favorite, FavoriteBorder } from "@mui/icons-material";
+import { useEffect, useState } from "react";
+import { useRecoilState } from "recoil";
+import { myFavoriteMovieState, myFavoriteTvState } from "../data/atoms";
 import styled from "styled-components";
 import device from "../theme/mediaQueries";
 
@@ -13,11 +17,51 @@ interface PropsType {
 }
 
 const Detail = ({ movieId, isLoading, data }: PropsType) => {
+  const [like, setLike] = useState(false);
   const navigate = useNavigate();
+  const [myFavoriteMovie, setMyFavoriteMovie] =
+    useRecoilState(myFavoriteMovieState);
+  const [myFavoriteTv, setMyFavoriteTv] = useRecoilState(myFavoriteTvState);
   const { scrollY } = useViewportScroll();
+  const movieIdMatch = useMatch(`/movie/:movieId`)?.params.movieId;
+  const searchIdMatch = useMatch(`/search/:movieId`)?.params.movieId;
+  const tvIdMatch = useMatch(`/tv/:tvShowId`)?.params.tvShowId;
+
+  useEffect(() => {
+    if (myFavoriteMovie.includes(movieIdMatch)) return setLike(true);
+    if (myFavoriteMovie.includes(searchIdMatch)) return setLike(true);
+    if (myFavoriteTv.includes(tvIdMatch)) return setLike(true);
+  }, []);
 
   const onOverlayClicked = () => {
     navigate(-1);
+  };
+
+  const onAddClick = () => {
+    setLike((prev) => !prev);
+    if (movieIdMatch)
+      return setMyFavoriteMovie((prev) => [...prev, movieIdMatch]);
+    if (searchIdMatch)
+      return setMyFavoriteMovie((prev) => [...prev, searchIdMatch]);
+    if (tvIdMatch) return setMyFavoriteTv((prev) => [...prev, tvIdMatch]);
+  };
+
+  const onDeleteClick = () => {
+    setLike((prev) => !prev);
+    if (movieIdMatch) {
+      setMyFavoriteMovie((prev) =>
+        prev.filter((item) => item !== movieIdMatch)
+      );
+    }
+    if (searchIdMatch) {
+      setMyFavoriteMovie((prev) =>
+        prev.filter((item) => item !== searchIdMatch)
+      );
+    }
+    if (tvIdMatch)
+      return setMyFavoriteTv((prev) =>
+        prev.filter((item) => item !== tvIdMatch)
+      );
   };
 
   return (
@@ -42,6 +86,17 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
             />
             <Tagline>{data?.tagline}</Tagline>
             <BigTitle>{data?.title ? data.title : data?.name}</BigTitle>
+            {like ? (
+              <MyFavarite onClick={onDeleteClick}>
+                <span>My Favorite</span>
+                <Favorite />
+              </MyFavarite>
+            ) : (
+              <MyFavarite onClick={onAddClick}>
+                <span>Add My Favorite</span>
+                <FavoriteBorder />
+              </MyFavarite>
+            )}
             <MovieDetail>
               <Info>
                 <h5>Genre :</h5>
@@ -56,7 +111,8 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
                   {data?.runtime ? "Running Time :" : "episode_run_time : "}
                 </h5>
                 <span>
-                  {data?.runtime ? data.runtime : data.episode_run_time[0]} min
+                  {data?.runtime ? data?.runtime : data?.episode_run_time[0]}
+                  min
                 </span>
               </Info>
               <p>
@@ -80,6 +136,28 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
   );
 };
 
+const MyFavarite = styled(motion.button)`
+  display: flex;
+  align-items: center;
+  margin: 20px;
+  padding: 0 10px;
+  width: fit-content;
+  border: 1px solid red;
+  border-radius: 20px;
+  color: #333;
+  background-color: #ffaa9f;
+  cursor: pointer;
+  > svg {
+    height: 24px;
+    width: 24px;
+    margin: 5px;
+    fill: #ff0000;
+  }
+  @media ${device.mobile} {
+    margin: 10px;
+  }
+`;
+
 const Overlay = styled(motion.div)`
   position: fixed;
   top: 0;
@@ -101,10 +179,10 @@ const BigMovie = styled(motion.div)`
   overflow: scroll;
   -ms-overflow-style: none;
   scrollbar-width: none;
+  background-color: ${(props) => props.theme.black.darker};
   &::-webkit-scrollbar {
     display: none;
   }
-  background-color: ${(props) => props.theme.black.darker};
   @media ${device.tablet} {
     width: 70vw;
   }
@@ -129,7 +207,6 @@ const BigTitle = styled.h3`
   font-size: 40px;
   position: relative;
   font-weight: 700;
-  margin-bottom: 30px;
   @media ${device.mobile} {
     font-size: 22px;
     display: flex;

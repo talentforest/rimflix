@@ -2,6 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Footer from "./components/Footer";
 import Header from "./components/Header";
 import Home from "./routes/Home";
+import MyFavorite from "./routes/MyFavorite";
 import Search from "./routes/Search";
 import Tv from "./routes/Tv";
 
@@ -16,6 +17,7 @@ function Router() {
         <Route path="/movie/:id" element={<Home />} />
         <Route path="/tv/:id" element={<Tv />} />
         <Route path="/search/:id" element={<Search />} />
+        <Route path="/myFavorite" element={<MyFavorite />} />
       </Routes>
       <Footer />
     </BrowserRouter>
