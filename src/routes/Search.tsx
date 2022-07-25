@@ -12,8 +12,12 @@ const Search = () => {
   const searchKeyword = location.search.split("=")[1];
 
   const { data: searchMovie, isLoading: searchMovieLoading } =
-    useQuery<IGetMovieTvResult>(["movies", searchKeyword], () =>
-      getSearchMovie(searchKeyword)
+    useQuery<IGetMovieTvResult>(
+      ["movies", searchKeyword],
+      () => getSearchMovie(searchKeyword),
+      {
+        enabled: Boolean(searchKeyword),
+      }
     );
 
   const moviesWithPoster = searchMovie?.results.filter(
@@ -26,7 +30,7 @@ const Search = () => {
       {searchMovieLoading ? (
         <Loader>Loading...</Loader>
       ) : (
-        <div>
+        <ul>
           {moviesWithPoster ? (
             moviesWithPoster?.map((contents) => (
               <ContentsBox contents={contents} key={contents.id} />
@@ -34,7 +38,7 @@ const Search = () => {
           ) : (
             <></>
           )}
-        </div>
+        </ul>
       )}
       <AnimatePresence>
         <Modal />
@@ -51,26 +55,41 @@ const Loader = styled.div`
 `;
 
 const Container = styled.div`
-  margin-top: 70px;
+  margin-top: 100px;
   padding: 0 30px;
   width: 100%;
+  min-height: 100vh;
   h1 {
     margin-left: 10px;
     font-size: 14px;
   }
-  > div {
-    display: flex;
-    flex-wrap: wrap;
-    justify-content: space-around;
+  > ul {
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    justify-items: center;
     gap: 10px;
     margin-top: 20px;
     > div {
-      width: 100px;
-      margin-bottom: 30px;
+      width: 200px;
+    }
+  }
+  @media ${device.tablet} {
+    > ul {
+      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+      > div {
+        width: 180px;
+      }
     }
   }
   @media ${device.mobile} {
     overflow: hidden;
+    margin-top: 70px;
+    > ul {
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      > div {
+        width: 120px;
+      }
+    }
   }
 `;
 

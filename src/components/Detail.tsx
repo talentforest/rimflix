@@ -40,14 +40,14 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
                 )})`,
               }}
             />
-            <BigTitle>{data?.title ? data.title : data?.name}</BigTitle>
             <Tagline>{data?.tagline}</Tagline>
+            <BigTitle>{data?.title ? data.title : data?.name}</BigTitle>
             <MovieDetail>
               <Info>
-                <h5>Genre : </h5>
+                <h5>Genre :</h5>
                 <div>
-                  {data.genres.slice(0, 3).map((item) => (
-                    <span key={item.id}>{item.name}</span>
+                  {data.genres.slice(0, 2).map((item) => (
+                    <span key={item.id}>{item.name},</span>
                   ))}
                 </div>
               </Info>
@@ -91,9 +91,9 @@ const Overlay = styled(motion.div)`
 `;
 
 const BigMovie = styled(motion.div)`
+  width: 50vw;
   position: absolute;
-  width: 500px;
-  height: 470px;
+  height: 70vh;
   left: 0;
   right: 0;
   margin: 0 auto;
@@ -106,26 +106,19 @@ const BigMovie = styled(motion.div)`
   }
   background-color: ${(props) => props.theme.black.darker};
   @media ${device.tablet} {
-    width: 450px;
-    height: 600px;
+    width: 70vw;
   }
   @media ${device.mobile} {
-    width: 280px;
-    height: 400px;
+    width: 90vw;
   }
 `;
 
 const BigCover = styled.div`
-  width: 100%;
   background-size: cover;
   background-position: center center;
   height: 330px;
-  @media ${device.tablet} {
-    width: 450px;
-    height: 320px;
-  }
+  border: 1px solid #141414;
   @media ${device.mobile} {
-    width: 280px;
     height: 220px;
   }
 `;
@@ -133,11 +126,11 @@ const BigCover = styled.div`
 const BigTitle = styled.h3`
   color: ${(props) => props.theme.white.lighter};
   padding: 20px 20px 0;
-  font-size: 46px;
+  font-size: 40px;
   position: relative;
   font-weight: 700;
+  margin-bottom: 30px;
   @media ${device.mobile} {
-    height: 50px;
     font-size: 22px;
     display: flex;
     align-items: center;
@@ -197,7 +190,8 @@ const Info = styled.div`
   align-items: center;
   > h5 {
     margin-right: 5px;
-    color: #c8c8c8;
+    color: #aaa;
+    width: max-content;
   }
   > span {
     margin-right: 3px;

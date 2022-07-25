@@ -5,7 +5,8 @@ import { getMovieTrailer, getTvTrailer, IGetMovieTvResult } from "../api/api";
 import { makeImagePath } from "../utils/makeImagePath";
 import { Close, Info, PlayCircle } from "@mui/icons-material";
 import { useQuery } from "react-query";
-import { useState } from "react";
+import React, { useState } from "react";
+import ReactPlayer from "react-player/lazy";
 import useWindowSize from "../hook/useWindowSize";
 
 interface PropsType {
@@ -20,7 +21,10 @@ const Banner = ({ data }: PropsType) => {
 
   const { data: movieTrailer } = useQuery<IGetMovieTvResult>(
     ["movies", videoId],
-    () => getMovieTrailer(videoId)
+    () => getMovieTrailer(videoId),
+    {
+      enabled: Boolean(videoId),
+    }
   );
 
   const { data: tvTrailer } = useQuery<IGetMovieTvResult>(
@@ -76,36 +80,46 @@ const Banner = ({ data }: PropsType) => {
       </div>
     </Container>
   ) : (
-    <Video>
-      {pathname.includes("/tv") ? (
-        <iframe
-          width="100%"
-          height="400"
-          src={`https://www.youtube.com/embed/${tvTrailer?.results[0].key}?controls=&autoplay=1&loop=1&mute=1&playlist=${tvTrailer?.results[0].key}`}
-          title="YouTube video player"
-          allowFullScreen
-          allow="accelerometer; autoplay"
-        ></iframe>
-      ) : (
-        <iframe
-          width="100%"
-          height="400"
-          src={`https://www.youtube.com/embed/${movieTrailer?.results[0]?.key}?controls=&autoplay=1&loop=1&mute=1&playlist=${movieTrailer?.results[0]?.key}`}
-          title="YouTube video player"
-          allowFullScreen
-          allow="accelerometer; autoplay"
-        ></iframe>
-      )}
+    <>
+      <Video>
+        {pathname.includes("/tv") ? (
+          <Trailer
+            url={`https://www.youtube.com/watch?v=${tvTrailer?.results[0]?.key}`}
+            playing={true}
+            muted={true}
+            controls={false}
+            loop={true}
+            width="100%"
+            height="100%"
+            config={{
+              youtube: { playerVars: { origin: "https://www.youtube.com" } },
+            }}
+          />
+        ) : (
+          <Trailer
+            url={`https://www.youtube.com/watch?v=${movieTrailer?.results[0]?.key}`}
+            playing={true}
+            muted={true}
+            controls={false}
+            loop={true}
+            width="100%"
+            height="100%"
+            config={{
+              youtube: { playerVars: { origin: "https://www.youtube.com" } },
+            }}
+          />
+        )}
+      </Video>
       <TrailerCloseButton onClick={handlePlayClick}>
         <span>Close</span>
         <Close />
       </TrailerCloseButton>
-    </Video>
+    </>
   );
 };
 
 const Container = styled.div<{ $bgPhoto: string }>`
-  height: 80vh;
+  height: 85vh;
   display: flex;
   flex-direction: column;
   justify-content: center;
@@ -129,18 +143,18 @@ const Container = styled.div<{ $bgPhoto: string }>`
     background-repeat: no-repeat;
     align-items: center;
     padding: 0px 20px;
-    height: 70vh;
+    height: 80vh;
   }
   @media ${device.mobile} {
     padding: 0px 20px;
-    height: 70vh;
+    height: 80vh;
   }
 `;
 
 const Title = styled.h2`
-  font-size: 55px;
+  font-size: 50px;
   font-weight: 700;
-  margin-bottom: 20px;
+  margin: 20px 0;
   @media ${device.tablet} {
     text-align: center;
     font-size: 45px;
@@ -153,7 +167,7 @@ const Title = styled.h2`
 `;
 
 const Overview = styled.p`
-  font-size: 24px;
+  font-size: 20px;
   margin-bottom: 10px;
   width: 55%;
 `;
@@ -170,7 +184,7 @@ const InfoButton = styled.button`
   font-weight: 700;
   cursor: pointer;
   background-color: #fff;
-  margin-bottom: 30px;
+  margin: 20px 0;
   > span {
     margin-right: 5px;
   }
@@ -189,8 +203,21 @@ const InfoButton = styled.button`
 `;
 
 const Video = styled.div`
+  margin-top: 60px;
   position: relative;
-  margin: 60px 0;
+  height: 450px;
+  @media ${device.tablet} {
+    height: 450px;
+  }
+  @media ${device.mobile} {
+    height: 250px;
+  }
+`;
+
+const Trailer = styled(ReactPlayer)`
+  position: absolute;
+  top: 0;
+  left: 0;
 `;
 
 const TrailerButton = styled(InfoButton)`
@@ -200,16 +227,12 @@ const TrailerButton = styled(InfoButton)`
 `;
 
 const TrailerCloseButton = styled(TrailerButton)`
-  position: absolute;
-  right: 0;
-  margin: 20px 40px 0 0;
+  margin: 0 auto 100px;
+
   @media ${device.tablet} {
-    margin-right: 40px;
-    margin-top: 0;
   }
   @media ${device.mobile} {
-    margin-right: 20px;
-    margin-top: 0;
+    margin: 0 auto 40px;
   }
 `;
 

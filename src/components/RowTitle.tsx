@@ -10,7 +10,7 @@ const RowTitle = ({ title }: PropsType) => {
 };
 
 const H1 = styled.h1`
-  padding: 50px 60px 20px;
+  padding: 10px 60px 20px;
   font-size: 26px;
   font-weight: 700;
   @media ${device.tablet} {

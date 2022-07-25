@@ -14,6 +14,7 @@ const boxVariants = {
   hover: {
     scale: 1.2,
     y: -60,
+    zIndex: 2,
     transition: {
       delay: 0.2,
       duration: 0.3,
@@ -50,7 +51,7 @@ const ContentsBox = ({ contents }: PropsType) => {
 
   const onBoxClicked = (id: number) => {
     if (location === "/") return navigate(`/movie/${id}`);
-    if (location === "/search") return navigate(`/movie/${id}`);
+    if (location === "/search") return navigate(`/search/${id}`);
     if (location === "/tv") return navigate(`/tv/${id}`);
   };
 
@@ -97,16 +98,22 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
   background-image: url(${(props) => props.$bgPhoto});
   background-size: cover;
   background-position: center center;
-  height: 150px;
-  width: auto;
-  font-size: 66px;
+  height: 220px;
   border-radius: 3px;
+  margin-bottom: 30px;
+  position: relative;
   cursor: pointer;
   &:first-child {
     transform-origin: center left;
   }
   &:last-child {
     transform-origin: center right;
+  }
+  @media ${device.tablet} {
+    height: 200px;
+  }
+  @media ${device.mobile} {
+    height: 180px;
   }
 `;
 
@@ -117,21 +124,23 @@ const Info = styled(motion.div)`
   border-bottom-right-radius: 3px;
   position: absolute;
   bottom: -40px;
-  height: 50px;
+  height: 60px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: start;
   font-size: 12px;
-  padding: 8px 10px;
+  padding: 4px;
+  width: 100%;
   > h4 {
     font-weight: 700;
-    margin-bottom: 8px;
+    margin-bottom: 4px;
   }
   > div {
     display: flex;
     justify-content: space-between;
     font-size: 10px;
+    width: 100%;
     span {
       margin-right: 5px;
     }

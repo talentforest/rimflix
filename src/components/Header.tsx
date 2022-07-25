@@ -7,7 +7,7 @@ import device from "../theme/mediaQueries";
 const logoVariants = {
   start: { pathLength: 0, fill: "rgba(255, 255, 255, 0)" },
   end: {
-    fill: "rgba(255, 255, 255, 1)",
+    fill: "#ff0000",
     pathLength: 1,
   },
 };
@@ -27,6 +27,7 @@ function Header() {
   const navigate = useNavigate();
   const location = useLocation().pathname;
   const tvMatch = useMatch("/tv/*");
+  const favoriteMatch = useMatch("/myFavorite/*");
   const homeMovieMatch = location === "/" || location.includes("movie");
 
   const inputAnimation = useAnimation();
@@ -95,10 +96,15 @@ function Header() {
         </Link>
         <Items>
           <Link to="/">
-            <Item>Home {homeMovieMatch && <Circle layoutId="circle" />}</Item>
+            <Item>Movies {homeMovieMatch && <Circle layoutId="circle" />}</Item>
           </Link>
-          <Link to="/tv">
+          <Link to="/tv ">
             <Item>Tv Shows {tvMatch && <Circle layoutId="circle" />}</Item>
+          </Link>
+          <Link to="/myFavorite">
+            <Item>
+              My Favorite {favoriteMatch && <Circle layoutId="circle" />}
+            </Item>
           </Link>
         </Items>
       </Col>
@@ -115,7 +121,7 @@ function Header() {
         <Search onSubmit={onSubmit}>
           <motion.svg
             onClick={toggleSearch}
-            animate={{ x: searchOpen ? -268 : 0, scale: searchOpen ? 0.7 : 1 }}
+            animate={{ x: searchOpen ? -230 : 0, scale: searchOpen ? 0.7 : 1 }}
             transition={{ type: "linear" }}
             fill="currentColor"
             viewBox="0 0 20 20"
@@ -172,9 +178,8 @@ const Nav = styled(motion.nav)`
 
 const Logo = styled(motion.svg)`
   margin-right: 50px;
-  width: 95px;
-  height: 25px;
-  fill: ${(props) => props.theme.red};
+  width: 100px;
+  height: 35px;
   cursor: pointer;
   path {
     stroke: white;
@@ -182,7 +187,7 @@ const Logo = styled(motion.svg)`
   @media ${device.mobile} {
     width: 70px;
     height: 15px;
-    margin-right: 30px;
+    margin-right: 10px;
   }
 `;
 
@@ -203,12 +208,13 @@ const Item = styled.li`
   position: relative;
   display: flex;
   justify-content: center;
+  font-size: 18px;
   flex-direction: column;
   &:hover {
     color: ${(props) => props.theme.white.lighter};
   }
   @media ${device.mobile} {
-    font-size: 13px;
+    font-size: 14px;
   }
 `;
 
@@ -231,7 +237,6 @@ const Search = styled.form`
   position: relative;
   cursor: pointer;
   svg {
-    /* width: 26px; */
     height: 26px;
     z-index: 2;
     cursor: pointer;
@@ -256,12 +261,16 @@ const Input = styled(motion.input)`
   background-color: #000;
   border: 1px solid ${(props) => props.theme.white.lighter};
   border-radius: 3px;
-  width: 300px;
+  width: 260px;
+  height: 40px;
   &::placeholder {
     font-size: 14px;
   }
   &:focus {
     outline: none;
+  }
+  @media ${device.mobile} {
+    height: 30px;
   }
 `;
 

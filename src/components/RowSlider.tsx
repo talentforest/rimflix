@@ -86,7 +86,7 @@ const RowSlider = ({ sliceData, wholeData, type, category }: PropsType) => {
           <Modal />
         </AnimatePresence>
       </SliderContainer>
-      <ArrowForwardIos sx={{ width: "3%" }} onClick={increaseIndex} />
+      <ArrowForwardIos onClick={increaseIndex} />
     </Container>
   );
 };
@@ -94,15 +94,29 @@ const RowSlider = ({ sliceData, wholeData, type, category }: PropsType) => {
 const Container = styled.div`
   display: flex;
   width: 100%;
+  height: 280px;
   padding: 0 10px;
-  margin-bottom: 20px;
+  box-sizing: border-box;
   svg {
     margin: 0 10px;
-    height: 150px;
+    height: 220px;
+    width: 30px;
     cursor: pointer;
+  }
+  @media ${device.tablet} {
+    height: 280px;
+    svg {
+      width: 20px;
+      height: 220px;
+    }
   }
   @media ${device.mobile} {
     padding: 0;
+    height: 240px;
+    svg {
+      width: 10px;
+      height: 180px;
+    }
   }
 `;
 
@@ -111,7 +125,6 @@ const SliderContainer = styled.div`
   width: 100%;
   margin: -80px auto 0;
   display: flex;
-  align-items: center;
   padding: 80px 0 140px;
   > svg {
     padding-bottom: 10px;
@@ -131,7 +144,7 @@ const Row = styled(motion.div)`
   top: 5px;
   width: 100%;
   display: grid;
-  gap: 5px;
+  gap: 10px;
   grid-template-columns: repeat(6, 1fr);
   @media ${device.tablet} {
     grid-template-columns: repeat(4, 1fr);

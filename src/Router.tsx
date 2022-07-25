@@ -15,6 +15,7 @@ function Router() {
         <Route path="/search" element={<Search />} />
         <Route path="/movie/:id" element={<Home />} />
         <Route path="/tv/:id" element={<Tv />} />
+        <Route path="/search/:id" element={<Search />} />
       </Routes>
       <Footer />
     </BrowserRouter>
