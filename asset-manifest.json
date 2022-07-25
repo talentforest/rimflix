@@ -1,10 +1,36 @@
 {
   "files": {
-    "main.js": "/rimflix/static/js/main.21a4b0e3.js",
+    "main.js": "/rimflix/static/js/main.78ca8d28.js",
+    "reactPlayerYouTube.js": "/rimflix/static/js/reactPlayerYouTube.51d9fea5.chunk.js",
+    "reactPlayerSoundCloud.js": "/rimflix/static/js/reactPlayerSoundCloud.16a0ee93.chunk.js",
+    "reactPlayerVimeo.js": "/rimflix/static/js/reactPlayerVimeo.5bf6f0fa.chunk.js",
+    "reactPlayerFacebook.js": "/rimflix/static/js/reactPlayerFacebook.fb7f6845.chunk.js",
+    "reactPlayerStreamable.js": "/rimflix/static/js/reactPlayerStreamable.5d3664f1.chunk.js",
+    "reactPlayerWistia.js": "/rimflix/static/js/reactPlayerWistia.780f198f.chunk.js",
+    "reactPlayerTwitch.js": "/rimflix/static/js/reactPlayerTwitch.8ffc7e36.chunk.js",
+    "reactPlayerDailyMotion.js": "/rimflix/static/js/reactPlayerDailyMotion.d51a7ed7.chunk.js",
+    "reactPlayerMixcloud.js": "/rimflix/static/js/reactPlayerMixcloud.ac156fd8.chunk.js",
+    "reactPlayerVidyard.js": "/rimflix/static/js/reactPlayerVidyard.f9b44557.chunk.js",
+    "reactPlayerKaltura.js": "/rimflix/static/js/reactPlayerKaltura.9f552102.chunk.js",
+    "reactPlayerFilePlayer.js": "/rimflix/static/js/reactPlayerFilePlayer.50cb074c.chunk.js",
+    "reactPlayerPreview.js": "/rimflix/static/js/reactPlayerPreview.8bbee70a.chunk.js",
     "index.html": "/rimflix/index.html",
-    "main.21a4b0e3.js.map": "/rimflix/static/js/main.21a4b0e3.js.map"
+    "main.78ca8d28.js.map": "/rimflix/static/js/main.78ca8d28.js.map",
+    "reactPlayerYouTube.51d9fea5.chunk.js.map": "/rimflix/static/js/reactPlayerYouTube.51d9fea5.chunk.js.map",
+    "reactPlayerSoundCloud.16a0ee93.chunk.js.map": "/rimflix/static/js/reactPlayerSoundCloud.16a0ee93.chunk.js.map",
+    "reactPlayerVimeo.5bf6f0fa.chunk.js.map": "/rimflix/static/js/reactPlayerVimeo.5bf6f0fa.chunk.js.map",
+    "reactPlayerFacebook.fb7f6845.chunk.js.map": "/rimflix/static/js/reactPlayerFacebook.fb7f6845.chunk.js.map",
+    "reactPlayerStreamable.5d3664f1.chunk.js.map": "/rimflix/static/js/reactPlayerStreamable.5d3664f1.chunk.js.map",
+    "reactPlayerWistia.780f198f.chunk.js.map": "/rimflix/static/js/reactPlayerWistia.780f198f.chunk.js.map",
+    "reactPlayerTwitch.8ffc7e36.chunk.js.map": "/rimflix/static/js/reactPlayerTwitch.8ffc7e36.chunk.js.map",
+    "reactPlayerDailyMotion.d51a7ed7.chunk.js.map": "/rimflix/static/js/reactPlayerDailyMotion.d51a7ed7.chunk.js.map",
+    "reactPlayerMixcloud.ac156fd8.chunk.js.map": "/rimflix/static/js/reactPlayerMixcloud.ac156fd8.chunk.js.map",
+    "reactPlayerVidyard.f9b44557.chunk.js.map": "/rimflix/static/js/reactPlayerVidyard.f9b44557.chunk.js.map",
+    "reactPlayerKaltura.9f552102.chunk.js.map": "/rimflix/static/js/reactPlayerKaltura.9f552102.chunk.js.map",
+    "reactPlayerFilePlayer.50cb074c.chunk.js.map": "/rimflix/static/js/reactPlayerFilePlayer.50cb074c.chunk.js.map",
+    "reactPlayerPreview.8bbee70a.chunk.js.map": "/rimflix/static/js/reactPlayerPreview.8bbee70a.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.21a4b0e3.js"
+    "static/js/main.78ca8d28.js"
   ]
 }
