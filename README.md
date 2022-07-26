@@ -1,46 +1,45 @@
-# Getting Started with Create React App
+# 🎞 Rimflix
 
-This project was bootstrapped with [Create React App](https://github.com/facebook/create-react-app).
+## Rimflix 소개
 
-## Available Scripts
+> 넷플릭스를 모티브로 만든 영화 사이트입니다. 현재 상영하고 있는 영화나 인기있는 컨텐츠들을 볼 수 있으며, 또한 영화 검색 기능를 검색할 수 있습니다.
+>
+> 이렇게 여러 영화와 텔레비젼 컨텐츠들을 둘러볼 수 있는 것에 더해, 내가 좋아하는 영화나 TV를 저장하여 따로 볼 수 있는 공간도 개발하였습니다.
 
-In the project directory, you can run:
+<br/>
 
-### `npm start`
+---
 
-Runs the app in the development mode.\
-Open [http://localhost:3000](http://localhost:3000) to view it in the browser.
+<br/>
 
-The page will reload if you make edits.\
-You will also see any lint errors in the console.
+## Rimflix 기능 소개
 
-### `npm test`
+> Rimflix는 반응형 웹페이지입니다.
 
-Launches the test runner in the interactive watch mode.\
-See the section about [running tests](https://facebook.github.io/create-react-app/docs/running-tests) for more information.
+<br/>
 
-### `npm run build`
+---
 
-Builds the app for production to the `build` folder.\
-It correctly bundles React in production mode and optimizes the build for the best performance.
+<br/>
 
-The build is minified and the filenames include the hashes.\
-Your app is ready to be deployed!
+## 🔎 Spec
 
-See the section about [deployment](https://facebook.github.io/create-react-app/docs/deployment) for more information.
+### ReactJS
 
-### `npm run eject`
+### Typescript
 
-**Note: this is a one-way operation. Once you `eject`, you can’t go back!**
+### Recoil
 
-If you aren’t satisfied with the build tool and configuration choices, you can `eject` at any time. This command will remove the single build dependency from your project.
+### React-query
 
-Instead, it will copy all the configuration files and the transitive dependencies (webpack, Babel, ESLint, etc) right into your project so you have full control over them. All of the commands except `eject` will still work, but they will point to the copied scripts so you can tweak them. At this point you’re on your own.
+- 확실히 react-query를 쓰니 캐싱 능력이 정말 탁월했습니다. 덕분에 로딩을 쉽게 이용할 수 있었고, 속도 측면에서도 좀 더 원활히 사용할 수 있었습니다.
 
-You don’t have to ever use `eject`. The curated feature set is suitable for small and middle deployments, and you shouldn’t feel obligated to use this feature. However we understand that this tool wouldn’t be useful if you couldn’t customize it when you are ready for it.
+---
 
-## Learn More
+## 앱 살펴보기
 
-You can learn more in the [Create React App documentation](https://facebook.github.io/create-react-app/docs/getting-started).
+### [Demo](https://talentforest.github.io/rimflix/)
 
-To learn React, check out the [React documentation](https://reactjs.org/).
+- gh-pages로 배포하였습니다.
+
+---
