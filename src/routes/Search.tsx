@@ -19,7 +19,6 @@ const Search = () => {
         enabled: Boolean(searchKeyword),
       }
     );
-
   const moviesWithPoster = searchMovie?.results.filter(
     (item) => !(item.backdrop_path === null && item.poster_path === null)
   );

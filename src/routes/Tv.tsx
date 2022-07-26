@@ -18,19 +18,24 @@ const Tv = () => {
   const { data: onAirTvShow, isLoading: onAirShowLoading } =
     useQuery<IGetMovieTvResult>(["tvs", "onAirTvShow"], getAiringTodayTvShows);
 
+  const bannerData = topTvShow?.results[0];
+  const sliceBannerData = topTvShow?.results.slice(1);
+  const popularData = popularTvShow?.results;
+  const onAirData = onAirTvShow?.results;
+
   return (
     <Wrapper>
       {topShowLoading && popularShowLoading && onAirShowLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <MovieBanner data={topTvShow} />
+          <MovieBanner data={bannerData} />
           <RowTitle title={"On Air Tv Shows"} />
-          <RowSlider wholeData={onAirTvShow} />
+          <RowSlider data={sliceBannerData} />
           <RowTitle title={"Top Ranked Tv Shows"} />
-          <RowSlider sliceData={topTvShow} />
+          <RowSlider data={popularData} />
           <RowTitle title={"Popular Tv Shows"} />
-          <RowSlider wholeData={popularTvShow} />
+          <RowSlider data={onAirData} />
         </>
       )}
     </Wrapper>

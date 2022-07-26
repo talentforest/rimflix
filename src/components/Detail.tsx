@@ -31,6 +31,7 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
     if (myFavoriteMovie.includes(movieIdMatch)) return setLike(true);
     if (myFavoriteMovie.includes(searchIdMatch)) return setLike(true);
     if (myFavoriteTv.includes(tvIdMatch)) return setLike(true);
+    // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onOverlayClicked = () => {
@@ -142,7 +143,6 @@ const MyFavarite = styled(motion.button)`
   margin: 20px;
   padding: 0 10px;
   width: fit-content;
-  border: 1px solid red;
   border-radius: 20px;
   color: #333;
   background-color: #ffaa9f;

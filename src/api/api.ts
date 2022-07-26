@@ -7,57 +7,38 @@ export interface IGetMovieTvResult {
     minimum: string;
   };
   page?: number;
-  results: IGetMovieTv[];
+  results: IDetail[];
   total_pages?: number;
   total_results?: number;
 }
 
-export interface IGetMovieTv {
-  adult?: boolean;
-  id: number;
-  backdrop_path: string;
-  poster_path: string;
-  title?: string;
-  name?: string;
-  original_title?: string;
-  original_name?: string;
-  overview: string;
-  release_date?: string;
-  first_air_date?: string;
-  vote_average: number;
-  url?: string;
-  type?: string;
-  category?: string;
-  key?: string;
-}
-
-interface IGenres {
-  id: number;
-  name: string;
-}
-
 export interface IDetail {
+  id?: number;
   genres?: IGenres[];
   homepage?: string;
   original_title?: string;
   original_name?: string;
   tagline?: string;
-  runtime: number;
+  runtime?: number;
   number_of_episodes?: number;
   number_of_seasons?: number;
   adult?: boolean;
   backdrop_path?: string;
   poster_path: string;
-  release_data: string;
+  release_date: string;
   vote_average: number;
   overview: string;
   title: string;
-  first_air_date: string;
-  last_air_date: string;
-  name: string;
-  seasons: ISeason[];
-  episode_run_time: number[];
+  first_air_date?: string;
+  last_air_date?: string;
+  name?: string;
+  seasons?: ISeason[];
+  episode_run_time?: number[];
+}
+
+interface IGenres {
   id: number;
+  name: string;
 }
 
 interface ISeason {
@@ -68,6 +49,17 @@ interface ISeason {
   overview: string;
   poster_path: string;
   season_number: number;
+}
+
+export interface IGetVideo {
+  id: string;
+  results: IVideo[];
+}
+
+interface IVideo {
+  id: string;
+  key: string;
+  name?: string;
 }
 
 // Movie Api

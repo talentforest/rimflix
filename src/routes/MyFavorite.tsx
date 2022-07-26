@@ -48,8 +48,9 @@ const Container = styled.div`
   width: 100%;
   min-height: 100vh;
   > div {
-    display: flex;
-    flex-wrap: wrap;
+    display: grid;
+    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    justify-items: center;
     gap: 0 20px;
   }
   h1 {
@@ -58,13 +59,18 @@ const Container = styled.div`
       margin-top: 50px;
     }
   }
-
   @media ${device.tablet} {
     padding: 10px 50px;
+    > div {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
   }
   @media ${device.mobile} {
     padding: 10px 20px 20px;
     margin-top: 50px;
+    > div {
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+    }
   }
 `;
 

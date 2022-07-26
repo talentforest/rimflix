@@ -4,7 +4,7 @@ import useSlide from "../hook/useSlide";
 import ContentsBox from "./ContentsBox";
 import device from "../theme/mediaQueries";
 import { AnimatePresence, motion } from "framer-motion";
-import { IGetMovieTvResult } from "../api/api";
+import { IDetail, IGetMovieTvResult } from "../api/api";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
 const rowVariants = {
@@ -20,16 +20,15 @@ const rowVariants = {
 };
 
 interface PropsType {
-  sliceData?: IGetMovieTvResult;
-  wholeData?: IGetMovieTvResult;
+  data?: IDetail[];
   upcomingData?: IGetMovieTvResult;
   type?: string;
   category?: string;
 }
 
-const RowSlider = ({ sliceData, wholeData, type, category }: PropsType) => {
+const RowSlider = ({ data, type, category }: PropsType) => {
   const { offset, back, index, toggleLeaving, increaseIndex, decreaseIndex } =
-    useSlide(sliceData || wholeData);
+    useSlide(data);
 
   return (
     <Container>
@@ -50,35 +49,11 @@ const RowSlider = ({ sliceData, wholeData, type, category }: PropsType) => {
               key={index}
               custom={back}
             >
-              {sliceData ? (
-                sliceData?.results
-                  ?.slice(1) // 배너에 사용한 영화 제외
-                  .slice(offset * index, offset * index + offset)
-                  .map((contents) => (
-                    <ContentsBox
-                      contents={contents}
-                      key={contents.id}
-                      type={type}
-                      category={category}
-                    />
-                  ))
-              ) : (
-                <></>
-              )}
-              {wholeData ? (
-                wholeData?.results
-                  .slice(offset * index, offset * index + offset)
-                  .map((contents) => (
-                    <ContentsBox
-                      contents={contents}
-                      key={contents.id}
-                      type={type}
-                      category={category}
-                    />
-                  ))
-              ) : (
-                <></>
-              )}
+              {data
+                ?.slice(offset * index, offset * index + offset)
+                .map((contents) => (
+                  <ContentsBox contents={contents} key={contents.id} />
+                ))}
             </Row>
           </AnimatePresence>
         </Slider>

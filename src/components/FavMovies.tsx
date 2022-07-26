@@ -1,7 +1,7 @@
 import { motion } from "framer-motion";
 import { useQuery } from "react-query";
 import styled from "styled-components";
-import { getDetail, IGetMovieTv } from "../api/api";
+import { getDetail, IDetail } from "../api/api";
 import useWindowSize from "../hook/useWindowSize";
 import { makeImagePath } from "../utils/makeImagePath";
 import { v4 as uuidv4 } from "uuid";
@@ -44,21 +44,20 @@ const infoVariants = {
 };
 
 const FavMovies = ({ movieId, tvId }: PropsType) => {
-  const { data: detail, isLoading: detailIsLoading } = useQuery<IGetMovieTv>(
+  const { data: detail, isLoading: detailIsLoading } = useQuery<IDetail>(
     ["detail", `detail_${movieId}`],
     () => getDetail("movie", movieId),
     {
       enabled: Boolean(movieId),
     }
   );
-  const { data: tvDetail, isLoading: tvDetailIsLoading } =
-    useQuery<IGetMovieTv>(
-      ["detail", `detail_${tvId}`],
-      () => getDetail("tv", tvId),
-      {
-        enabled: Boolean(tvId),
-      }
-    );
+  const { data: tvDetail, isLoading: tvDetailIsLoading } = useQuery<IDetail>(
+    ["detail", `detail_${tvId}`],
+    () => getDetail("tv", tvId),
+    {
+      enabled: Boolean(tvId),
+    }
+  );
 
   const { windowSize } = useWindowSize();
 
@@ -126,7 +125,8 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
     width: 160px;
   }
   @media ${device.mobile} {
-    height: 180px;
+    height: 200px;
+    width: 150px;
   }
 `;
 

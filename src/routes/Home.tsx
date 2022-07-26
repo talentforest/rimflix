@@ -18,28 +18,33 @@ const Home = () => {
   const { data: upcomingMovie, isLoading: upcomingMovieLoading } =
     useQuery<IGetMovieTvResult>(["movies", "upcomingMovie"], getUpcomingMovie);
 
+  const bannerData = nowPlaying?.results[0];
+  const removeBannerData = nowPlaying?.results.slice(1);
+  const topRatedData = topRatedMovie?.results;
+  const upcomingData = upcomingMovie?.results;
+
   return (
     <Wrapper>
       {nowPlayingLoading && topRatedMovieLoading && upcomingMovieLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <MovieBanner data={nowPlaying} />
+          <MovieBanner data={bannerData} />
           <RowTitle title={"Now Playing"} />
           <RowSlider
-            sliceData={nowPlaying}
+            data={removeBannerData}
             type="nowPlaying"
             category="movie"
           />
           <RowTitle title={"Top Rated Movies"} />
           <RowSlider
-            wholeData={topRatedMovie}
+            data={topRatedData}
             type="topRatedMovie"
             category="movie"
           />
           <RowTitle title={"Upcoming Movies"} />
           <RowSlider
-            wholeData={upcomingMovie}
+            data={upcomingData}
             type="upcomingMovie"
             category="movie"
           />

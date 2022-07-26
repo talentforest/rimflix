@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import device from "../theme/mediaQueries";
 import { Link, useLocation } from "react-router-dom";
-import { getMovieTrailer, getTvTrailer, IGetMovieTvResult } from "../api/api";
+import { getMovieTrailer, getTvTrailer, IGetVideo, IDetail } from "../api/api";
 import { makeImagePath } from "../utils/makeImagePath";
 import { Close, Info, PlayCircle } from "@mui/icons-material";
 import { useQuery } from "react-query";
@@ -10,16 +10,16 @@ import ReactPlayer from "react-player/lazy";
 import useWindowSize from "../hook/useWindowSize";
 
 interface PropsType {
-  data?: IGetMovieTvResult;
+  data?: IDetail;
 }
 
 const Banner = ({ data }: PropsType) => {
   const [videoClick, setVideoClick] = useState(false);
   const { windowSize } = useWindowSize();
   const pathname = useLocation().pathname;
-  const videoId = data?.results[0].id;
+  const videoId = data?.id;
 
-  const { data: movieTrailer } = useQuery<IGetMovieTvResult>(
+  const { data: movieTrailer } = useQuery<IGetVideo>(
     ["movies", videoId],
     () => getMovieTrailer(videoId),
     {
@@ -27,7 +27,7 @@ const Banner = ({ data }: PropsType) => {
     }
   );
 
-  const { data: tvTrailer } = useQuery<IGetMovieTvResult>(
+  const { data: tvTrailer } = useQuery<IGetVideo>(
     ["tv", videoId],
     () => getTvTrailer(videoId),
     {
@@ -44,29 +44,15 @@ const Banner = ({ data }: PropsType) => {
     <Container
       $bgPhoto={
         windowSize.width > 500
-          ? makeImagePath(
-              data?.results[0].backdrop_path || data?.results[0].poster_path
-            )
-          : makeImagePath(
-              data?.results[0].poster_path || data?.results[0].backdrop_path
-            )
+          ? makeImagePath(data?.backdrop_path || data?.poster_path)
+          : makeImagePath(data?.poster_path || data?.backdrop_path)
       }
     >
-      {data?.results[0].title ? (
-        <Title>{data?.results[0].title}</Title>
-      ) : (
-        <Title>{data?.results[0].name}</Title>
-      )}
-      {windowSize.width > 1023 ? (
-        <Overview>{data?.results[0].overview}</Overview>
-      ) : null}
+      {data?.title ? <Title>{data?.title}</Title> : <Title>{data?.name}</Title>}
+      {windowSize.width > 1023 ? <Overview>{data?.overview}</Overview> : null}
       <div>
         <Link
-          to={
-            pathname === "/tv"
-              ? `/tv/${data?.results[0].id}`
-              : `/movie/${data?.results[0].id}`
-          }
+          to={pathname === "/tv" ? `/tv/${data?.id}` : `/movie/${data?.id}`}
         >
           <InfoButton>
             <span>More Info</span>
@@ -86,26 +72,26 @@ const Banner = ({ data }: PropsType) => {
           <Trailer
             url={`https://www.youtube.com/watch?v=${tvTrailer?.results[0]?.key}`}
             playing={true}
-            muted={true}
+            muted={false}
             controls={false}
             loop={true}
             width="100%"
             height="100%"
             config={{
-              youtube: { playerVars: { origin: "http://localhost:3000" } },
+              youtube: { playerVars: { origin: "https://localhost:3000" } },
             }}
           />
         ) : (
           <Trailer
             url={`https://www.youtube.com/watch?v=${movieTrailer?.results[0]?.key}`}
             playing={true}
-            muted={true}
+            muted={false}
             controls={false}
             loop={true}
             width="100%"
             height="100%"
             config={{
-              youtube: { playerVars: { origin: "http://localhost:3000" } },
+              youtube: { playerVars: { origin: "https://localhost:3000" } },
             }}
           />
         )}

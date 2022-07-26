@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { makeImagePath } from "../utils/makeImagePath";
 import { v4 as uuidv4 } from "uuid";
-import { IGetMovieTv } from "../api/api";
+import { IDetail } from "../api/api";
 import styled from "styled-components";
 import useWindowSize from "../hook/useWindowSize";
 import device from "../theme/mediaQueries";
@@ -38,9 +38,7 @@ const infoVariants = {
 };
 
 interface PropsType {
-  contents: IGetMovieTv;
-  type?: string;
-  category?: string;
+  contents: IDetail;
 }
 
 const ContentsBox = ({ contents }: PropsType) => {
