@@ -6,7 +6,7 @@ import {
   getTopRatedTvShows,
   IGetMovieTvResult,
 } from "../api/api";
-import MovieBanner from "../components/Banner";
+import MovieBanner from "../components/MovieBanner";
 import RowSlider from "../components/RowSlider";
 import RowTitle from "../components/RowTitle";
 
