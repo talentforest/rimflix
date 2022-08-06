@@ -5,7 +5,7 @@ import { getMovieTrailer, getTvTrailer, IGetVideo, IDetail } from "../api/api";
 import { makeImagePath } from "../utils/makeImagePath";
 import { CancelRounded, Info, PlayCircle } from "@mui/icons-material";
 import { useQuery } from "react-query";
-import { useState } from "react";
+import { useRef, useState } from "react";
 import ReactPlayer from "react-player/lazy";
 
 interface PropsType {
@@ -14,6 +14,8 @@ interface PropsType {
 
 const MovieBanner = ({ data }: PropsType) => {
   const [videoClick, setVideoClick] = useState(false);
+  const [showMessage, setShowMessage] = useState(false);
+  const guideMsg = useRef();
   const pathname = useLocation().pathname;
   const videoId = data?.id;
 
@@ -35,6 +37,12 @@ const MovieBanner = ({ data }: PropsType) => {
 
   const handlePlayClick = () => {
     setVideoClick((prev) => !prev);
+
+    setTimeout(() => {
+      setShowMessage((prev) => !prev);
+      console.log(showMessage);
+    }, 6000);
+    setShowMessage((prev) => !prev);
   };
 
   return !videoClick ? (
@@ -63,39 +71,69 @@ const MovieBanner = ({ data }: PropsType) => {
       </BannerButtons>
     </BannerWrapper>
   ) : (
-    <>
-      <Video>
-        <Trailer
-          url={
-            pathname.includes("/tv")
-              ? `https://www.youtube.com/watch?v=${tvTrailer?.results[0]?.key}`
-              : `https://www.youtube.com/watch?v=${movieTrailer?.results[0]?.key}`
-          }
-          playing={true}
-          muted={false}
-          controls={false}
-          loop={true}
-          width="100%"
-          height="100%"
-          config={{
-            youtube: { playerVars: { origin: "https://localhost:3000" } },
-          }}
-        />
-        <GuideMsg>
-          if you want to close the video, then click this button!
-        </GuideMsg>
-        <TrailerCloseButton onClick={handlePlayClick}>
-          <CancelRounded />
-        </TrailerCloseButton>
-      </Video>
-    </>
+    <Video>
+      <Trailer
+        url={
+          pathname.includes("/tv")
+            ? `https://www.youtube.com/watch?v=${tvTrailer?.results[0]?.key}`
+            : `https://www.youtube.com/watch?v=${movieTrailer?.results[0]?.key}`
+        }
+        playing={true}
+        muted={false}
+        controls={false}
+        loop={true}
+        width="100%"
+        height="100%"
+        config={{
+          youtube: { playerVars: { origin: "https://localhost:3000" } },
+        }}
+      />
+      <GuideMsg className={showMessage ? "" : "none"}>
+        if you want to close the video, then click this button!
+        <div />
+      </GuideMsg>
+      <TrailerCloseButton onClick={handlePlayClick}>
+        <CancelRounded />
+      </TrailerCloseButton>
+    </Video>
   );
 };
 const GuideMsg = styled.div`
   color: #fff;
   position: absolute;
-  top: -45px;
-  right: 100px;
+  top: -55px;
+  right: 110px;
+  font-size: 18px;
+  border-radius: 20px;
+  padding: 10px 20px;
+  background-color: #ffa2a2;
+  div {
+    width: 13px;
+    height: 13px;
+    position: absolute;
+    right: -5px;
+    bottom: 14px;
+    transform: rotate(45deg);
+    background-color: #ffa2a2;
+  }
+  &.none {
+    display: none;
+  }
+  @media ${device.tablet} {
+    font-size: 14px;
+    top: -58px;
+    right: 100px;
+    div {
+      width: 12px;
+      height: 12px;
+      right: -4px;
+      bottom: 12px;
+    }
+  }
+  @media ${device.mobile} {
+    top: -45px;
+    right: 90px;
+  }
 `;
 
 const BannerWrapper = styled.div`
