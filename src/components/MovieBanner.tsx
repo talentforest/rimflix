@@ -5,7 +5,7 @@ import { getMovieTrailer, getTvTrailer, IGetVideo, IDetail } from "../api/api";
 import { makeImagePath } from "../utils/makeImagePath";
 import { CancelRounded, Info, PlayCircle } from "@mui/icons-material";
 import { useQuery } from "react-query";
-import { useRef, useState } from "react";
+import { useState } from "react";
 import ReactPlayer from "react-player/lazy";
 
 interface PropsType {
@@ -15,7 +15,6 @@ interface PropsType {
 const MovieBanner = ({ data }: PropsType) => {
   const [videoClick, setVideoClick] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
-  const guideMsg = useRef();
   const pathname = useLocation().pathname;
   const videoId = data?.id;
 
@@ -243,7 +242,6 @@ const Video = styled.div`
   margin: 140px 0 80px;
   position: relative;
   height: 550px;
-  height: 450px;
   box-shadow: 1px 2px 50px rgba(249, 249, 249, 0.3);
   @media ${device.tablet} {
     height: 400px;
