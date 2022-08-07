@@ -53,21 +53,27 @@ const MovieBanner = ({ data }: PropsType) => {
         />
         <img src={makeImagePath(data?.poster_path)} alt="movie poster" />
       </Picture>
-      {data?.title ? <Title>{data?.title}</Title> : <Title>{data?.name}</Title>}
-      <Overview>{data?.overview}</Overview>
-      <BannerButtons>
-        <InfoButton
-          as={Link}
-          to={pathname === "/tv" ? `/tv/${data?.id}` : `/movie/${data?.id}`}
-        >
-          <span>More Info</span>
-          <Info />
-        </InfoButton>
-        <TrailerButton onClick={handlePlayClick}>
-          <span>Trailer</span>
-          <PlayCircle />
-        </TrailerButton>
-      </BannerButtons>
+      <BannerInfo>
+        {data?.title ? (
+          <Title>{data?.title}</Title>
+        ) : (
+          <Title>{data?.name}</Title>
+        )}
+        <Overview>{data?.overview}</Overview>
+        <BannerButtons>
+          <InfoButton
+            as={Link}
+            to={pathname === "/tv" ? `/tv/${data?.id}` : `/movie/${data?.id}`}
+          >
+            <span>More Info</span>
+            <Info />
+          </InfoButton>
+          <TrailerButton onClick={handlePlayClick}>
+            <span>Trailer</span>
+            <PlayCircle />
+          </TrailerButton>
+        </BannerButtons>
+      </BannerInfo>
     </BannerWrapper>
   ) : (
     <Video>
@@ -97,6 +103,7 @@ const MovieBanner = ({ data }: PropsType) => {
     </Video>
   );
 };
+
 const GuideMsg = styled.div`
   color: #fff;
   position: absolute;
@@ -165,19 +172,30 @@ const Picture = styled.picture`
   }
 `;
 
-const Title = styled.h2`
+const BannerInfo = styled.div`
+  margin-left: 30px;
   position: absolute;
-  font-size: 50px;
-  font-weight: 700;
-  margin: 0 30px;
-  top: 300px;
   @media ${device.tablet} {
     text-align: center;
     font-size: 45px;
     display: block;
     width: 100%;
     margin: 0;
-    top: 500px;
+  }
+  @media ${device.mobile} {
+    font-size: 28px;
+  }
+`;
+
+const Title = styled.h2`
+  font-size: 50px;
+  font-weight: 700;
+  margin-bottom: 10px;
+  @media ${device.tablet} {
+    text-align: center;
+    font-size: 45px;
+    width: 100%;
+    margin-bottom: 30px;
   }
   @media ${device.mobile} {
     font-size: 28px;
@@ -185,27 +203,22 @@ const Title = styled.h2`
 `;
 
 const Overview = styled.p`
-  position: absolute;
-  bottom: 180px;
   font-size: 22px;
-  margin: 0 30px;
   width: 650px;
   line-height: 1.2;
+  margin-bottom: 30px;
   @media ${device.tablet} {
     display: none;
   }
 `;
 
 const BannerButtons = styled.div`
-  position: absolute;
   display: flex;
   gap: 20px;
-  bottom: 50px;
-  right: 0;
-  left: 0;
-  justify-content: center;
+  @media ${device.tablet} {
+    justify-content: center;
+  }
   @media ${device.mobile} {
-    bottom: 100px;
     gap: 10px;
   }
 `;
@@ -229,6 +242,8 @@ const InfoButton = styled.button`
   @media ${device.tablet} {
     font-weight: 700;
     padding-left: 10px;
+    width: 130px;
+    height: 50px;
   }
   @media ${device.mobile} {
     font-size: 14px;
