@@ -149,7 +149,6 @@ const BannerWrapper = styled.div`
   flex-direction: column;
   justify-content: center;
   color: #fff;
-  margin-bottom: 80px;
 `;
 
 const Picture = styled.picture`
@@ -181,6 +180,7 @@ const BannerInfo = styled.div`
     display: block;
     width: 100%;
     margin: 0;
+    top: 70vh;
   }
   @media ${device.mobile} {
     font-size: 28px;
