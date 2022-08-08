@@ -2,7 +2,6 @@ import { motion } from "framer-motion";
 import { useQuery } from "react-query";
 import styled from "styled-components";
 import { getDetail, IDetail } from "../api/api";
-import useWindowSize from "../hook/useWindowSize";
 import { makeImagePath } from "../utils/makeImagePath";
 import { v4 as uuidv4 } from "uuid";
 import device from "../theme/mediaQueries";
@@ -43,7 +42,7 @@ const infoVariants = {
   },
 };
 
-const FavMovies = ({ movieId, tvId }: PropsType) => {
+const FavContents = ({ movieId, tvId }: PropsType) => {
   const { data: detail, isLoading: detailIsLoading } = useQuery<IDetail>(
     ["detail", `detail_${movieId}`],
     () => getDetail("movie", movieId),
@@ -59,7 +58,7 @@ const FavMovies = ({ movieId, tvId }: PropsType) => {
     }
   );
 
-  const { windowSize } = useWindowSize();
+  console.log(detail?.genres.map((item) => item.name));
 
   return detailIsLoading && tvDetailIsLoading ? (
     <div>Loading...</div>
@@ -71,22 +70,25 @@ const FavMovies = ({ movieId, tvId }: PropsType) => {
       whileHover="hover"
       initial="normal"
       transition={{ type: "tween" }}
-      $bgPhoto={
-        windowSize.width > 500
-          ? makeImagePath(
-              detail?.backdrop_path ||
-                detail?.poster_path ||
-                tvDetail?.backdrop_path ||
-                tvDetail?.poster_path
-            )
-          : makeImagePath(
-              detail?.poster_path ||
-                detail?.backdrop_path ||
-                tvDetail?.backdrop_path ||
-                tvDetail?.poster_path
-            )
-      }
     >
+      <Picture>
+        <source
+          srcSet={makeImagePath(
+            detail
+              ? detail?.backdrop_path || detail?.poster_path
+              : tvDetail?.backdrop_path || tvDetail?.poster_path
+          )}
+          media="(min-width: 1023px)"
+        />
+        <img
+          src={makeImagePath(
+            detail
+              ? detail?.poster_path || detail?.poster_path
+              : tvDetail?.poster_path || tvDetail?.poster_path
+          )}
+          alt="movie poster"
+        />
+      </Picture>
       <Info variants={infoVariants}>
         <h4>
           {detail?.title
@@ -110,23 +112,33 @@ const FavMovies = ({ movieId, tvId }: PropsType) => {
   );
 };
 
-const Box = styled(motion.div)<{ $bgPhoto: string }>`
-  background-color: white;
-  background-image: url(${(props) => props.$bgPhoto});
-  background-size: cover;
-  background-position: center center;
-  height: 220px;
-  width: 130px;
-  border-radius: 3px;
+const Box = styled(motion.div)`
+  width: 250px;
+  height: 180px;
+  border-radius: 5px;
   margin-bottom: 30px;
   position: relative;
   @media ${device.tablet} {
-    height: 220px;
-    width: 160px;
+    width: 180px;
+    height: 250px;
   }
   @media ${device.mobile} {
-    height: 200px;
-    width: 150px;
+    width: 120px;
+    height: 180px;
+  }
+`;
+
+const Picture = styled.picture`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  img {
+    border-radius: 5px;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
   }
 `;
 
@@ -136,35 +148,42 @@ const Info = styled(motion.div)`
   border-bottom-left-radius: 3px;
   border-bottom-right-radius: 3px;
   position: absolute;
-  bottom: -40px;
-  height: 60px;
+  bottom: -55px;
+  height: 70px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: start;
-  font-size: 12px;
-  padding: 4px;
+  padding: 10px;
   width: 100%;
   > h4 {
+    font-size: 16px;
     font-weight: 700;
-    margin-bottom: 4px;
+    margin-bottom: 8px;
   }
   > div {
     display: flex;
     justify-content: space-between;
-    font-size: 10px;
+    font-size: 16px;
     width: 100%;
     span {
       margin-right: 5px;
     }
   }
   @media ${device.tablet} {
-    bottom: -38px;
+    > h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
   }
   @media ${device.mobile} {
-    height: 60px;
-    bottom: -48px;
+    > h4 {
+      font-size: 16px;
+      font-weight: 700;
+      margin-bottom: 8px;
+    }
   }
 `;
 
-export default FavMovies;
+export default FavContents;
