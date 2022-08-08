@@ -15,6 +15,7 @@ export interface IGetMovieTvResult {
 export interface IDetail {
   id?: number;
   genres?: IGenres[];
+  genre_ids: number[];
   homepage?: string;
   original_title?: string;
   original_name?: string;
@@ -36,7 +37,7 @@ export interface IDetail {
   episode_run_time?: number[];
 }
 
-interface IGenres {
+export interface IGenres {
   id: number;
   name: string;
 }
@@ -60,6 +61,13 @@ interface IVideo {
   id: string;
   key: string;
   name?: string;
+}
+
+// get Genre Ids
+export function getGenres() {
+  return fetch(`${BASE_PATH}/genre/movie/list?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
 }
 
 // Movie Api

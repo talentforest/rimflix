@@ -86,8 +86,9 @@ const SliderContainer = styled.div`
     }
   }
   @media ${device.mobile} {
-    height: 240px;
+    height: 280px;
     margin-top: -30px;
+    margin-bottom: 10px;
     > svg {
       width: 30px;
     }

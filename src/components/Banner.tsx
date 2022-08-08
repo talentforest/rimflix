@@ -39,7 +39,6 @@ const Banner = ({ data }: PropsType) => {
 
     setTimeout(() => {
       setShowMessage((prev) => !prev);
-      console.log(showMessage);
     }, 6000);
     setShowMessage((prev) => !prev);
   };

@@ -58,8 +58,6 @@ const FavContents = ({ movieId, tvId }: PropsType) => {
     }
   );
 
-  console.log(detail?.genres.map((item) => item.name));
-
   return detailIsLoading && tvDetailIsLoading ? (
     <div>Loading...</div>
   ) : (
