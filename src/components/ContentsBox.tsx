@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { makeImagePath } from "../utils/makeImagePath";
 import { v4 as uuidv4 } from "uuid";
-import { getGenres, IDetail, IGenres } from "../api/api";
+import { getGenres, getTvGenres, IDetail, IGenres } from "../api/api";
 import styled from "styled-components";
 import device from "../theme/mediaQueries";
 import { useQuery } from "react-query";
@@ -50,9 +50,12 @@ const ContentsBox = ({ contents }: PropsType) => {
   const location = useLocation().pathname;
   const navigate = useNavigate();
 
-  const { data: genres, isLoading: genresLoading } = useQuery<IGetGenres>(
-    ["genres", "MovieGenres"],
-    getGenres
+  const { data: movieGenres, isLoading: movieGenresLoading } =
+    useQuery<IGetGenres>(["genres", "MovieGenres"], getGenres);
+
+  const { data: tvGenres, isLoading: tvGenresLoading } = useQuery<IGetGenres>(
+    ["tvGenres", "TvGenres"],
+    getTvGenres
   );
 
   const onBoxClicked = (id: number) => {
@@ -61,7 +64,10 @@ const ContentsBox = ({ contents }: PropsType) => {
     if (location === "/tv") return navigate(`/tv/${id}`);
   };
 
-  const findGenres = genres?.genres?.filter((item) =>
+  const findMovieGenres = movieGenres?.genres?.filter((item) =>
+    contents.genre_ids.includes(item.id)
+  );
+  const findTvGenres = tvGenres?.genres?.filter((item) =>
     contents.genre_ids.includes(item.id)
   );
 
@@ -78,6 +84,7 @@ const ContentsBox = ({ contents }: PropsType) => {
       <Image
         src={makeImagePath(contents?.poster_path || contents?.poster_path)}
         alt="movie poster"
+        loading="lazy"
       />
       <Info variants={infoVariants}>
         <h4>
@@ -90,9 +97,13 @@ const ContentsBox = ({ contents }: PropsType) => {
             : contents.name}
         </h4>
         <Genres>
-          {findGenres.slice(0, 3).map((item) => (
-            <span>{item.name}</span>
-          ))}
+          {location === "/tv"
+            ? findTvGenres
+                ?.slice(0, 3)
+                .map((item) => <span key={item.id}>{item.name}</span>)
+            : findMovieGenres
+                ?.slice(0, 3)
+                .map((item) => <span key={item.id}>{item.name}</span>)}
         </Genres>
         <div>
           <span>

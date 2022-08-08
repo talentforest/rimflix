@@ -78,12 +78,14 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
       >
         {!isLoading && data && (
           <>
+            <BigCoverOverlay />
             <BigCover
-              style={{
-                backgroundImage: `linear-gradient(to top, #181818, transparent), url(${makeImagePath(
-                  data.backdrop_path ? data.backdrop_path : data.poster_path
-                )})`,
-              }}
+              src={
+                data.backdrop_path
+                  ? makeImagePath(data.backdrop_path)
+                  : makeImagePath(data.poster_path)
+              }
+              alt="backdrop image"
             />
             <Tagline>{data?.tagline}</Tagline>
             <BigTitle>{data?.title ? data.title : data?.name}</BigTitle>
@@ -101,11 +103,11 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
             <MovieDetail>
               <Info>
                 <h5>Genre :</h5>
-                <div>
-                  {data.genres.slice(0, 2).map((item) => (
-                    <span key={item.id}>{item.name},</span>
+                <Genres>
+                  {data.genres.slice(0, 3).map((item) => (
+                    <span key={item.id}>{item.name}</span>
                   ))}
-                </div>
+                </Genres>
               </Info>
               <Info>
                 <h5>
@@ -130,6 +132,20 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
                 <></>
               )}
             </MovieDetail>
+            {data?.belongs_to_collection ? (
+              <Collection>
+                <h5>Movie Collection</h5>
+                <div>
+                  <img
+                    src={makeImagePath(
+                      data?.belongs_to_collection?.poster_path
+                    )}
+                    alt="collection poster"
+                  />
+                  <span>{data.belongs_to_collection.name}</span>
+                </div>
+              </Collection>
+            ) : null}
           </>
         )}
       </BigMovie>
@@ -191,11 +207,22 @@ const BigMovie = styled(motion.div)`
   }
 `;
 
-const BigCover = styled.div`
-  background-size: cover;
-  background-position: center center;
+const BigCoverOverlay = styled.div`
+  position: absolute;
+  height: 340px;
+  width: 100%;
+  left: 0;
+  right: 0;
+  background: linear-gradient(to bottom, rgba(0, 0, 0, 0) 50%, #181818 100%);
+  @media ${device.mobile} {
+    height: 230px;
+  }
+`;
+
+const BigCover = styled.img`
   height: 330px;
-  border: 1px solid #141414;
+  width: 100%;
+  object-fit: cover;
   @media ${device.mobile} {
     height: 220px;
   }
@@ -216,12 +243,30 @@ const BigTitle = styled.h3`
 `;
 
 const Tagline = styled.p`
-  padding: 0 20px;
+  padding: 20px 20px 0;
   font-size: 20px;
   color: ${(props) => props.theme.white.lighter};
   @media ${device.mobile} {
     font-size: 14px;
     padding: 10px;
+  }
+`;
+
+const Collection = styled.div`
+  padding: 20px;
+  h5 {
+    color: #aaa;
+    font-size: 18px;
+    margin-bottom: 10px;
+  }
+  > div {
+    display: flex;
+    flex-direction: column;
+    img {
+      width: 160px;
+      height: 230px;
+      margin-bottom: 10px;
+    }
   }
 `;
 
@@ -282,6 +327,23 @@ const Info = styled.div`
   @media ${device.mobile} {
     > div {
       font-size: 14px;
+    }
+  }
+`;
+
+const Genres = styled.span`
+  display: flex;
+  gap: 5px;
+  span {
+    border-radius: 20px;
+    background-color: ${(props) => props.theme.white.darker};
+    padding: 3px 8px;
+    color: #333;
+    &:nth-child(2) {
+      background-color: #a1bdff;
+    }
+    &:last-child {
+      background-color: #ffbb94;
     }
   }
 `;

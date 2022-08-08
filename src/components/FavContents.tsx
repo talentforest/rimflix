@@ -85,6 +85,7 @@ const FavContents = ({ movieId, tvId }: PropsType) => {
               : tvDetail?.poster_path || tvDetail?.poster_path
           )}
           alt="movie poster"
+          loading="lazy"
         />
       </Picture>
       <Info variants={infoVariants}>

@@ -12,6 +12,13 @@ export interface IGetMovieTvResult {
   total_results?: number;
 }
 
+interface ICollection {
+  backdrop_path: string;
+  id: number;
+  name: string;
+  poster_path: string;
+}
+
 export interface IDetail {
   id?: number;
   genres?: IGenres[];
@@ -21,6 +28,7 @@ export interface IDetail {
   original_name?: string;
   tagline?: string;
   runtime?: number;
+  belongs_to_collection?: ICollection;
   number_of_episodes?: number;
   number_of_seasons?: number;
   adult?: boolean;
@@ -66,6 +74,12 @@ interface IVideo {
 // get Genre Ids
 export function getGenres() {
   return fetch(`${BASE_PATH}/genre/movie/list?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
+}
+
+export function getTvGenres() {
+  return fetch(`${BASE_PATH}/genre/tv/list?api_key=${API_KEY}`).then(
     (response) => response.json()
   );
 }
