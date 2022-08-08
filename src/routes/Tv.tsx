@@ -6,7 +6,7 @@ import {
   getTopRatedTvShows,
   IGetMovieTvResult,
 } from "../api/api";
-import MovieBanner from "../components/MovieBanner";
+import Banner from "../components/Banner";
 import RowSlider from "../components/RowSlider";
 import RowTitle from "../components/RowTitle";
 
@@ -29,7 +29,7 @@ const Tv = () => {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <MovieBanner data={bannerData} />
+          <Banner data={bannerData} />
           <RowTitle title={"On Air Tv Shows"} />
           <RowSlider data={sliceBannerData} />
           <RowTitle title={"Top Ranked Tv Shows"} />

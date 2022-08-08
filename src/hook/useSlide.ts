@@ -9,8 +9,7 @@ const useSlide = (data: IDetail[]) => {
 
   const { windowSize } = useWindowSize();
 
-  let offset = 6;
-
+  let offset = 5;
   if (windowSize.width <= 500) {
     offset = 3;
   } else if (windowSize.width <= 1023) {

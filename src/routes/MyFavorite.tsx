@@ -1,6 +1,6 @@
 import { useRecoilValue } from "recoil";
 import styled from "styled-components";
-import FavMovies from "../components/FavMovies";
+import FavContents from "../components/FavContents";
 import { myFavoriteMovieState, myFavoriteTvState } from "../data/atoms";
 import device from "../theme/mediaQueries";
 
@@ -16,7 +16,7 @@ const MyFavorite = () => {
           <Empty>It's still empty.</Empty>
         ) : (
           myFavoriteMovie.map((movieId) => (
-            <FavMovies key={movieId} movieId={movieId} />
+            <FavContents key={movieId} movieId={movieId} />
           ))
         )}
       </div>
@@ -25,7 +25,7 @@ const MyFavorite = () => {
         {myFavoriteTv.length === 0 ? (
           <Empty>It's still empty.</Empty>
         ) : (
-          myFavoriteTv.map((tvId) => <FavMovies key={tvId} tvId={tvId} />)
+          myFavoriteTv.map((tvId) => <FavContents key={tvId} tvId={tvId} />)
         )}
       </div>
     </Container>
@@ -44,17 +44,19 @@ const Empty = styled.div`
 
 const Container = styled.div`
   margin-top: 100px;
-  padding: 10px 120px;
+  padding: 10px 80px;
   width: 100%;
   min-height: 100vh;
   > div {
+    width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
     justify-items: center;
     gap: 0 20px;
   }
   h1 {
-    margin-bottom: 10px;
+    font-size: 24px;
+    margin-bottom: 20px;
     &:nth-child(3) {
       margin-top: 50px;
     }
@@ -62,14 +64,18 @@ const Container = styled.div`
   @media ${device.tablet} {
     padding: 10px 50px;
     > div {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+    }
+    h1 {
+      font-size: 18px;
+      margin-bottom: 15px;
     }
   }
   @media ${device.mobile} {
     padding: 10px 20px 20px;
     margin-top: 50px;
     > div {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
   }
 `;

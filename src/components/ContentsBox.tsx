@@ -4,7 +4,6 @@ import { makeImagePath } from "../utils/makeImagePath";
 import { v4 as uuidv4 } from "uuid";
 import { IDetail } from "../api/api";
 import styled from "styled-components";
-import useWindowSize from "../hook/useWindowSize";
 import device from "../theme/mediaQueries";
 
 const boxVariants = {
@@ -12,9 +11,9 @@ const boxVariants = {
     scale: 1,
   },
   hover: {
-    scale: 1.2,
-    y: -60,
-    zIndex: 2,
+    scale: 1.12,
+    y: -20,
+    zIndex: 1,
     transition: {
       delay: 0.2,
       duration: 0.3,
@@ -29,6 +28,7 @@ const infoVariants = {
   hover: {
     opacity: 1,
     y: 10,
+    zIndex: 1,
     transition: {
       delay: 0.2,
       duration: 0.3,
@@ -45,13 +45,13 @@ const ContentsBox = ({ contents }: PropsType) => {
   const location = useLocation().pathname;
   const navigate = useNavigate();
 
-  const { windowSize } = useWindowSize();
-
   const onBoxClicked = (id: number) => {
     if (location === "/") return navigate(`/movie/${id}`);
     if (location === "/search") return navigate(`/search/${id}`);
     if (location === "/tv") return navigate(`/tv/${id}`);
   };
+
+  console.log(contents);
 
   return (
     <Box
@@ -62,12 +62,11 @@ const ContentsBox = ({ contents }: PropsType) => {
       whileHover="hover"
       initial="normal"
       transition={{ type: "tween" }}
-      $bgPhoto={
-        windowSize.width > 500
-          ? makeImagePath(contents.backdrop_path || contents.poster_path)
-          : makeImagePath(contents.poster_path || contents.backdrop_path)
-      }
     >
+      <Image
+        src={makeImagePath(contents?.poster_path || contents?.poster_path)}
+        alt="movie poster"
+      />
       <Info variants={infoVariants}>
         <h4>
           {contents.title
@@ -91,15 +90,11 @@ const ContentsBox = ({ contents }: PropsType) => {
   );
 };
 
-const Box = styled(motion.div)<{ $bgPhoto: string }>`
-  background-color: white;
-  background-image: url(${(props) => props.$bgPhoto});
-  background-size: cover;
-  background-position: center center;
-  height: 220px;
+const Box = styled(motion.div)`
+  position: relative;
+  height: 100%;
   border-radius: 3px;
   margin-bottom: 30px;
-  position: relative;
   cursor: pointer;
   &:first-child {
     transform-origin: center left;
@@ -108,11 +103,22 @@ const Box = styled(motion.div)<{ $bgPhoto: string }>`
     transform-origin: center right;
   }
   @media ${device.tablet} {
-    height: 200px;
+    height: 240px;
   }
   @media ${device.mobile} {
     height: 180px;
   }
+`;
+
+const Image = styled.img`
+  position: absolute;
+  top: 0;
+  bottom: 0;
+  left: 0;
+  right: 0;
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
 `;
 
 const Info = styled(motion.div)`
@@ -122,12 +128,12 @@ const Info = styled(motion.div)`
   border-bottom-right-radius: 3px;
   position: absolute;
   bottom: -40px;
-  height: 60px;
+  height: 100px;
   display: flex;
   flex-direction: column;
   justify-content: center;
   align-items: start;
-  font-size: 12px;
+  font-size: 16px;
   padding: 4px;
   width: 100%;
   > h4 {
@@ -137,7 +143,7 @@ const Info = styled(motion.div)`
   > div {
     display: flex;
     justify-content: space-between;
-    font-size: 10px;
+    font-size: 14px;
     width: 100%;
     span {
       margin-right: 5px;
@@ -149,6 +155,10 @@ const Info = styled(motion.div)`
   @media ${device.mobile} {
     height: 60px;
     bottom: -48px;
+    font-size: 14px;
+    > div {
+      font-size: 12px;
+    }
   }
 `;
 

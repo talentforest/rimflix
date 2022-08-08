@@ -4,125 +4,115 @@ import useSlide from "../hook/useSlide";
 import ContentsBox from "./ContentsBox";
 import device from "../theme/mediaQueries";
 import { AnimatePresence, motion } from "framer-motion";
-import { IDetail, IGetMovieTvResult } from "../api/api";
+import { IDetail } from "../api/api";
 import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 
 const rowVariants = {
   hidden: (back: boolean) => ({
-    x: back ? -window.outerWidth + 40 : window.outerWidth - 40,
+    x: back ? -window.outerWidth + 5 : window.outerWidth - 5,
   }),
   visible: {
     x: 0,
   },
   exit: (back: boolean) => ({
-    x: back ? window.outerWidth - 40 : -window.outerWidth + 40,
+    x: back ? window.outerWidth - 5 : -window.outerWidth + 5,
   }),
 };
 
 interface PropsType {
   data?: IDetail[];
-  upcomingData?: IGetMovieTvResult;
-  type?: string;
-  category?: string;
 }
 
-const RowSlider = ({ data, type, category }: PropsType) => {
+const RowSlider = ({ data }: PropsType) => {
   const { offset, back, index, toggleLeaving, increaseIndex, decreaseIndex } =
     useSlide(data);
 
   return (
-    <Container>
-      <ArrowBackIos sx={{ width: "3%" }} onClick={decreaseIndex} />
-      <SliderContainer>
-        <Slider>
-          <AnimatePresence
+    <SliderContainer>
+      <ArrowBackIos onClick={decreaseIndex} />
+      <Slider>
+        <AnimatePresence
+          custom={back}
+          initial={false}
+          onExitComplete={toggleLeaving}
+        >
+          <Row
+            variants={rowVariants}
+            initial="hidden"
+            animate="visible"
+            exit="exit"
+            transition={{ type: "tween", duration: 1 }}
+            key={index}
             custom={back}
-            initial={false}
-            onExitComplete={toggleLeaving}
           >
-            <Row
-              variants={rowVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              transition={{ type: "tween", duration: 1 }}
-              key={index}
-              custom={back}
-            >
-              {data
-                ?.slice(offset * index, offset * index + offset)
-                .map((contents) => (
-                  <ContentsBox contents={contents} key={contents.id} />
-                ))}
-            </Row>
-          </AnimatePresence>
-        </Slider>
-        <AnimatePresence>
-          <Modal />
+            {data
+              ?.slice(offset * index, offset * index + offset)
+              .map((contents) => (
+                <ContentsBox contents={contents} key={contents.id} />
+              ))}
+          </Row>
         </AnimatePresence>
-      </SliderContainer>
+      </Slider>
+      <AnimatePresence>
+        <Modal />
+      </AnimatePresence>
       <ArrowForwardIos onClick={increaseIndex} />
-    </Container>
+    </SliderContainer>
   );
 };
 
-const Container = styled.div`
+const SliderContainer = styled.div`
+  box-sizing: border-box;
+  overflow: hidden;
   display: flex;
   width: 100%;
-  height: 280px;
-  padding: 0 10px;
-  box-sizing: border-box;
+  height: 420px;
+  padding: 50px 0;
+  margin-top: -30px;
+  margin-bottom: 50px;
   > svg {
-    margin: 0 10px;
-    height: 220px;
-    width: 30px;
+    padding: 0 10px;
+    height: 100%;
+    width: 50px;
     cursor: pointer;
   }
   @media ${device.tablet} {
-    height: 280px;
+    height: 320px;
+    padding: 35px 0;
+    margin-top: -40px;
     > svg {
-      width: 20px;
-      height: 220px;
+      width: 35px;
+      padding: 0 5px;
     }
   }
   @media ${device.mobile} {
-    padding: 0;
     height: 240px;
+    margin-top: -30px;
     > svg {
-      width: 10px;
-      height: 180px;
+      width: 30px;
     }
-  }
-`;
-
-const SliderContainer = styled.div`
-  overflow: hidden;
-  width: 100%;
-  margin: -80px auto 0;
-  display: flex;
-  padding: 80px 0 140px;
-  > svg {
-    padding-bottom: 10px;
   }
 `;
 
 const Slider = styled.div`
   position: relative;
   width: 100%;
+  height: 100%;
   display: flex;
   align-items: center;
-  margin: 0 auto 50px;
+  margin: 0 auto;
 `;
 
 const Row = styled(motion.div)`
   position: absolute;
-  top: 5px;
   width: 100%;
+  height: 100%;
   display: grid;
-  gap: 10px;
-  grid-template-columns: repeat(6, 1fr);
+  gap: 0 15px;
+  grid-template-columns: repeat(5, 1fr);
   @media ${device.tablet} {
     grid-template-columns: repeat(4, 1fr);
+    gap: 0 10px;
   }
   @media ${device.mobile} {
     grid-template-columns: repeat(3, 1fr);

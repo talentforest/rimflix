@@ -10,16 +10,16 @@ const RowTitle = ({ title }: PropsType) => {
 };
 
 const H1 = styled.h1`
-  padding: 10px 60px 20px;
-  font-size: 26px;
+  padding: 0 60px;
+  font-size: 30px;
   font-weight: 700;
   @media ${device.tablet} {
-    font-size: 22px;
-    padding: 0px 50px 10px;
+    padding: 0px 50px 20px;
+    font-size: 26px;
   }
   @media ${device.mobile} {
-    font-size: 18px;
     padding: 10px 30px 10px;
+    font-size: 18px;
   }
 `;
 
