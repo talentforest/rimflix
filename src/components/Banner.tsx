@@ -12,7 +12,7 @@ interface PropsType {
   data?: IDetail;
 }
 
-const MovieBanner = ({ data }: PropsType) => {
+const Banner = ({ data }: PropsType) => {
   const [videoClick, setVideoClick] = useState(false);
   const [showMessage, setShowMessage] = useState(false);
   const pathname = useLocation().pathname;
@@ -143,12 +143,13 @@ const GuideMsg = styled.div`
 `;
 
 const BannerWrapper = styled.div`
-  height: 100vh;
+  height: 70vh;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
   color: #fff;
+  margin-bottom: 30px;
 `;
 
 const Picture = styled.picture`
@@ -172,23 +173,25 @@ const Picture = styled.picture`
 `;
 
 const BannerInfo = styled.div`
-  margin-left: 30px;
+  margin-left: 40px;
   position: absolute;
+  bottom: 50px;
   @media ${device.tablet} {
     text-align: center;
     font-size: 45px;
     display: block;
     width: 100%;
+    bottom: 100px;
     margin: 0;
-    top: 70vh;
   }
   @media ${device.mobile} {
     font-size: 28px;
+    bottom: 50px;
   }
 `;
 
 const Title = styled.h2`
-  font-size: 50px;
+  font-size: 40px;
   font-weight: 700;
   margin-bottom: 10px;
   @media ${device.tablet} {
@@ -203,10 +206,10 @@ const Title = styled.h2`
 `;
 
 const Overview = styled.p`
-  font-size: 22px;
+  font-size: 20px;
   width: 650px;
   line-height: 1.2;
-  margin-bottom: 30px;
+  margin-bottom: 20px;
   @media ${device.tablet} {
     display: none;
   }
@@ -229,8 +232,8 @@ const InfoButton = styled.button`
   justify-content: center;
   border: none;
   border-radius: 5px;
-  width: 150px;
-  height: 60px;
+  width: 130px;
+  height: 50px;
   font-size: 18px;
   font-weight: 700;
   cursor: pointer;
@@ -309,4 +312,4 @@ const TrailerCloseButton = styled.button`
   }
 `;
 
-export default MovieBanner;
+export default Banner;
