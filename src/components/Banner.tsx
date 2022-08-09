@@ -1,12 +1,11 @@
 import styled from "styled-components";
 import device from "../theme/mediaQueries";
 import { Link, useLocation } from "react-router-dom";
-import { getMovieTrailer, getTvTrailer, IGetVideo, IDetail } from "../api/api";
+import { IDetail } from "../api/api";
 import { makeImagePath } from "../utils/makeImagePath";
-import { CancelRounded, Info, PlayCircle } from "@mui/icons-material";
-import { useQuery } from "react-query";
+import { Close, Info, PlayCircle } from "@mui/icons-material";
 import { useState } from "react";
-import ReactPlayer from "react-player/lazy";
+import VideoPlayer from "./VideoPlayer";
 
 interface PropsType {
   data?: IDetail;
@@ -14,33 +13,10 @@ interface PropsType {
 
 const Banner = ({ data }: PropsType) => {
   const [videoClick, setVideoClick] = useState(false);
-  const [showMessage, setShowMessage] = useState(false);
   const pathname = useLocation().pathname;
-  const videoId = data?.id;
-
-  const { data: movieTrailer } = useQuery<IGetVideo>(
-    ["movies", videoId],
-    () => getMovieTrailer(videoId),
-    {
-      enabled: Boolean(videoId),
-    }
-  );
-
-  const { data: tvTrailer } = useQuery<IGetVideo>(
-    ["tv", videoId],
-    () => getTvTrailer(videoId),
-    {
-      enabled: pathname.includes("/tv"),
-    }
-  );
 
   const handlePlayClick = () => {
     setVideoClick((prev) => !prev);
-
-    setTimeout(() => {
-      setShowMessage((prev) => !prev);
-    }, 6000);
-    setShowMessage((prev) => !prev);
   };
 
   return !videoClick ? (
@@ -59,7 +35,7 @@ const Banner = ({ data }: PropsType) => {
           <Title>{data?.name}</Title>
         )}
         <Overview>{data?.overview}</Overview>
-        <BannerButtons>
+        <ButtonsContainer>
           <InfoButton
             as={Link}
             to={pathname === "/tv" ? `/tv/${data?.id}` : `/movie/${data?.id}`}
@@ -71,75 +47,19 @@ const Banner = ({ data }: PropsType) => {
             <span>Trailer</span>
             <PlayCircle />
           </TrailerButton>
-        </BannerButtons>
+        </ButtonsContainer>
       </BannerInfo>
     </BannerWrapper>
   ) : (
-    <Video>
-      <Trailer
-        url={
-          pathname.includes("/tv")
-            ? `https://www.youtube.com/watch?v=${tvTrailer?.results[0]?.key}`
-            : `https://www.youtube.com/watch?v=${movieTrailer?.results[0]?.key}`
-        }
-        playing={true}
-        muted={false}
-        controls={false}
-        loop={true}
-        width="100%"
-        height="100%"
-        config={{
-          youtube: { playerVars: { origin: "https://localhost:3000" } },
-        }}
-      />
-      <GuideMsg className={showMessage ? "" : "none"}>
-        if you want to close the video, then click this button!
-        <div />
-      </GuideMsg>
-      <TrailerCloseButton onClick={handlePlayClick}>
-        <CancelRounded />
-      </TrailerCloseButton>
-    </Video>
+    <VideoContainer>
+      <CloseTrailerButton onClick={handlePlayClick}>
+        <span>Close</span>
+        <Close />
+      </CloseTrailerButton>
+      <VideoPlayer videoId={data.id} mute={false} />
+    </VideoContainer>
   );
 };
-
-const GuideMsg = styled.div`
-  color: #fff;
-  position: absolute;
-  top: -55px;
-  right: 110px;
-  font-size: 18px;
-  border-radius: 20px;
-  padding: 10px 20px;
-  background-color: #ffa2a2;
-  div {
-    width: 13px;
-    height: 13px;
-    position: absolute;
-    right: -5px;
-    bottom: 14px;
-    transform: rotate(45deg);
-    background-color: #ffa2a2;
-  }
-  &.none {
-    display: none;
-  }
-  @media ${device.tablet} {
-    font-size: 14px;
-    top: -58px;
-    right: 100px;
-    div {
-      width: 12px;
-      height: 12px;
-      right: -4px;
-      bottom: 12px;
-    }
-  }
-  @media ${device.mobile} {
-    top: -45px;
-    right: 90px;
-  }
-`;
 
 const BannerWrapper = styled.div`
   height: 70vh;
@@ -214,7 +134,7 @@ const Overview = styled.p`
   }
 `;
 
-const BannerButtons = styled.div`
+const ButtonsContainer = styled.div`
   display: flex;
   gap: 20px;
   @media ${device.tablet} {
@@ -255,58 +175,54 @@ const InfoButton = styled.button`
   }
 `;
 
-const Video = styled.div`
-  margin: 140px 0 80px;
-  position: relative;
-  height: 550px;
-  box-shadow: 1px 2px 50px rgba(249, 249, 249, 0.3);
-  @media ${device.tablet} {
-    height: 400px;
-  }
-  @media ${device.mobile} {
-    margin: 110px 0 80px;
-    height: 300px;
-  }
-`;
-
-const Trailer = styled(ReactPlayer)`
-  position: absolute;
-  top: 0;
-  left: 0;
-`;
-
 const TrailerButton = styled(InfoButton)`
   background-color: #fe5151;
   color: #fff;
   margin-left: 10px;
 `;
 
-const TrailerCloseButton = styled.button`
-  position: absolute;
-  right: 40px;
-  top: -60px;
-  border: none;
-  background-color: transparent;
-  color: #fff;
-  display: flex;
-  align-items: center;
-  font-size: 20px;
-  cursor: pointer;
+const VideoContainer = styled.div`
+  margin: 140px 0 80px;
+  position: relative;
+  height: 550px;
+  box-shadow: 1px 2px 50px rgba(249, 249, 249, 0.3);
   svg {
-    width: 50px;
-    height: 50px;
+    width: 40px;
+    height: 40px;
   }
   @media ${device.tablet} {
-    svg {
-      width: 40px;
-      height: 40px;
-    }
+    height: 400px;
   }
   @media ${device.mobile} {
-    top: -40px;
+    margin: 110px 0 80px;
+    height: 300px;
     svg {
       width: 30px;
       height: 30px;
+    }
+  }
+`;
+
+const CloseTrailerButton = styled(InfoButton)`
+  position: absolute;
+  right: 20px;
+  top: -50px;
+  width: 140px;
+  height: 40px;
+  border: 1px solid #eaeaea;
+  color: #fff;
+  background-color: ${(props) => props.theme.black.darker};
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+  @media ${device.mobile} {
+    width: 100px;
+    height: 30px;
+    top: -40px;
+    svg {
+      width: 20px;
+      height: 20px;
     }
   }
 `;

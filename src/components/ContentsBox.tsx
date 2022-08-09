@@ -50,10 +50,12 @@ const ContentsBox = ({ contents }: PropsType) => {
   const location = useLocation().pathname;
   const navigate = useNavigate();
 
-  const { data: movieGenres, isLoading: movieGenresLoading } =
-    useQuery<IGetGenres>(["genres", "MovieGenres"], getGenres);
+  const { data: movieGenres } = useQuery<IGetGenres>(
+    ["genres", "MovieGenres"],
+    getGenres
+  );
 
-  const { data: tvGenres, isLoading: tvGenresLoading } = useQuery<IGetGenres>(
+  const { data: tvGenres } = useQuery<IGetGenres>(
     ["tvGenres", "TvGenres"],
     getTvGenres
   );
@@ -108,7 +110,7 @@ const ContentsBox = ({ contents }: PropsType) => {
         <div>
           <span>
             {contents.release_date
-              ? contents.release_date
+              ? contents.release_date.split("-").join(".")
               : contents.first_air_date}
           </span>
           <span>{contents.vote_average}</span>
@@ -158,7 +160,7 @@ const Info = styled(motion.div)`
   align-items: start;
   width: 100%;
   min-height: 110px;
-  padding: 5px 10px;
+  padding: 10px 20px;
   opacity: 0;
   background-color: ${(props) => props.theme.black.darker};
   border-bottom-left-radius: 5px;
@@ -176,7 +178,6 @@ const Info = styled(motion.div)`
     font-size: 14px;
     width: 100%;
     span {
-      margin-right: 5px;
       &:last-child {
         width: 24px;
         height: 22px;
@@ -192,7 +193,7 @@ const Info = styled(motion.div)`
   }
   @media ${device.tablet} {
     bottom: -38px;
-    padding: 7px 5px;
+    padding: 10px 15px;
     div {
       font-size: 12px;
     }
@@ -201,6 +202,7 @@ const Info = styled(motion.div)`
     height: 60px;
     bottom: -48px;
     font-size: 14px;
+    padding: 10px 5px;
   }
 `;
 
@@ -210,24 +212,19 @@ const Genres = styled.span`
   flex-wrap: wrap;
   justify-content: center;
   gap: 4px;
-  font-size: 11px;
+  font-size: 12px;
   span {
-    font-weight: 700;
-    border-radius: 10px;
-    background-color: ${(props) => props.theme.white.darker};
-    padding: 1px 3px;
-    color: #333;
-    &:nth-child(2) {
-      background-color: #a1bdff;
-    }
-    &:last-child {
-      background-color: #ffbb94;
-    }
+    border: 1px solid #aaa;
+    border-radius: 5px;
+    background-color: ${(props) => props.theme.black.lighter};
+    padding: 2px 3px;
+    color: #fff;
   }
   @media ${device.tablet} {
-    font-size: 10px;
+    font-size: 12px;
   }
   @media ${device.mobile} {
+    font-size: 10px;
   }
 `;
 
