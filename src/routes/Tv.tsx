@@ -8,7 +8,6 @@ import {
 } from "../api/api";
 import Banner from "../components/Banner";
 import RowSlider from "../components/RowSlider";
-import RowTitle from "../components/RowTitle";
 
 const Tv = () => {
   const { data: topTvShow, isLoading: topShowLoading } =
@@ -19,7 +18,7 @@ const Tv = () => {
     useQuery<IGetMovieTvResult>(["tvs", "onAirTvShow"], getAiringTodayTvShows);
 
   const bannerData = topTvShow?.results[0];
-  const sliceBannerData = topTvShow?.results.slice(1);
+  const exceptBannerData = topTvShow?.results.slice(1);
   const popularData = popularTvShow?.results;
   const onAirData = onAirTvShow?.results;
 
@@ -30,12 +29,9 @@ const Tv = () => {
       ) : (
         <>
           <Banner data={bannerData} />
-          <RowTitle title={"On Air Tv Shows"} />
-          <RowSlider data={sliceBannerData} />
-          <RowTitle title={"Top Ranked Tv Shows"} />
-          <RowSlider data={popularData} />
-          <RowTitle title={"Popular Tv Shows"} />
-          <RowSlider data={onAirData} />
+          <RowSlider title={"On Air Tv Shows"} data={exceptBannerData} />
+          <RowSlider title={"Top Ranked Tv Shows"} data={popularData} />
+          <RowSlider title={"Popular Tv Shows"} data={onAirData} />
         </>
       )}
     </Wrapper>

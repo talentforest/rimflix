@@ -21,45 +21,63 @@ const rowVariants = {
 
 interface PropsType {
   data?: IDetail[];
+  title: string;
 }
 
-const RowSlider = ({ data }: PropsType) => {
+const RowSlider = ({ title, data }: PropsType) => {
   const { offset, back, index, toggleLeaving, increaseIndex, decreaseIndex } =
     useSlide(data);
 
   return (
-    <SliderContainer>
-      <ArrowBackIos onClick={decreaseIndex} />
-      <Slider>
-        <AnimatePresence
-          custom={back}
-          initial={false}
-          onExitComplete={toggleLeaving}
-        >
-          <Row
-            variants={rowVariants}
-            initial="hidden"
-            animate="visible"
-            exit="exit"
-            transition={{ type: "tween", duration: 1 }}
-            key={index}
+    <>
+      <RowTitle>{title}</RowTitle>
+      <SliderContainer>
+        <ArrowBackIos onClick={decreaseIndex} />
+        <Slider>
+          <AnimatePresence
             custom={back}
+            initial={false}
+            onExitComplete={toggleLeaving}
           >
-            {data
-              ?.slice(offset * index, offset * index + offset)
-              .map((contents) => (
-                <ContentsBox contents={contents} key={contents.id} />
-              ))}
-          </Row>
+            <Row
+              variants={rowVariants}
+              initial="hidden"
+              animate="visible"
+              exit="exit"
+              transition={{ type: "tween", duration: 1 }}
+              key={index}
+              custom={back}
+            >
+              {data
+                ?.slice(offset * index, offset * index + offset)
+                .map((contents) => (
+                  <ContentsBox contents={contents} key={contents.id} />
+                ))}
+            </Row>
+          </AnimatePresence>
+        </Slider>
+        <AnimatePresence>
+          <Modal />
         </AnimatePresence>
-      </Slider>
-      <AnimatePresence>
-        <Modal />
-      </AnimatePresence>
-      <ArrowForwardIos onClick={increaseIndex} />
-    </SliderContainer>
+        <ArrowForwardIos onClick={increaseIndex} />
+      </SliderContainer>
+    </>
   );
 };
+
+const RowTitle = styled.h2`
+  padding: 0 60px;
+  font-size: 30px;
+  font-weight: 700;
+  @media ${device.tablet} {
+    padding: 0px 50px 20px;
+    font-size: 26px;
+  }
+  @media ${device.mobile} {
+    padding: 10px 30px 10px;
+    font-size: 18px;
+  }
+`;
 
 const SliderContainer = styled.div`
   box-sizing: border-box;

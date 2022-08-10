@@ -6,7 +6,6 @@ import {
   getUpcomingMovie,
   IGetMovieTvResult,
 } from "../api/api";
-import RowTitle from "../components/RowTitle";
 import Banner from "../components/Banner";
 import RowSlider from "../components/RowSlider";
 
@@ -19,7 +18,7 @@ const Home = () => {
     useQuery<IGetMovieTvResult>(["movies", "upcomingMovie"], getUpcomingMovie);
 
   const bannerData = nowPlaying?.results[0];
-  const removeBannerData = nowPlaying?.results.slice(1);
+  const exceptBannerData = nowPlaying?.results.slice(1);
   const topRatedData = topRatedMovie?.results;
   const upcomingData = upcomingMovie?.results;
 
@@ -30,12 +29,9 @@ const Home = () => {
       ) : (
         <>
           <Banner data={bannerData} />
-          <RowTitle title={"Now Playing"} />
-          <RowSlider data={removeBannerData} />
-          <RowTitle title={"Top Rated Movies"} />
-          <RowSlider data={topRatedData} />
-          <RowTitle title={"Upcoming Movies"} />
-          <RowSlider data={upcomingData} />
+          <RowSlider title={"Now Playing"} data={exceptBannerData} />
+          <RowSlider title={"Top Rated Movies"} data={topRatedData} />
+          <RowSlider title={"Upcoming Movies"} data={upcomingData} />
         </>
       )}
     </Wrapper>
