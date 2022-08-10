@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import { makeImagePath } from "../utils/makeImagePath";
 import { IDetail } from "../api/api";
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
-import { useEffect, useState } from "react";
+import React, { useEffect, useState } from "react";
 import { useRecoilState } from "recoil";
 import { myFavoriteMovieState, myFavoriteTvState } from "../data/atoms";
 import styled from "styled-components";
@@ -144,6 +144,37 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
                   />
                 </Info>
               ) : null}
+              {data?.number_of_seasons ? (
+                <SeasonInfo>
+                  {data?.seasons.map((item) => (
+                    <React.Fragment key={item.id}>
+                      <h5>{item.name}</h5>
+                      <div>
+                        {item.poster_path ? (
+                          <img
+                            src={makeImagePath(item.poster_path)}
+                            alt="season poster"
+                          />
+                        ) : (
+                          <img
+                            src={makeImagePath(data.poster_path)}
+                            alt="season poster"
+                          />
+                        )}
+                        <div>
+                          <p>{item.overview}</p>
+                          <span>Episodes: {item.episode_count}</span>
+                          <span>
+                            Air Date: {item.air_date?.split("-").join(".")}
+                          </span>
+                        </div>
+                      </div>
+                    </React.Fragment>
+                  ))}
+                </SeasonInfo>
+              ) : (
+                <></>
+              )}
             </DetailInfo>
           </>
         )}
@@ -196,6 +227,7 @@ const VideoContainer = styled.div`
     height: 40px;
   }
   @media ${device.mobile} {
+    height: 230px;
     svg {
       width: 30px;
       height: 30px;
@@ -286,8 +318,15 @@ const Info = styled.div<{ $column?: string }>`
   }
   > img {
     width: 160px;
-    height: 230px;
-    margin-bottom: 10px;
+    height: 240px;
+    margin: 10px 0;
+  }
+  @media ${device.mobile} {
+    > img {
+      width: 120px;
+      height: 180px;
+      margin: 10px 0;
+    }
   }
 `;
 
@@ -301,6 +340,58 @@ const Genres = styled.div`
     background-color: ${(props) => props.theme.black.lighter};
     padding: 5px 8px;
     color: #fff;
+  }
+`;
+
+const SeasonInfo = styled.div`
+  margin-top: 20px;
+  h5 {
+    font-size: 20px;
+    margin-bottom: 10px;
+  }
+  > div {
+    margin-bottom: 30px;
+    background-color: ${(props) => props.theme.black.lighter};
+    padding: 10px;
+    border-radius: 5px;
+    display: flex;
+    align-items: center;
+    > img {
+      width: 100px;
+      height: 140px;
+      margin-right: 10px;
+    }
+    > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      p {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+      span {
+        font-size: 14px;
+        color: #eee;
+      }
+    }
+  }
+  @media ${device.mobile} {
+    > div {
+      align-items: flex-start;
+      > img {
+        width: 80px;
+        height: 120px;
+      }
+      > div {
+        p {
+          display: none;
+        }
+        span {
+          font-size: 16px;
+          margin: 5px 0;
+        }
+      }
+    }
   }
 `;
 
