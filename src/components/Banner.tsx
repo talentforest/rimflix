@@ -1,11 +1,11 @@
-import styled from "styled-components";
-import device from "../theme/mediaQueries";
 import { Link, useLocation } from "react-router-dom";
 import { IDetail } from "../api/api";
 import { makeImagePath } from "../utils/makeImagePath";
-import { Close, Info, PlayCircle } from "@mui/icons-material";
 import { useState } from "react";
 import VideoPlayer from "./VideoPlayer";
+import device from "../theme/mediaQueries";
+import styled from "styled-components";
+import ButtonBox from "./common/ButtonBox";
 
 interface PropsType {
   data?: IDetail;
@@ -13,14 +13,14 @@ interface PropsType {
 
 const Banner = ({ data }: PropsType) => {
   const [videoClick, setVideoClick] = useState(false);
-  const pathname = useLocation().pathname;
+  const { pathname } = useLocation();
 
   const handlePlayClick = () => {
     setVideoClick((prev) => !prev);
   };
 
   return !videoClick ? (
-    <BannerWrapper>
+    <BannerContainer>
       <Picture>
         <source
           srcSet={makeImagePath(data?.backdrop_path)}
@@ -28,40 +28,36 @@ const Banner = ({ data }: PropsType) => {
         />
         <img src={makeImagePath(data?.poster_path)} alt="movie poster" />
       </Picture>
-      <BannerInfo>
-        {data?.title ? (
-          <Title>{data?.title}</Title>
-        ) : (
-          <Title>{data?.name}</Title>
-        )}
-        <Overview>{data?.overview}</Overview>
+      <InfoBox>
+        {data?.title ? <h3>{data?.title}</h3> : <h3>{data?.name}</h3>}
+        <p>{data?.overview}</p>
         <ButtonsContainer>
-          <InfoButton
-            as={Link}
-            to={pathname === "/tv" ? `/tv/${data?.id}` : `/movie/${data?.id}`}
+          <Link
+            to={pathname === "/tv" ? `/tv/${data.id}` : `/movie/${data.id}`}
           >
-            <span>More Info</span>
-            <Info />
-          </InfoButton>
-          <TrailerButton onClick={handlePlayClick}>
-            <span>Trailer</span>
-            <PlayCircle />
-          </TrailerButton>
+            <ButtonBox buttonName="More Info" infoIcon={true} />
+          </Link>
+          <ButtonBox
+            buttonName="Trailer"
+            handlePlayClick={handlePlayClick}
+            playIcon={true}
+          />
         </ButtonsContainer>
-      </BannerInfo>
-    </BannerWrapper>
+      </InfoBox>
+    </BannerContainer>
   ) : (
     <VideoContainer>
-      <CloseTrailerButton onClick={handlePlayClick}>
-        <span>Close</span>
-        <Close />
-      </CloseTrailerButton>
+      <ButtonBox
+        buttonName="Close"
+        handlePlayClick={handlePlayClick}
+        closeIcon={true}
+      />
       <VideoPlayer videoId={data.id} mute={false} />
     </VideoContainer>
   );
 };
 
-const BannerWrapper = styled.div`
+const BannerContainer = styled.div`
   height: 70vh;
   position: relative;
   display: flex;
@@ -91,10 +87,21 @@ const Picture = styled.picture`
   }
 `;
 
-const BannerInfo = styled.div`
+const InfoBox = styled.div`
   margin-left: 40px;
   position: absolute;
   bottom: 50px;
+  h3 {
+    font-size: 40px;
+    font-weight: 700;
+    margin-bottom: 10px;
+  }
+  p {
+    font-size: 20px;
+    width: 650px;
+    line-height: 1.2;
+    margin-bottom: 20px;
+  }
   @media ${device.tablet} {
     text-align: center;
     font-size: 45px;
@@ -102,35 +109,22 @@ const BannerInfo = styled.div`
     width: 100%;
     bottom: 100px;
     margin: 0;
+    h3 {
+      text-align: center;
+      font-size: 45px;
+      width: 100%;
+      margin-bottom: 30px;
+    }
+    p {
+      display: none;
+    }
   }
   @media ${device.mobile} {
     font-size: 28px;
     bottom: 50px;
-  }
-`;
-
-const Title = styled.h2`
-  font-size: 40px;
-  font-weight: 700;
-  margin-bottom: 10px;
-  @media ${device.tablet} {
-    text-align: center;
-    font-size: 45px;
-    width: 100%;
-    margin-bottom: 30px;
-  }
-  @media ${device.mobile} {
-    font-size: 28px;
-  }
-`;
-
-const Overview = styled.p`
-  font-size: 20px;
-  width: 650px;
-  line-height: 1.2;
-  margin-bottom: 20px;
-  @media ${device.tablet} {
-    display: none;
+    h3 {
+      font-size: 28px;
+    }
   }
 `;
 
@@ -143,42 +137,6 @@ const ButtonsContainer = styled.div`
   @media ${device.mobile} {
     gap: 10px;
   }
-`;
-
-const InfoButton = styled.button`
-  display: flex;
-  align-items: center;
-  justify-content: center;
-  border: none;
-  border-radius: 5px;
-  width: 130px;
-  height: 50px;
-  font-size: 18px;
-  font-weight: 700;
-  cursor: pointer;
-  background-color: #fff;
-  color: #333;
-  > span {
-    margin-right: 5px;
-  }
-  @media ${device.tablet} {
-    font-weight: 700;
-    padding-left: 10px;
-    width: 130px;
-    height: 50px;
-  }
-  @media ${device.mobile} {
-    font-size: 14px;
-    width: 110px;
-    height: 40px;
-    font-weight: 700;
-  }
-`;
-
-const TrailerButton = styled(InfoButton)`
-  background-color: #fe5151;
-  color: #fff;
-  margin-left: 10px;
 `;
 
 const VideoContainer = styled.div`
@@ -199,30 +157,6 @@ const VideoContainer = styled.div`
     svg {
       width: 30px;
       height: 30px;
-    }
-  }
-`;
-
-const CloseTrailerButton = styled(InfoButton)`
-  position: absolute;
-  right: 20px;
-  top: -50px;
-  width: 140px;
-  height: 40px;
-  border: 1px solid #eaeaea;
-  color: #fff;
-  background-color: ${(props) => props.theme.black.darker};
-  svg {
-    width: 30px;
-    height: 30px;
-  }
-  @media ${device.mobile} {
-    width: 100px;
-    height: 30px;
-    top: -40px;
-    svg {
-      width: 20px;
-      height: 20px;
     }
   }
 `;
