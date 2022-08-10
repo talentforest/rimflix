@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { useMatch } from "react-router-dom";
-import { getDetail, IDetail } from "../api/api";
+import { getCollection, getDetail, IDetail } from "../api/api";
 import Detail from "./Detail";
 
 const Modal = () => {
@@ -18,6 +18,15 @@ const Modal = () => {
     () => getDetail("tv", ModalTvShowMatch)
   );
 
+  const { data: collection, isLoading: collectionIsLoading } = useQuery<any>(
+    ["details", `detail_collection`],
+    () => getCollection(detail.belongs_to_collection.id),
+    {
+      enabled:
+        Boolean(ModalMovieMatch) && Boolean(detail?.belongs_to_collection.id),
+    }
+  );
+
   return (
     <>
       {SearchMatch ? (
@@ -25,6 +34,8 @@ const Modal = () => {
           movieId={SearchMatch}
           isLoading={detailIsLoading}
           data={detail}
+          collection={collection}
+          collectionIsLoading={collectionIsLoading}
         />
       ) : null}
       {ModalMovieMatch ? (
@@ -32,6 +43,8 @@ const Modal = () => {
           movieId={ModalMovieMatch}
           isLoading={detailIsLoading}
           data={detail}
+          collection={collection}
+          collectionIsLoading={collectionIsLoading}
         />
       ) : null}
       {ModalTvShowMatch ? (

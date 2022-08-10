@@ -1,70 +1,41 @@
 import { motion, useViewportScroll } from "framer-motion";
-import { useMatch, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { makeImagePath } from "../utils/makeImagePath";
-import { IDetail } from "../api/api";
-import { Favorite, FavoriteBorder } from "@mui/icons-material";
-import React, { useEffect, useState } from "react";
-import { useRecoilState } from "recoil";
-import { myFavoriteMovieState, myFavoriteTvState } from "../data/atoms";
+import { ICollection, IDetail } from "../api/api";
+import React, { useState } from "react";
 import styled from "styled-components";
 import device from "../theme/mediaQueries";
 import VideoPlayer from "./VideoPlayer";
+import RateBox from "./common/RateBox";
+import GenreBox from "./common/GenreBox";
+import FavoriteButton from "./common/FavoriteButton";
 
 interface PropsType {
   movieId: string;
   isLoading: boolean;
   data: IDetail;
+  collection?: ICollection;
+  collectionIsLoading?: boolean;
 }
 
-const Detail = ({ movieId, isLoading, data }: PropsType) => {
+const Detail = ({
+  movieId,
+  isLoading,
+  data,
+  collection,
+  collectionIsLoading,
+}: PropsType) => {
   const navigate = useNavigate();
-  const [like, setLike] = useState(false);
-  const [myFavoriteMovie, setMyFavoriteMovie] =
-    useRecoilState(myFavoriteMovieState);
-  const [myFavoriteTv, setMyFavoriteTv] = useRecoilState(myFavoriteTvState);
+  const [openFolder, setOpenFolder] = useState(false);
   const { scrollY } = useViewportScroll();
-
-  const movieIdMatch = useMatch(`/movie/:movieId`)?.params.movieId;
-  const searchIdMatch = useMatch(`/search/:movieId`)?.params.movieId;
-  const tvIdMatch = useMatch(`/tv/:tvShowId`)?.params.tvShowId;
-
-  useEffect(() => {
-    if (myFavoriteMovie.includes(movieIdMatch)) return setLike(true);
-    if (myFavoriteMovie.includes(searchIdMatch)) return setLike(true);
-    if (myFavoriteTv.includes(tvIdMatch)) return setLike(true);
-    // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
 
   const onOverlayClicked = () => {
     navigate(-1);
   };
 
-  const onAddClick = () => {
-    setLike((prev) => !prev);
-    if (movieIdMatch)
-      return setMyFavoriteMovie((prev) => [...prev, movieIdMatch]);
-    if (searchIdMatch)
-      return setMyFavoriteMovie((prev) => [...prev, searchIdMatch]);
-    if (tvIdMatch) return setMyFavoriteTv((prev) => [...prev, tvIdMatch]);
-  };
-
-  const onDeleteClick = () => {
-    setLike((prev) => !prev);
-    if (movieIdMatch) {
-      setMyFavoriteMovie((prev) =>
-        prev.filter((item) => item !== movieIdMatch)
-      );
-    }
-    if (searchIdMatch) {
-      setMyFavoriteMovie((prev) =>
-        prev.filter((item) => item !== searchIdMatch)
-      );
-    }
-    if (tvIdMatch)
-      return setMyFavoriteTv((prev) =>
-        prev.filter((item) => item !== tvIdMatch)
-      );
+  const openDetail = () => {
+    setOpenFolder((prev) => !prev);
   };
 
   return (
@@ -78,7 +49,7 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
         style={{ top: scrollY.get() + 100 }}
         layoutId={`${movieId}${uuidv4}`}
       >
-        {!isLoading && data && (
+        {!isLoading && !collectionIsLoading && data && (
           <>
             <VideoContainer>
               <VideoPlayer
@@ -90,22 +61,12 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
             <DetailInfo>
               {data?.tagline ? <Tagline>{data?.tagline}</Tagline> : <></>}
               <BigTitle>{data?.title ? data.title : data?.name}</BigTitle>
-              {like ? (
-                <MyFavarite onClick={onDeleteClick}>
-                  <span>My Favorite</span>
-                  <Favorite />
-                </MyFavarite>
-              ) : (
-                <MyFavarite onClick={onAddClick}>
-                  <span>Add My Favorite</span>
-                  <FavoriteBorder />
-                </MyFavarite>
-              )}
+              <FavoriteButton />
               <Info>
                 <h5>Genre :</h5>
                 <Genres>
                   {data.genres.slice(0, 3).map((item) => (
-                    <span key={item.id}>{item.name}</span>
+                    <GenreBox key={item.id} genre={item.name} />
                   ))}
                 </Genres>
               </Info>
@@ -134,16 +95,46 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
                 <></>
               )}
               {data?.belongs_to_collection ? (
-                <Info $column="column">
+                <SeasonInfo>
                   <h5>Movie Collection</h5>
-                  <img
-                    src={makeImagePath(
-                      data?.belongs_to_collection?.poster_path
-                    )}
-                    alt="collection poster"
-                  />
-                </Info>
+                  <div>
+                    <img
+                      src={makeImagePath(
+                        data?.belongs_to_collection?.poster_path
+                      )}
+                      alt="collection poster"
+                    />
+                    <div>
+                      <h6>{collection.name}</h6>
+                      <p>{collection.overview}</p>
+                      {collection.parts.map((item) => (
+                        <span key={item.id}>{item.title}</span>
+                      ))}
+                      <button onClick={openDetail}>More Details</button>
+                    </div>
+                  </div>
+                </SeasonInfo>
               ) : null}
+              {openFolder ? (
+                <OpenDetails>
+                  {collection?.parts.map((item) => (
+                    <div key={item.id}>
+                      <div>
+                        <h6 key={item.id}>{item.original_title}</h6>
+                        <p>{item.overview}</p>
+                        <span>{item.release_date.split("-").join(".")}</span>
+                        <RateBox rate={item.vote_average} />
+                      </div>
+                      <img
+                        src={makeImagePath(item.poster_path)}
+                        alt="collection poster"
+                      />
+                    </div>
+                  ))}
+                </OpenDetails>
+              ) : (
+                <></>
+              )}
               {data?.number_of_seasons ? (
                 <SeasonInfo>
                   {data?.seasons.map((item) => (
@@ -162,7 +153,7 @@ const Detail = ({ movieId, isLoading, data }: PropsType) => {
                           />
                         )}
                         <div>
-                          <p>{item.overview}</p>
+                          <p className="displayNone">{item.overview}</p>
                           <span>Episodes: {item.episode_count}</span>
                           <span>
                             Air Date: {item.air_date?.split("-").join(".")}
@@ -232,26 +223,6 @@ const VideoContainer = styled.div`
       width: 30px;
       height: 30px;
     }
-  }
-`;
-
-const MyFavarite = styled(motion.button)`
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  border-radius: 5px;
-  border: 1px solid #aaa;
-  color: #333;
-  background-color: #ffaa9f;
-  cursor: pointer;
-  margin-bottom: 20px;
-  padding: 4px 8px;
-  font-weight: 700;
-  > svg {
-    height: 20px;
-    width: 20px;
-    margin-left: 5px;
-    fill: #ff0000;
   }
 `;
 
@@ -346,16 +317,17 @@ const Genres = styled.div`
 const SeasonInfo = styled.div`
   margin-top: 20px;
   h5 {
-    font-size: 20px;
+    font-size: 16px;
+    color: #ffcccc;
     margin-bottom: 10px;
   }
   > div {
-    margin-bottom: 30px;
+    margin-bottom: 10px;
     background-color: ${(props) => props.theme.black.lighter};
     padding: 10px;
     border-radius: 5px;
     display: flex;
-    align-items: center;
+    align-items: flex-start;
     > img {
       width: 100px;
       height: 140px;
@@ -365,6 +337,10 @@ const SeasonInfo = styled.div`
       display: flex;
       flex-direction: column;
       justify-content: space-between;
+      h6 {
+        font-size: 20px;
+        margin-bottom: 15px;
+      }
       p {
         font-size: 16px;
         margin-bottom: 10px;
@@ -372,6 +348,14 @@ const SeasonInfo = styled.div`
       span {
         font-size: 14px;
         color: #eee;
+      }
+      button {
+        align-self: end;
+        color: #fff;
+        text-decoration: underline;
+        background-color: transparent;
+        border: none;
+        cursor: pointer;
       }
     }
   }
@@ -383,14 +367,60 @@ const SeasonInfo = styled.div`
         height: 120px;
       }
       > div {
+        h6 {
+          font-size: 18px;
+          margin-bottom: 10px;
+          font-weight: 600;
+        }
         p {
-          display: none;
+          font-size: 15px;
+          &.displayNone {
+            display: none;
+          }
         }
         span {
           font-size: 16px;
           margin: 5px 0;
         }
       }
+    }
+  }
+`;
+
+const OpenDetails = styled.div`
+  display: flex;
+  flex-direction: column;
+  background-color: ${(props) => props.theme.black.lighter};
+  border-radius: 5px;
+  > div {
+    display: flex;
+    padding: 10px 0;
+    margin: 0 10px;
+    border-bottom: 1px solid #aaa;
+    &:last-child {
+      border-bottom: none;
+    }
+    > div {
+      display: flex;
+      flex-direction: column;
+      justify-content: space-between;
+      h6 {
+        font-size: 18px;
+        margin-bottom: 10px;
+        font-weight: 600;
+      }
+      span {
+        font-size: 16px;
+      }
+      p {
+        font-size: 16px;
+        margin-bottom: 10px;
+      }
+    }
+    > img {
+      width: 80px;
+      height: 130px;
+      margin-left: 10px;
     }
   }
 `;

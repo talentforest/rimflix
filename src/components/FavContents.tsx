@@ -5,6 +5,7 @@ import { getDetail, IDetail } from "../api/api";
 import { makeImagePath } from "../utils/makeImagePath";
 import { v4 as uuidv4 } from "uuid";
 import device from "../theme/mediaQueries";
+import RateBox from "./common/RateBox";
 
 interface PropsType {
   movieId?: string;
@@ -104,7 +105,7 @@ const FavContents = ({ movieId, tvId }: PropsType) => {
               ? detail?.release_date
               : tvDetail?.first_air_date}
           </span>
-          <span>{detail?.vote_average || tvDetail?.vote_average}</span>
+          <RateBox rate={detail?.vote_average || tvDetail?.vote_average} />
         </div>
       </Info>
     </Box>

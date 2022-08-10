@@ -6,6 +6,8 @@ import { getGenres, getTvGenres, IDetail, IGenres } from "../api/api";
 import styled from "styled-components";
 import device from "../theme/mediaQueries";
 import { useQuery } from "react-query";
+import RateBox from "./common/RateBox";
+import GenreBox from "./common/GenreBox";
 
 const boxVariants = {
   normal: {
@@ -102,18 +104,18 @@ const ContentsBox = ({ contents }: PropsType) => {
           {location === "/tv"
             ? findTvGenres
                 ?.slice(0, 3)
-                .map((item) => <span key={item.id}>{item.name}</span>)
+                .map((item) => <GenreBox key={item.id} genre={item.name} />)
             : findMovieGenres
                 ?.slice(0, 3)
-                .map((item) => <span key={item.id}>{item.name}</span>)}
+                .map((item) => <GenreBox key={item.id} genre={item.name} />)}
         </Genres>
         <div>
           <span>
             {contents.release_date
               ? contents.release_date.split("-").join(".")
-              : contents.first_air_date}
+              : contents.first_air_date.split("-").join(".")}
           </span>
-          <span>{contents.vote_average}</span>
+          <RateBox rate={contents.vote_average} />
         </div>
       </Info>
     </Box>
@@ -177,19 +179,6 @@ const Info = styled(motion.div)`
     align-items: center;
     font-size: 14px;
     width: 100%;
-    span {
-      &:last-child {
-        width: 24px;
-        height: 22px;
-        font-weight: 700;
-        background-color: #9ed2ff;
-        color: #313ef9;
-        display: flex;
-        justify-content: center;
-        align-items: center;
-        border-radius: 5px;
-      }
-    }
   }
   @media ${device.tablet} {
     bottom: -38px;
@@ -213,13 +202,6 @@ const Genres = styled.span`
   justify-content: center;
   gap: 4px;
   font-size: 12px;
-  span {
-    border: 1px solid #aaa;
-    border-radius: 5px;
-    background-color: ${(props) => props.theme.black.lighter};
-    padding: 2px 3px;
-    color: #fff;
-  }
   @media ${device.tablet} {
     font-size: 12px;
   }

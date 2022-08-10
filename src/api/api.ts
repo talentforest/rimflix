@@ -12,11 +12,13 @@ export interface IGetMovieTvResult {
   total_results?: number;
 }
 
-interface ICollection {
+export interface ICollection {
   backdrop_path: string;
   id: number;
   name: string;
   poster_path: string;
+  overview?: string;
+  parts?: IDetail[];
 }
 
 export interface IDetail {
@@ -69,6 +71,13 @@ interface IVideo {
   id: string;
   key: string;
   name?: string;
+}
+
+// get Movie Collection info
+export function getCollection(collectionId: number) {
+  return fetch(
+    `${BASE_PATH}/collection/${collectionId}?api_key=${API_KEY}`
+  ).then((response) => response.json());
 }
 
 // get Genre Ids
