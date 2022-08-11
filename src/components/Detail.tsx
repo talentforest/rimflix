@@ -103,9 +103,9 @@ const Detail = ({
                       alt="collection poster"
                     />
                     <div>
-                      <h6>{collection.name}</h6>
-                      <p>{collection.overview}</p>
-                      {collection.parts.map((item) => (
+                      <h6>{collection?.name}</h6>
+                      <p>{collection?.overview}</p>
+                      {collection?.parts?.map((item) => (
                         <span key={item.id}>{item.title}</span>
                       ))}
                       <button onClick={openDetail}>More Details</button>
