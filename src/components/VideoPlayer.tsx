@@ -1,32 +1,33 @@
 import { VolumeOff, VolumeUp } from "@mui/icons-material";
 import { useState } from "react";
-import ReactPlayer from "react-player";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
-import styled from "styled-components";
 import { getMovieTrailer, getTvTrailer, IGetVideo } from "../api/api";
 import { makeImagePath } from "../utils/makeImagePath";
+import ReactPlayer from "react-player/lazy";
+import styled from "styled-components";
 
 interface PropsType {
   videoId: number;
-  mute: boolean;
   backdropPath?: string;
+  posterPath?: string;
 }
 
-const VideoPlayer = ({ videoId, mute, backdropPath }: PropsType) => {
+const VideoPlayer = ({ videoId, backdropPath, posterPath }: PropsType) => {
   const pathname = useLocation().pathname;
   const [volume, setVolume] = useState(true);
 
-  const { data: movieTrailer } = useQuery<IGetVideo>(
-    ["movies", videoId],
-    () => getMovieTrailer(videoId),
-    {
-      enabled: pathname === "/" || pathname.includes("/movie"),
-    }
-  );
+  const { data: movieTrailer, isLoading: movieTrailerLoading } =
+    useQuery<IGetVideo>(
+      ["movieTrailer", videoId],
+      () => getMovieTrailer(videoId),
+      {
+        enabled: pathname === "/" || pathname.includes("/movie"),
+      }
+    );
 
-  const { data: tvTrailer } = useQuery<IGetVideo>(
-    ["tv", videoId],
+  const { data: tvTrailer, isLoading: tvTrailerLoading } = useQuery<IGetVideo>(
+    ["tvTrailer", videoId],
     () => getTvTrailer(videoId),
     {
       enabled: pathname.includes("/tv"),
@@ -37,18 +38,23 @@ const VideoPlayer = ({ videoId, mute, backdropPath }: PropsType) => {
     setVolume((prev) => !prev);
   };
 
+  const tvResults = tvTrailer?.results;
+  const movieResults = movieTrailer?.results;
+
   return (
     <>
-      {tvTrailer?.results.length || movieTrailer?.results.length ? (
+      {!movieTrailerLoading &&
+      !tvTrailerLoading &&
+      (tvResults?.length || movieResults?.length) ? (
         <>
           <Trailer
             url={
               pathname.includes("/tv")
                 ? `https://www.youtube.com/watch?v=${
-                    tvTrailer?.results[tvTrailer.results.length - 1]?.key
+                    tvResults[tvResults.length - 1]?.key
                   }`
                 : `https://www.youtube.com/watch?v=${
-                    movieTrailer?.results[movieTrailer.results.length - 1]?.key
+                    movieResults[movieResults.length - 1]?.key
                   }`
             }
             playing={true}
@@ -58,7 +64,11 @@ const VideoPlayer = ({ videoId, mute, backdropPath }: PropsType) => {
             width="100%"
             height="100%"
             config={{
-              youtube: { playerVars: { origin: "https://localhost:3000" } },
+              youtube: {
+                playerVars: {
+                  origin: "https://localhost:3000",
+                },
+              },
             }}
           />
           {volume ? (
@@ -70,7 +80,10 @@ const VideoPlayer = ({ videoId, mute, backdropPath }: PropsType) => {
       ) : (
         <>
           <Overlay />
-          <BackdropImg src={makeImagePath(backdropPath)} alt="backdrop" />
+          <BackdropImg
+            src={makeImagePath(backdropPath || posterPath)}
+            alt="backdrop"
+          />
         </>
       )}
     </>

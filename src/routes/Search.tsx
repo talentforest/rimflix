@@ -3,7 +3,7 @@ import { useLocation } from "react-router-dom";
 import { getSearchMovie, IGetMovieTvResult } from "../api/api";
 import { AnimatePresence } from "framer-motion";
 import styled from "styled-components";
-import ContentsBox from "../components/ContentsBox";
+import Contents from "../components/Contents";
 import Modal from "../components/Modal";
 import device from "../theme/mediaQueries";
 
@@ -32,7 +32,7 @@ const Search = () => {
         <ul>
           {moviesWithPoster ? (
             moviesWithPoster?.map((contents) => (
-              <ContentsBox contents={contents} key={contents.id} />
+              <Contents contents={contents} key={contents.id} />
             ))
           ) : (
             <></>

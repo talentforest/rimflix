@@ -8,8 +8,9 @@ import styled from "styled-components";
 import device from "../theme/mediaQueries";
 import VideoPlayer from "./VideoPlayer";
 import RateBox from "./common/RateBox";
-import GenreBox from "./common/GenreBox";
+import InfoBox from "./common/InfoBox";
 import FavoriteButton from "./common/FavoriteButton";
+import Overlay from "./common/Overlay";
 
 interface PropsType {
   movieId: string;
@@ -40,12 +41,8 @@ const Detail = ({
 
   return (
     <>
-      <Overlay
-        onClick={() => onOverlayClicked()}
-        exit={{ opacity: 0 }}
-        animate={{ opacity: 1 }}
-      />
-      <Modal
+      <Overlay onOverlayClicked={onOverlayClicked} />
+      <ModalBox
         style={{ top: scrollY.get() + 100 }}
         layoutId={`${movieId}${uuidv4}`}
       >
@@ -54,19 +51,19 @@ const Detail = ({
             <VideoContainer>
               <VideoPlayer
                 videoId={data.id}
-                mute={true}
                 backdropPath={data.backdrop_path}
+                posterPath={data.poster_path}
               />
             </VideoContainer>
             <DetailInfo>
-              {data?.tagline ? <Tagline>{data?.tagline}</Tagline> : <></>}
-              <BigTitle>{data?.title ? data.title : data?.name}</BigTitle>
+              {data?.tagline ? <p>{data.tagline}</p> : <></>}
+              <h3>{data?.title ? data.title : data?.name}</h3>
               <FavoriteButton />
               <Info>
                 <h5>Genre :</h5>
                 <Genres>
                   {data.genres.slice(0, 3).map((item) => (
-                    <GenreBox key={item.id} genre={item.name} />
+                    <InfoBox key={item.id} info={item.name} />
                   ))}
                 </Genres>
               </Info>
@@ -74,10 +71,11 @@ const Detail = ({
                 <h5>
                   {data?.runtime ? "Running Time :" : "Episode Running Time : "}
                 </h5>
-                <span>
-                  {data?.runtime ? data?.runtime : data?.episode_run_time[0]}
-                  min
-                </span>
+                <InfoBox
+                  info={`${
+                    data?.runtime ? data.runtime : data?.episode_run_time[0]
+                  } min`}
+                />
               </Info>
               <Info $column="column">
                 <h5>Overview</h5>
@@ -169,23 +167,12 @@ const Detail = ({
             </DetailInfo>
           </>
         )}
-      </Modal>
+      </ModalBox>
     </>
   );
 };
 
-const Overlay = styled(motion.div)`
-  position: fixed;
-  top: 0;
-  left: 0;
-  width: 100%;
-  height: 100%;
-  background-color: rgba(0, 0, 0, 0.6);
-  opacity: 0;
-  z-index: 2;
-`;
-
-const Modal = styled(motion.div)`
+const ModalBox = styled(motion.div)`
   z-index: 3;
   width: 50vw;
   position: absolute;
@@ -230,8 +217,31 @@ const DetailInfo = styled.div`
   padding: 20px;
   display: flex;
   flex-direction: column;
+  h3 {
+    color: ${(props) => props.theme.white.lighter};
+    font-size: 40px;
+    font-weight: 700;
+    padding-bottom: 30px;
+    display: block;
+  }
+  p {
+    font-size: 20px;
+    padding-bottom: 10px;
+    color: ${(props) => props.theme.white.lighter};
+  }
+  @media ${device.tablet} {
+    h3 {
+      font-size: 32px;
+    }
+  }
   @media ${device.mobile} {
     top: -50px;
+    h3 {
+      font-size: 24px;
+    }
+    p {
+      font-size: 14px;
+    }
   }
 `;
 
@@ -241,29 +251,6 @@ const OfficialPage = styled.a`
   text-decoration: underline;
   font-size: 14px;
   cursor: pointer;
-`;
-
-const BigTitle = styled.h3`
-  color: ${(props) => props.theme.white.lighter};
-  font-size: 40px;
-  font-weight: 700;
-  padding-bottom: 30px;
-  display: block;
-  @media ${device.tablet} {
-    font-size: 32px;
-  }
-  @media ${device.mobile} {
-    font-size: 24px;
-  }
-`;
-
-const Tagline = styled.p`
-  font-size: 20px;
-  padding-bottom: 10px;
-  color: ${(props) => props.theme.white.lighter};
-  @media ${device.mobile} {
-    font-size: 14px;
-  }
 `;
 
 const Info = styled.div<{ $column?: string }>`
@@ -303,15 +290,8 @@ const Info = styled.div<{ $column?: string }>`
 
 const Genres = styled.div`
   display: flex;
+  flex-wrap: wrap;
   gap: 5px;
-  span {
-    border: 1px solid #aaa;
-    font-size: 14px;
-    border-radius: 5px;
-    background-color: ${(props) => props.theme.black.lighter};
-    padding: 5px 8px;
-    color: #fff;
-  }
 `;
 
 const SeasonInfo = styled.div`

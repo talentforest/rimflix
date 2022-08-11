@@ -1,31 +1,31 @@
 import { useRecoilValue } from "recoil";
-import styled from "styled-components";
-import FavContents from "../components/FavContents";
 import { myFavoriteMovieState, myFavoriteTvState } from "../data/atoms";
+import FavContents from "../components/FavContents";
 import device from "../theme/mediaQueries";
+import styled from "styled-components";
 
 const MyFavorite = () => {
-  const myFavoriteMovie = useRecoilValue(myFavoriteMovieState);
-  const myFavoriteTv = useRecoilValue(myFavoriteTvState);
+  const myFavoriteMovies = useRecoilValue(myFavoriteMovieState);
+  const myFavoriteTvs = useRecoilValue(myFavoriteTvState);
 
   return (
     <Container>
       <h1>My Favorite Movies</h1>
       <div>
-        {myFavoriteMovie.length === 0 ? (
+        {myFavoriteMovies.length === 0 ? (
           <Empty>It's still empty.</Empty>
         ) : (
-          myFavoriteMovie.map((movieId) => (
+          myFavoriteMovies.map((movieId) => (
             <FavContents key={movieId} movieId={movieId} />
           ))
         )}
       </div>
       <h1>My Favorite Tv Shows</h1>
       <div>
-        {myFavoriteTv.length === 0 ? (
+        {myFavoriteTvs.length === 0 ? (
           <Empty>It's still empty.</Empty>
         ) : (
-          myFavoriteTv.map((tvId) => <FavContents key={tvId} tvId={tvId} />)
+          myFavoriteTvs.map((tvId) => <FavContents key={tvId} tvId={tvId} />)
         )}
       </div>
     </Container>

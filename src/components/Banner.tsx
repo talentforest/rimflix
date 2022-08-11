@@ -52,7 +52,7 @@ const Banner = ({ data }: PropsType) => {
         handlePlayClick={handlePlayClick}
         closeIcon={true}
       />
-      <VideoPlayer videoId={data.id} mute={false} />
+      <VideoPlayer videoId={data.id} />
     </VideoContainer>
   );
 };

@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import Modal from "./Modal";
 import useSlide from "../hook/useSlide";
-import ContentsBox from "./ContentsBox";
+import Contents from "./Contents";
 import device from "../theme/mediaQueries";
 import { AnimatePresence, motion } from "framer-motion";
 import { IDetail } from "../api/api";
@@ -51,7 +51,7 @@ const RowSlider = ({ title, data }: PropsType) => {
               {data
                 ?.slice(offset * index, offset * index + offset)
                 .map((contents) => (
-                  <ContentsBox contents={contents} key={contents.id} />
+                  <Contents contents={contents} key={contents.id} />
                 ))}
             </Row>
           </AnimatePresence>

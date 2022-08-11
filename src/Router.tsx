@@ -18,6 +18,8 @@ function Router() {
         <Route path="/tv/:id" element={<Tv />} />
         <Route path="/search/:id" element={<Search />} />
         <Route path="/myFavorite" element={<MyFavorite />} />
+        <Route path="/myFavorite/movie/:id" element={<MyFavorite />} />
+        <Route path="/myFavorite/tv/:id" element={<MyFavorite />} />
       </Routes>
       <Footer />
     </BrowserRouter>

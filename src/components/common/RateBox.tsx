@@ -5,7 +5,7 @@ interface PropsType {
 }
 
 const RateBox = ({ rate }: PropsType) => {
-  const cuttedRate = rate.toFixed(1);
+  const cuttedRate = rate?.toFixed(1);
 
   return <Box>{cuttedRate}</Box>;
 };
