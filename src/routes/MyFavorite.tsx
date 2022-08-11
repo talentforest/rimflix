@@ -1,5 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { myFavoriteMovieState, myFavoriteTvState } from "../data/atoms";
+import { AnimatePresence } from "framer-motion";
+import Modal from "../components/Modal";
 import FavContents from "../components/FavContents";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
@@ -11,7 +13,7 @@ const MyFavorite = () => {
   return (
     <Container>
       <h1>My Favorite Movies</h1>
-      <div>
+      <section>
         {myFavoriteMovies.length === 0 ? (
           <Empty>It's still empty.</Empty>
         ) : (
@@ -19,15 +21,18 @@ const MyFavorite = () => {
             <FavContents key={movieId} movieId={movieId} />
           ))
         )}
-      </div>
+      </section>
       <h1>My Favorite Tv Shows</h1>
-      <div>
+      <section>
         {myFavoriteTvs.length === 0 ? (
           <Empty>It's still empty.</Empty>
         ) : (
           myFavoriteTvs.map((tvId) => <FavContents key={tvId} tvId={tvId} />)
         )}
-      </div>
+      </section>
+      <AnimatePresence>
+        <Modal />
+      </AnimatePresence>
     </Container>
   );
 };
@@ -47,7 +52,7 @@ const Container = styled.div`
   padding: 10px 80px;
   width: 100%;
   min-height: 100vh;
-  > div {
+  > section {
     width: 100%;
     display: grid;
     grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
@@ -63,7 +68,7 @@ const Container = styled.div`
   }
   @media ${device.tablet} {
     padding: 10px 50px;
-    > div {
+    > section {
       grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
     }
     h1 {
@@ -74,7 +79,7 @@ const Container = styled.div`
   @media ${device.mobile} {
     padding: 10px 20px 20px;
     margin-top: 50px;
-    > div {
+    > section {
       grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
     }
   }

@@ -94,7 +94,7 @@ export function getTvGenres() {
 }
 
 // Movie Api
-export function getMovies() {
+export function getNowPlayingMovies() {
   return fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}`).then(
     (response) => response.json()
   );

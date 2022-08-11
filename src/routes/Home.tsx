@@ -1,7 +1,7 @@
 import styled from "styled-components";
 import { useQuery } from "react-query";
 import {
-  getMovies,
+  getNowPlayingMovies,
   getTopRatedMovie,
   getUpcomingMovie,
   IGetMovieTvResult,
@@ -11,7 +11,7 @@ import RowSlider from "../components/RowSlider";
 
 const Home = () => {
   const { data: nowPlaying, isLoading: nowPlayingLoading } =
-    useQuery<IGetMovieTvResult>(["movies", "nowPlaying"], getMovies);
+    useQuery<IGetMovieTvResult>(["movies", "nowPlaying"], getNowPlayingMovies);
   const { data: topRatedMovie, isLoading: topRatedMovieLoading } =
     useQuery<IGetMovieTvResult>(["movies", "topRatedMovie"], getTopRatedMovie);
   const { data: upcomingMovie, isLoading: upcomingMovieLoading } =

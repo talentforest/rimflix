@@ -33,7 +33,7 @@ const Banner = ({ data }: PropsType) => {
         <p>{data?.overview}</p>
         <ButtonsContainer>
           <Link
-            to={pathname === "/tv" ? `/tv/${data.id}` : `/movie/${data.id}`}
+            to={pathname === "/tv" ? `/tv/${data?.id}` : `/movie/${data?.id}`}
           >
             <ButtonBox buttonName="More Info" infoIcon={true} />
           </Link>

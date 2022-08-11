@@ -69,8 +69,8 @@ const HoverBox = ({
     if (pathname === "/") return navigate(`/movie/${id}`);
     if (pathname === "/search") return navigate(`/search/${id}`);
     if (pathname === "/tv") return navigate(`/tv/${id}`);
-    if (movieId) return navigate(`/myfavorite/movie/${id}`);
-    if (tvId) return navigate(`/myfavorite/tv/${id}`);
+    if (movieId) return navigate(`/myFavorite/movie/${id}`);
+    if (tvId) return navigate(`/myFavorite/tv/${id}`);
   };
   return (
     <Box
