@@ -11,6 +11,7 @@ import RateBox from "./common/RateBox";
 import InfoBox from "./common/InfoBox";
 import FavoriteButton from "./common/FavoriteButton";
 import Overlay from "./common/Overlay";
+import { convertRunningTime } from "../utils/convertRunningTime";
 
 interface PropsType {
   movieId: string;
@@ -73,8 +74,10 @@ const Detail = ({
                 </h5>
                 <InfoBox
                   info={`${
-                    data?.runtime ? data.runtime : data?.episode_run_time[0]
-                  } min`}
+                    data?.runtime
+                      ? convertRunningTime(data.runtime)
+                      : convertRunningTime(data?.episode_run_time[0])
+                  }`}
                 />
               </Info>
               <Info $column="column">
