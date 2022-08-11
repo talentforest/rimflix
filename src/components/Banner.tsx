@@ -28,7 +28,7 @@ const Banner = ({ data }: PropsType) => {
         />
         <img src={makeImagePath(data?.poster_path)} alt="movie poster" />
       </Picture>
-      <InfoBox>
+      <BannerInfo>
         {data?.title ? <h3>{data?.title}</h3> : <h3>{data?.name}</h3>}
         <p>{data?.overview}</p>
         <ButtonsContainer>
@@ -43,7 +43,7 @@ const Banner = ({ data }: PropsType) => {
             playIcon={true}
           />
         </ButtonsContainer>
-      </InfoBox>
+      </BannerInfo>
     </BannerContainer>
   ) : (
     <VideoContainer>
@@ -87,7 +87,7 @@ const Picture = styled.picture`
   }
 `;
 
-const InfoBox = styled.div`
+const BannerInfo = styled.div`
   margin-left: 40px;
   position: absolute;
   bottom: 50px;

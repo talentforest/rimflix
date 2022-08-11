@@ -150,23 +150,23 @@ const Info = styled(motion.div)`
   }
   @media ${device.tablet} {
     bottom: -38px;
-    padding: 10px 15px;
+    padding: 5px 10px;
   }
   @media ${device.mobile} {
     height: 60px;
     bottom: -48px;
     font-size: 14px;
-    padding: 5px;
+    padding: 2px;
   }
 `;
 
-const Genres = styled.div`
+const Genres = styled.ul`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
   justify-content: center;
   gap: 4px;
-  > div {
+  > li {
     font-size: 10px;
     padding: 2px;
   }

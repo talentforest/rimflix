@@ -93,41 +93,52 @@ const Detail = ({
                 <></>
               )}
               {data?.belongs_to_collection ? (
-                <SeasonInfo>
+                <CollectionInfo>
                   <h5>Movie Collection</h5>
                   <div>
-                    <img
-                      src={makeImagePath(
-                        data?.belongs_to_collection?.poster_path
-                      )}
-                      alt="collection poster"
-                    />
                     <div>
-                      <h6>{collection?.name}</h6>
-                      <p>{collection?.overview}</p>
-                      {collection?.parts?.map((item) => (
-                        <span key={item.id}>{item.title}</span>
-                      ))}
-                      <button onClick={openDetail}>More Details</button>
+                      <img
+                        src={makeImagePath(
+                          data?.belongs_to_collection?.poster_path
+                        )}
+                        alt="collection poster"
+                      />
+                      <div>
+                        <h6>{collection.name}</h6>
+                        <p>{collection.overview}</p>
+                      </div>
                     </div>
+                    <h6>Collections ({collection?.parts.length})</h6>
+                    <ul>
+                      {collection.parts?.map((item) => (
+                        <InfoBox key={item.id} info={item.title} />
+                      ))}
+                    </ul>
+                    <button onClick={openDetail}>More Details</button>
                   </div>
-                </SeasonInfo>
+                </CollectionInfo>
               ) : null}
               {openFolder ? (
                 <OpenDetails>
                   {collection?.parts.map((item) => (
-                    <div key={item.id}>
+                    <li key={item.id}>
                       <div>
-                        <h6 key={item.id}>{item.original_title}</h6>
-                        <p>{item.overview}</p>
-                        <span>{item.release_date.split("-").join(".")}</span>
+                        <img
+                          src={makeImagePath(item.poster_path)}
+                          alt="collection poster"
+                        />
+                        <div>
+                          <h6 key={item.id}>{item.original_title}</h6>
+                          <p>{item.overview}</p>
+                        </div>
+                      </div>
+                      <div>
+                        <span>
+                          Release Date: {item.release_date.split("-").join(".")}
+                        </span>
                         <RateBox rate={item.vote_average} />
                       </div>
-                      <img
-                        src={makeImagePath(item.poster_path)}
-                        alt="collection poster"
-                      />
-                    </div>
+                    </li>
                   ))}
                 </OpenDetails>
               ) : (
@@ -196,7 +207,7 @@ const ModalBox = styled(motion.div)`
   }
 `;
 
-const VideoContainer = styled.div`
+const VideoContainer = styled.section`
   position: relative;
   width: 100%;
   height: 330px;
@@ -288,15 +299,77 @@ const Info = styled.div<{ $column?: string }>`
   }
 `;
 
-const Genres = styled.div`
+const Genres = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
 `;
 
-const SeasonInfo = styled.div`
+const CollectionInfo = styled.section`
   margin-top: 20px;
   h5 {
+    margin-top: 30px;
+    font-size: 16px;
+    color: #ffcccc;
+    margin-bottom: 10px;
+  }
+  h6 {
+    font-size: 20px;
+    margin-bottom: 15px;
+  }
+  > div {
+    display: flex;
+    flex-direction: column;
+    margin-bottom: 10px;
+    background-color: ${(props) => props.theme.black.lighter};
+    padding: 10px;
+    border-radius: 5px;
+    > div {
+      display: flex;
+      margin-bottom: 10px;
+      img {
+        width: 100px;
+        height: 140px;
+        margin-right: 10px;
+      }
+      > div {
+        p {
+          font-size: 16px;
+          margin-bottom: 10px;
+        }
+      }
+    }
+    button {
+      margin-top: 20px;
+      align-self: end;
+      color: #fff;
+      text-decoration: underline;
+      background-color: transparent;
+      border: none;
+      cursor: pointer;
+    }
+    ul {
+      display: flex;
+      flex-wrap: wrap;
+      gap: 5px;
+    }
+  }
+  @media ${device.mobile} {
+    > div {
+      > div {
+        display: block;
+        > img {
+          float: left;
+        }
+      }
+    }
+  }
+`;
+
+const SeasonInfo = styled.section`
+  margin-top: 20px;
+  h5 {
+    margin-top: 30px;
     font-size: 16px;
     color: #ffcccc;
     margin-bottom: 10px;
@@ -367,40 +440,47 @@ const SeasonInfo = styled.div`
   }
 `;
 
-const OpenDetails = styled.div`
+const OpenDetails = styled.ul`
   display: flex;
   flex-direction: column;
   background-color: ${(props) => props.theme.black.lighter};
   border-radius: 5px;
-  > div {
+  > li {
     display: flex;
+    flex-direction: column;
     padding: 10px 0;
     margin: 0 10px;
     border-bottom: 1px solid #aaa;
     &:last-child {
       border-bottom: none;
     }
-    > div {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      h6 {
-        font-size: 18px;
-        margin-bottom: 10px;
-        font-weight: 600;
+    > div:first-child {
+      display: block;
+      > div {
+        h6 {
+          font-size: 18px;
+          margin-bottom: 10px;
+          font-weight: 600;
+        }
+        p {
+          font-size: 16px;
+          margin-bottom: 10px;
+        }
       }
+      > img {
+        float: left;
+        width: 90px;
+        height: 130px;
+        margin-right: 10px;
+      }
+    }
+    > div:last-child {
+      display: flex;
+      justify-content: space-between;
+      margin-top: 10px;
       span {
         font-size: 16px;
       }
-      p {
-        font-size: 16px;
-        margin-bottom: 10px;
-      }
-    }
-    > img {
-      width: 80px;
-      height: 130px;
-      margin-left: 10px;
     }
   }
 `;

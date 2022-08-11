@@ -9,7 +9,8 @@ const InfoBox = ({ info }: PropsType) => {
   return <Box>{info}</Box>;
 };
 
-const Box = styled.div`
+const Box = styled.li`
+  list-style: none;
   border: 1px solid #aaa;
   border-radius: 5px;
   background-color: ${(props) => props.theme.black.lighter};

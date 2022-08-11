@@ -9,7 +9,7 @@ const Modal = () => {
   const tvIdMatch = useMatch(`/tv/:tvShowId`)?.params.tvShowId;
   const favMovieIdMatch = useMatch("/myFavorite/movie/:movieId")?.params
     .movieId;
-  const myFavTvId = useMatch("myFavorite/tv/:tvShowId")?.params.tvShowId;
+  const myFavTvIdMatch = useMatch("myFavorite/tv/:tvShowId")?.params.tvShowId;
 
   const { data: detail, isLoading: detailIsLoading } = useQuery<IDetail>(
     ["detail", movieIdMatch, searchIdMatch, favMovieIdMatch],
@@ -17,8 +17,8 @@ const Modal = () => {
   );
 
   const { data: detailTv, isLoading: detailTvIsLoading } = useQuery<IDetail>(
-    ["detail", tvIdMatch, myFavTvId],
-    () => getDetail("tv", tvIdMatch || myFavTvId)
+    ["detail", tvIdMatch, myFavTvIdMatch],
+    () => getDetail("tv", tvIdMatch || myFavTvIdMatch)
   );
 
   const { data: collection, isLoading: collectionIsLoading } = useQuery<any>(
@@ -26,7 +26,8 @@ const Modal = () => {
     () => getCollection(detail.belongs_to_collection.id),
     {
       enabled:
-        Boolean(movieIdMatch) && Boolean(detail?.belongs_to_collection?.id),
+        Boolean(movieIdMatch || favMovieIdMatch) &&
+        Boolean(detail?.belongs_to_collection?.id),
     }
   );
 
@@ -41,9 +42,9 @@ const Modal = () => {
           collectionIsLoading={collectionIsLoading}
         />
       )}
-      {(tvIdMatch || myFavTvId) && (
+      {(tvIdMatch || myFavTvIdMatch) && (
         <Detail
-          movieId={tvIdMatch || myFavTvId}
+          movieId={tvIdMatch || myFavTvIdMatch}
           isLoading={detailTvIsLoading}
           data={detailTv}
         />
