@@ -2,7 +2,7 @@ import { Link, useLocation } from "react-router-dom";
 import { IDetail } from "../api/api";
 import { makeImagePath } from "../utils/makeImagePath";
 import { useState } from "react";
-import VideoPlayer from "./VideoPlayer";
+import VideoPlayer from "./common/VideoPlayer";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
 import ButtonBox from "./common/ButtonBox";

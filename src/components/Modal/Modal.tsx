@@ -1,6 +1,6 @@
 import { useQuery } from "react-query";
 import { useMatch } from "react-router-dom";
-import { getCollection, getDetail, IDetail } from "../api/api";
+import { getCollection, getDetail, IDetail } from "../../api/api";
 import Detail from "./Detail";
 
 const Modal = () => {

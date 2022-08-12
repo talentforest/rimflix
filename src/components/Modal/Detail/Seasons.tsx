@@ -1,6 +1,6 @@
-import { ISeason } from "../../api/api";
-import { makeImagePath } from "../../utils/makeImagePath";
-import device from "../../theme/mediaQueries";
+import { ISeason } from "../../../api/api";
+import { makeImagePath } from "../../../utils/makeImagePath";
+import device from "../../../theme/mediaQueries";
 import styled from "styled-components";
 
 interface PropsType {

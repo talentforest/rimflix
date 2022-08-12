@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import Modal from "./Modal";
+import Modal from "./Modal/Modal";
 import useSlide from "../hook/useSlide";
 import Contents from "./Contents";
 import device from "../theme/mediaQueries";

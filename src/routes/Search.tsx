@@ -4,7 +4,7 @@ import { getSearchMovie, IGetMovieTvResult } from "../api/api";
 import { AnimatePresence } from "framer-motion";
 import styled from "styled-components";
 import Contents from "../components/Contents";
-import Modal from "../components/Modal";
+import Modal from "../components/Modal/Modal";
 import device from "../theme/mediaQueries";
 
 const Search = () => {

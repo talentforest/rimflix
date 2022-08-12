@@ -1,8 +1,8 @@
 import { useState } from "react";
-import { ICollection, IDetail } from "../../api/api";
-import { makeImagePath } from "../../utils/makeImagePath";
-import InfoBox from "../common/InfoBox";
-import RateBox from "../common/RateBox";
+import { ICollection, IDetail } from "../../../api/api";
+import { makeImagePath } from "../../../utils/makeImagePath";
+import InfoBox from "../../common/InfoBox";
+import RateBox from "../../common/RateBox";
 import styled from "styled-components";
 
 interface PropsType {

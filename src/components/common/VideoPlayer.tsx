@@ -2,8 +2,8 @@ import { VolumeOff, VolumeUp } from "@mui/icons-material";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
-import { getMovieTrailer, getTvTrailer, IGetVideo } from "../api/api";
-import { makeImagePath } from "../utils/makeImagePath";
+import { getMovieTrailer, getTvTrailer, IGetVideo } from "../../api/api";
+import { makeImagePath } from "../../utils/makeImagePath";
 import ReactPlayer from "react-player/lazy";
 import styled from "styled-components";
 

@@ -1,7 +1,7 @@
 import { useRecoilValue } from "recoil";
 import { myFavoriteMovieState, myFavoriteTvState } from "../data/atoms";
 import { AnimatePresence } from "framer-motion";
-import Modal from "../components/Modal";
+import Modal from "../components/Modal/Modal";
 import FavContents from "../components/FavContents";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
