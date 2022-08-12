@@ -1,43 +1,37 @@
 import { motion, useViewportScroll } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { makeImagePath } from "../utils/makeImagePath";
 import { ICollection, IDetail } from "../api/api";
-import React, { useState } from "react";
+import { convertRunningTime } from "../utils/convertRunningTime";
 import styled from "styled-components";
 import device from "../theme/mediaQueries";
 import VideoPlayer from "./VideoPlayer";
-import RateBox from "./common/RateBox";
 import InfoBox from "./common/InfoBox";
 import FavoriteButton from "./common/FavoriteButton";
 import Overlay from "./common/Overlay";
-import { convertRunningTime } from "../utils/convertRunningTime";
+import Collection from "./Detail/Collection";
+import Seasons from "./Detail/Seasons";
+import LinkButton from "./Detail/LinkButton";
 
 interface PropsType {
-  movieId: string;
-  isLoading: boolean;
-  data: IDetail;
+  detail: IDetail;
+  isLoading?: boolean;
   collection?: ICollection;
   collectionIsLoading?: boolean;
 }
 
 const Detail = ({
-  movieId,
   isLoading,
-  data,
+  detail,
   collection,
   collectionIsLoading,
 }: PropsType) => {
   const navigate = useNavigate();
-  const [openFolder, setOpenFolder] = useState(false);
+
   const { scrollY } = useViewportScroll();
 
   const onOverlayClicked = () => {
     navigate(-1);
-  };
-
-  const openDetail = () => {
-    setOpenFolder((prev) => !prev);
   };
 
   return (
@@ -45,140 +39,76 @@ const Detail = ({
       <Overlay onOverlayClicked={onOverlayClicked} />
       <ModalBox
         style={{ top: scrollY.get() + 100 }}
-        layoutId={`${movieId}${uuidv4}`}
+        layoutId={`${detail?.id}${uuidv4}`}
       >
-        {!isLoading && !collectionIsLoading && data && (
+        {!isLoading && !collectionIsLoading && detail && (
           <>
             <VideoContainer>
               <VideoPlayer
-                videoId={data.id}
-                backdropPath={data.backdrop_path}
-                posterPath={data.poster_path}
+                videoId={detail.id}
+                backdropPath={detail.backdrop_path}
+                posterPath={detail.poster_path}
               />
             </VideoContainer>
-            <DetailInfo>
-              {data?.tagline ? <p>{data.tagline}</p> : <></>}
-              <h3>{data?.title ? data.title : data?.name}</h3>
+            <AllDetail>
+              {detail?.tagline && <p>{detail.tagline}</p>}
+              <h3>{detail?.title ? detail.title : detail?.name}</h3>
               <FavoriteButton />
               <Info>
                 <h5>Genre :</h5>
                 <Genres>
-                  {data.genres.slice(0, 3).map((item) => (
+                  {detail.genres.slice(0, 3).map((item) => (
                     <InfoBox key={item.id} info={item.name} />
                   ))}
                 </Genres>
               </Info>
               <Info>
                 <h5>
-                  {data?.runtime ? "Running Time :" : "Episode Running Time : "}
+                  {detail?.runtime
+                    ? "Running Time :"
+                    : "Episode Running Time : "}
                 </h5>
-                <InfoBox
-                  info={`${
-                    data?.runtime
-                      ? convertRunningTime(data.runtime)
-                      : convertRunningTime(data?.episode_run_time[0])
-                  }`}
-                />
+                {detail?.runtime && (
+                  <InfoBox info={`${convertRunningTime(detail.runtime)}`} />
+                )}
+                {detail?.episode_run_time?.length ? (
+                  <InfoBox
+                    info={`${convertRunningTime(detail?.episode_run_time[0])}`}
+                  />
+                ) : (
+                  <span>There is no information.</span>
+                )}
               </Info>
               <Info $column="column">
                 <h5>Overview</h5>
-                <p>{data?.overview}</p>
+                {detail?.overview ? (
+                  <p>{detail?.overview}</p>
+                ) : (
+                  <p>There is no information.</p>
+                )}
               </Info>
-              {data.homepage ? (
-                <OfficialPage
-                  href={`${data.homepage}`}
-                  target="_blank"
-                  rel="noreferrer"
-                >
-                  Go Official Page
-                </OfficialPage>
-              ) : (
-                <></>
+              {detail?.homepage && (
+                <LinkButton
+                  homepage={detail.homepage}
+                  contents="Official Homepage"
+                />
               )}
-              {data?.belongs_to_collection ? (
-                <CollectionInfo>
+              {detail?.number_of_seasons && (
+                <Info $column="column">
+                  <h5>{detail?.seasons.length > 1 ? "Seasons" : "Season"}</h5>
+                  <Seasons
+                    seasons={detail.seasons}
+                    officialPosterPath={detail.poster_path}
+                  />
+                </Info>
+              )}
+              {detail?.belongs_to_collection && (
+                <Info $column="column">
                   <h5>Movie Collection</h5>
-                  <div>
-                    <div>
-                      <img
-                        src={makeImagePath(
-                          data?.belongs_to_collection?.poster_path
-                        )}
-                        alt="collection poster"
-                      />
-                      <div>
-                        <h6>{collection.name}</h6>
-                        <p>{collection.overview}</p>
-                      </div>
-                    </div>
-                    <h6>Collections ({collection?.parts.length})</h6>
-                    <ul>
-                      {collection.parts?.map((item) => (
-                        <InfoBox key={item.id} info={item.title} />
-                      ))}
-                    </ul>
-                    <button onClick={openDetail}>More Details</button>
-                  </div>
-                </CollectionInfo>
-              ) : null}
-              {openFolder ? (
-                <OpenDetails>
-                  {collection?.parts.map((item) => (
-                    <li key={item.id}>
-                      <div>
-                        <img
-                          src={makeImagePath(item.poster_path)}
-                          alt="collection poster"
-                        />
-                        <div>
-                          <h6 key={item.id}>{item.original_title}</h6>
-                          <p>{item.overview}</p>
-                        </div>
-                      </div>
-                      <div>
-                        <span>
-                          Release Date: {item.release_date.split("-").join(".")}
-                        </span>
-                        <RateBox rate={item.vote_average} />
-                      </div>
-                    </li>
-                  ))}
-                </OpenDetails>
-              ) : (
-                <></>
+                  <Collection collection={collection} detail={detail} />
+                </Info>
               )}
-              {data?.number_of_seasons ? (
-                <SeasonInfo>
-                  {data?.seasons.map((item) => (
-                    <React.Fragment key={item.id}>
-                      <h5>{item.name}</h5>
-                      <div>
-                        {item.poster_path ? (
-                          <img
-                            src={makeImagePath(item.poster_path)}
-                            alt="season poster"
-                          />
-                        ) : (
-                          <img
-                            src={makeImagePath(data.poster_path)}
-                            alt="season poster"
-                          />
-                        )}
-                        <div>
-                          <p className="displayNone">{item.overview}</p>
-                          <span>Episodes: {item.episode_count}</span>
-                          <span>
-                            Air Date: {item.air_date?.split("-").join(".")}
-                          </span>
-                        </div>
-                      </div>
-                    </React.Fragment>
-                  ))}
-                </SeasonInfo>
-              ) : (
-                <></>
-              )}
-            </DetailInfo>
+            </AllDetail>
           </>
         )}
       </ModalBox>
@@ -227,44 +157,36 @@ const VideoContainer = styled.section`
   }
 `;
 
-const DetailInfo = styled.div`
+const AllDetail = styled.section`
   padding: 20px;
   display: flex;
   flex-direction: column;
-  h3 {
+  > h3 {
     color: ${(props) => props.theme.white.lighter};
     font-size: 40px;
     font-weight: 700;
     padding-bottom: 30px;
     display: block;
   }
-  p {
+  > p {
     font-size: 20px;
     padding-bottom: 10px;
     color: ${(props) => props.theme.white.lighter};
   }
   @media ${device.tablet} {
-    h3 {
+    > h3 {
       font-size: 32px;
     }
   }
   @media ${device.mobile} {
     top: -50px;
-    h3 {
+    > h3 {
       font-size: 24px;
     }
-    p {
+    > p {
       font-size: 14px;
     }
   }
-`;
-
-const OfficialPage = styled.a`
-  padding: 10px 0;
-  align-self: end;
-  text-decoration: underline;
-  font-size: 14px;
-  cursor: pointer;
 `;
 
 const Info = styled.div<{ $column?: string }>`
@@ -278,15 +200,9 @@ const Info = styled.div<{ $column?: string }>`
     color: #ffcccc;
     width: max-content;
   }
-  > span {
-    border: 1px solid #aaa;
-    font-size: 14px;
-    border-radius: 5px;
-    background-color: ${(props) => props.theme.black.lighter};
-    padding: 5px 8px;
-  }
   > p {
     margin-top: 5px;
+    font-size: 16px;
   }
   > img {
     width: 160px;
@@ -306,186 +222,6 @@ const Genres = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
-`;
-
-const CollectionInfo = styled.section`
-  margin-top: 20px;
-  h5 {
-    margin-top: 30px;
-    font-size: 16px;
-    color: #ffcccc;
-    margin-bottom: 10px;
-  }
-  h6 {
-    font-size: 20px;
-    margin-bottom: 15px;
-  }
-  > div {
-    display: flex;
-    flex-direction: column;
-    margin-bottom: 10px;
-    background-color: ${(props) => props.theme.black.lighter};
-    padding: 10px;
-    border-radius: 5px;
-    > div {
-      display: flex;
-      margin-bottom: 10px;
-      img {
-        width: 100px;
-        height: 140px;
-        margin-right: 10px;
-      }
-      > div {
-        p {
-          font-size: 16px;
-          margin-bottom: 10px;
-        }
-      }
-    }
-    button {
-      margin-top: 20px;
-      align-self: end;
-      color: #fff;
-      text-decoration: underline;
-      background-color: transparent;
-      border: none;
-      cursor: pointer;
-    }
-    ul {
-      display: flex;
-      flex-wrap: wrap;
-      gap: 5px;
-    }
-  }
-  @media ${device.mobile} {
-    > div {
-      > div {
-        display: block;
-        > img {
-          float: left;
-        }
-      }
-    }
-  }
-`;
-
-const SeasonInfo = styled.section`
-  margin-top: 20px;
-  h5 {
-    margin-top: 30px;
-    font-size: 16px;
-    color: #ffcccc;
-    margin-bottom: 10px;
-  }
-  > div {
-    margin-bottom: 10px;
-    background-color: ${(props) => props.theme.black.lighter};
-    padding: 10px;
-    border-radius: 5px;
-    display: flex;
-    align-items: flex-start;
-    > img {
-      width: 100px;
-      height: 140px;
-      margin-right: 10px;
-    }
-    > div {
-      display: flex;
-      flex-direction: column;
-      justify-content: space-between;
-      h6 {
-        font-size: 20px;
-        margin-bottom: 15px;
-      }
-      p {
-        font-size: 16px;
-        margin-bottom: 10px;
-      }
-      span {
-        font-size: 14px;
-        color: #eee;
-      }
-      button {
-        align-self: end;
-        color: #fff;
-        text-decoration: underline;
-        background-color: transparent;
-        border: none;
-        cursor: pointer;
-      }
-    }
-  }
-  @media ${device.mobile} {
-    > div {
-      align-items: flex-start;
-      > img {
-        width: 80px;
-        height: 120px;
-      }
-      > div {
-        h6 {
-          font-size: 18px;
-          margin-bottom: 10px;
-          font-weight: 600;
-        }
-        p {
-          font-size: 15px;
-          &.displayNone {
-            display: none;
-          }
-        }
-        span {
-          font-size: 16px;
-          margin: 5px 0;
-        }
-      }
-    }
-  }
-`;
-
-const OpenDetails = styled.ul`
-  display: flex;
-  flex-direction: column;
-  background-color: ${(props) => props.theme.black.lighter};
-  border-radius: 5px;
-  > li {
-    display: flex;
-    flex-direction: column;
-    padding: 10px 0;
-    margin: 0 10px;
-    border-bottom: 1px solid #aaa;
-    &:last-child {
-      border-bottom: none;
-    }
-    > div:first-child {
-      display: block;
-      > div {
-        h6 {
-          font-size: 18px;
-          margin-bottom: 10px;
-          font-weight: 600;
-        }
-        p {
-          font-size: 16px;
-          margin-bottom: 10px;
-        }
-      }
-      > img {
-        float: left;
-        width: 90px;
-        height: 130px;
-        margin-right: 10px;
-      }
-    }
-    > div:last-child {
-      display: flex;
-      justify-content: space-between;
-      margin-top: 10px;
-      span {
-        font-size: 16px;
-      }
-    }
-  }
 `;
 
 export default Detail;

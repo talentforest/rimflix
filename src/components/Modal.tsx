@@ -16,7 +16,7 @@ const Modal = () => {
     () => getDetail("movie", movieIdMatch || searchIdMatch || favMovieIdMatch)
   );
 
-  const { data: detailTv, isLoading: detailTvIsLoading } = useQuery<IDetail>(
+  const { data: tvDetail, isLoading: tvDetailIsLoading } = useQuery<IDetail>(
     ["detail", tvIdMatch, myFavTvIdMatch],
     () => getDetail("tv", tvIdMatch || myFavTvIdMatch)
   );
@@ -35,19 +35,14 @@ const Modal = () => {
     <>
       {(movieIdMatch || favMovieIdMatch || searchIdMatch) && (
         <Detail
-          movieId={movieIdMatch || favMovieIdMatch || searchIdMatch}
+          detail={detail}
           isLoading={detailIsLoading}
-          data={detail}
           collection={collection}
           collectionIsLoading={collectionIsLoading}
         />
       )}
       {(tvIdMatch || myFavTvIdMatch) && (
-        <Detail
-          movieId={tvIdMatch || myFavTvIdMatch}
-          isLoading={detailTvIsLoading}
-          data={detailTv}
-        />
+        <Detail detail={tvDetail} isLoading={tvDetailIsLoading} />
       )}
     </>
   );
