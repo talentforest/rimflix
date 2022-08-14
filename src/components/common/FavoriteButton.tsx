@@ -26,7 +26,7 @@ const FavoriteButton = ({ contentsId }: PropsType) => {
 
   const onAddClick = () => {
     setLike((prev) => !prev);
-    if (pathname.includes("/movie") || pathname.includes("/search"))
+    if (pathname.includes("/movie"))
       return setFavMovies((prev) => [...prev, contentsId]);
 
     if (pathname.includes("/tv"))
@@ -35,7 +35,7 @@ const FavoriteButton = ({ contentsId }: PropsType) => {
 
   const onDeleteClick = () => {
     setLike((prev) => !prev);
-    if (pathname.includes("/movie") || pathname.includes("/search")) {
+    if (pathname.includes("/movie")) {
       setFavMovies((prev) => prev.filter((item) => item !== contentsId));
     }
     if (pathname.includes("/tv"))
