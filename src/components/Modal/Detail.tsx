@@ -1,8 +1,9 @@
 import { motion, useViewportScroll } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { ICollection, IDetail } from "../../api/api";
+import { getCollection, IDetail } from "../../api/api";
 import { convertRunningTime } from "../../utils/convertRunningTime";
+import { useQuery } from "react-query";
 import styled from "styled-components";
 import device from "../../theme/mediaQueries";
 import VideoPlayer from "../common/VideoPlayer";
@@ -15,24 +16,40 @@ import LinkButton from "./Detail/LinkButton";
 
 interface PropsType {
   detail: IDetail;
-  isLoading?: boolean;
-  collection?: ICollection;
-  collectionIsLoading?: boolean;
 }
 
-const Detail = ({
-  isLoading,
-  detail,
-  collection,
-  collectionIsLoading,
-}: PropsType) => {
-  const navigate = useNavigate();
+const Detail = ({ detail }: PropsType) => {
+  const { data: collection, isLoading: collectionIsLoading } = useQuery<any>(
+    ["details", "collection"],
+    () => getCollection(detail.belongs_to_collection.id),
+    {
+      enabled: Boolean(detail.belongs_to_collection?.id),
+    }
+  );
 
+  const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
 
   const onOverlayClicked = () => {
     navigate(-1);
   };
+
+  const {
+    id,
+    backdrop_path,
+    poster_path,
+    title,
+    name,
+    tagline,
+    overview,
+    genres,
+    episode_run_time,
+    runtime,
+    homepage,
+    number_of_seasons,
+    seasons,
+    belongs_to_collection,
+  } = detail;
 
   return (
     <>
@@ -41,76 +58,80 @@ const Detail = ({
         style={{ top: scrollY.get() + 100 }}
         layoutId={`${detail?.id}${uuidv4}`}
       >
-        {!isLoading && !collectionIsLoading && detail && (
-          <>
-            <VideoContainer>
-              <VideoPlayer
-                videoId={detail.id}
-                backdropPath={detail.backdrop_path}
-                posterPath={detail.poster_path}
-              />
-            </VideoContainer>
-            <AllDetail>
-              {detail?.tagline && <p>{detail.tagline}</p>}
-              <h3>{detail?.title ? detail.title : detail?.name}</h3>
-              <FavoriteButton />
-              <Info>
-                <h5>Genre :</h5>
-                <Genres>
-                  {detail.genres.slice(0, 3).map((item) => (
-                    <InfoBox key={item.id} info={item.name} />
-                  ))}
-                </Genres>
-              </Info>
-              <Info>
-                <h5>
-                  {detail?.runtime
-                    ? "Running Time :"
-                    : "Episode Running Time : "}
-                </h5>
-                {detail?.runtime && (
-                  <InfoBox info={`${convertRunningTime(detail.runtime)}`} />
+        <VideoContainer>
+          <VideoPlayer
+            videoId={id}
+            backdropPath={backdrop_path}
+            posterPath={poster_path}
+          />
+        </VideoContainer>
+        <AllDetail>
+          <p>{tagline}</p>
+          <h3>{title || name}</h3>
+          <FavoriteButton contentsId={id} />
+          <Info>
+            <h5>Genre :</h5>
+            <Genres>
+              {genres.length !== 0 ? (
+                genres
+                  .slice(0, 3)
+                  .map((item) => <InfoBox key={item.id} info={item.name} />)
+              ) : (
+                <p>There is no information.</p>
+              )}
+            </Genres>
+          </Info>
+          <Info>
+            {(runtime || runtime === 0) && (
+              <>
+                <h5>Running Time : </h5>
+                {runtime ? (
+                  <InfoBox info={`${convertRunningTime(runtime)}`} />
+                ) : (
+                  <span>There is no information</span>
                 )}
-                {detail?.episode_run_time?.length ? (
+              </>
+            )}
+            {episode_run_time && (
+              <>
+                <h5>Episode Running Time : </h5>
+                {Boolean(episode_run_time.length) ? (
                   <InfoBox
-                    info={`${convertRunningTime(detail?.episode_run_time[0])}`}
+                    info={`${convertRunningTime(episode_run_time[0])}`}
                   />
                 ) : (
-                  <span>There is no information.</span>
+                  <span>There is no information</span>
                 )}
-              </Info>
-              <Info $column="column">
-                <h5>Overview</h5>
-                {detail?.overview ? (
-                  <p>{detail?.overview}</p>
-                ) : (
-                  <p>There is no information.</p>
-                )}
-              </Info>
-              {detail?.homepage && (
-                <LinkButton
-                  homepage={detail.homepage}
-                  contents="Official Homepage"
-                />
-              )}
-              {detail?.number_of_seasons && (
-                <Info $column="column">
-                  <h5>{detail?.seasons.length > 1 ? "Seasons" : "Season"}</h5>
-                  <Seasons
-                    seasons={detail.seasons}
-                    officialPosterPath={detail.poster_path}
-                  />
-                </Info>
-              )}
-              {detail?.belongs_to_collection && (
-                <Info $column="column">
-                  <h5>Movie Collection</h5>
-                  <Collection collection={collection} detail={detail} />
-                </Info>
-              )}
-            </AllDetail>
-          </>
-        )}
+              </>
+            )}
+          </Info>
+          <Info $column="column">
+            <h5>Overview</h5>
+            <p>{overview || "There is no information"}</p>
+          </Info>
+          {homepage && (
+            <LinkButton
+              homepage={detail.homepage}
+              contents="Official Homepage"
+            />
+          )}
+          {number_of_seasons && (
+            <Info $column="column">
+              <h5>{seasons.length > 1 ? "Seasons" : "Season"}</h5>
+              <Seasons seasons={seasons} officialPosterPath={poster_path} />
+            </Info>
+          )}
+          {belongs_to_collection && !collectionIsLoading && (
+            <Info $column="column">
+              <h5>Movie Collection</h5>
+              <Collection
+                officialPoster={detail.poster_path || detail.backdrop_path}
+                posterPath={detail.belongs_to_collection.poster_path}
+                collection={collection}
+              />
+            </Info>
+          )}
+        </AllDetail>
       </ModalBox>
     </>
   );
@@ -210,6 +231,15 @@ const Info = styled.div<{ $column?: string }>`
     margin: 10px 0;
   }
   @media ${device.mobile} {
+    flex-direction: column;
+    align-items: flex-start;
+    margin-bottom: 16px;
+    > h5 {
+      margin-bottom: 5px;
+    }
+    > p {
+      margin-top: 0;
+    }
     > img {
       width: 120px;
       height: 180px;

@@ -2,6 +2,7 @@ import { ISeason } from "../../../api/api";
 import { makeImagePath } from "../../../utils/makeImagePath";
 import device from "../../../theme/mediaQueries";
 import styled from "styled-components";
+import { changeDateSeperator } from "../../../utils/changeDateSeperator";
 
 interface PropsType {
   seasons: ISeason[];
@@ -13,17 +14,18 @@ const Seasons = ({ seasons, officialPosterPath }: PropsType) => {
     <SeasonLists>
       {seasons?.map((item) => (
         <li key={item.id}>
-          {item.poster_path ? (
-            <img src={makeImagePath(item.poster_path)} alt="season poster" />
-          ) : (
-            <img src={makeImagePath(officialPosterPath)} alt="official" />
-          )}
+          {
+            <img
+              src={makeImagePath(item.poster_path || officialPosterPath)}
+              alt="season poster"
+            />
+          }
           <BasicInfo>
             <h6>{item.name}</h6>
             <span>Episodes: {item.episode_count}</span>
             <span>
               {item.air_date &&
-                `Air Date: ${item.air_date?.split("-").join(".")}`}
+                `Air Date: ${changeDateSeperator(item.air_date)}`}
             </span>
             {item.overview && <p>{item.overview}</p>}
           </BasicInfo>

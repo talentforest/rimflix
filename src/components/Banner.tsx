@@ -8,7 +8,7 @@ import styled from "styled-components";
 import ButtonBox from "./common/ButtonBox";
 
 interface PropsType {
-  data?: IDetail;
+  data: IDetail;
 }
 
 const Banner = ({ data }: PropsType) => {
@@ -19,22 +19,22 @@ const Banner = ({ data }: PropsType) => {
     setVideoClick((prev) => !prev);
   };
 
-  return !videoClick ? (
+  const { backdrop_path, poster_path, title, name, overview, id } = data;
+
+  return !videoClick && !!data ? (
     <BannerContainer>
       <Picture>
         <source
-          srcSet={makeImagePath(data?.backdrop_path)}
+          srcSet={makeImagePath(backdrop_path)}
           media="(min-width: 700px)"
         />
-        <img src={makeImagePath(data?.poster_path)} alt="movie poster" />
+        <img src={makeImagePath(poster_path)} alt="movie poster" />
       </Picture>
       <BannerInfo>
-        {data?.title ? <h3>{data?.title}</h3> : <h3>{data?.name}</h3>}
-        <p>{data?.overview}</p>
+        {<h3>{title || name}</h3>}
+        <p>{overview}</p>
         <ButtonsContainer>
-          <Link
-            to={pathname === "/tv" ? `/tv/${data?.id}` : `/movie/${data?.id}`}
-          >
+          <Link to={pathname === "/tv" ? `/tv/${id}` : `/movie/${id}`}>
             <ButtonBox buttonName="More Info" infoIcon={true} />
           </Link>
           <ButtonBox
@@ -52,7 +52,7 @@ const Banner = ({ data }: PropsType) => {
         handlePlayClick={handlePlayClick}
         closeIcon={true}
       />
-      <VideoPlayer videoId={data.id} />
+      <VideoPlayer videoId={id} />
     </VideoContainer>
   );
 };
@@ -140,9 +140,9 @@ const ButtonsContainer = styled.div`
 `;
 
 const VideoContainer = styled.div`
-  margin: 140px 0 80px;
+  margin: 130px 0 80px;
   position: relative;
-  height: 550px;
+  height: 450px;
   box-shadow: 1px 2px 50px rgba(249, 249, 249, 0.3);
   svg {
     width: 40px;
@@ -152,7 +152,7 @@ const VideoContainer = styled.div`
     height: 400px;
   }
   @media ${device.mobile} {
-    margin: 110px 0 80px;
+    margin: 90px 0 50px;
     height: 300px;
     svg {
       width: 30px;

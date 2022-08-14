@@ -2,11 +2,14 @@ import { motion } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
 import { useLocation, useNavigate } from "react-router-dom";
 import { makeImagePath } from "../../utils/makeImagePath";
-import { IGenres } from "../../api/api";
+import { IDetail, IGenres } from "../../api/api";
+import { changeDateSeperator } from "../../utils/changeDateSeperator";
 import InfoBox from "./InfoBox";
 import RateBox from "./RateBox";
 import styled from "styled-components";
 import device from "../../theme/mediaQueries";
+import { useRecoilValue } from "recoil";
+import { searchState } from "../../data/atoms";
 
 const boxVariants = {
   normal: {
@@ -40,38 +43,48 @@ const infoVariants = {
 };
 
 interface PropsType {
-  movieId?: boolean;
-  tvId?: boolean;
-  id: number;
-  poster: string;
-  backdrop: string;
-  title: string;
-  firstDate: string;
-  rate: number;
-  genreNames: IGenres[];
+  favMovieId?: boolean;
+  favTvId?: boolean;
+  searchMovieId?: number;
+  searchTvId?: number;
+  contents: IDetail;
+  genres: IGenres[];
 }
 
 const HoverBox = ({
-  movieId,
-  tvId,
-  id,
-  poster,
-  backdrop,
-  title,
-  firstDate,
-  rate,
-  genreNames,
+  favMovieId,
+  favTvId,
+  searchMovieId,
+  searchTvId,
+  contents,
+  genres,
 }: PropsType) => {
+  const searchQuery = useRecoilValue(searchState);
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
+  const {
+    title,
+    id,
+    name,
+    poster_path,
+    backdrop_path,
+    first_air_date,
+    release_date,
+    vote_average,
+  } = contents;
+
   const onBoxClicked = (id: number) => {
     if (pathname === "/") return navigate(`/movie/${id}`);
-    if (pathname === "/search") return navigate(`/search/${id}`);
     if (pathname === "/tv") return navigate(`/tv/${id}`);
-    if (movieId) return navigate(`/myFavorite/movie/${id}`);
-    if (tvId) return navigate(`/myFavorite/tv/${id}`);
+
+    if (searchMovieId) return navigate(`/search/movie/${id}/${searchQuery}`);
+    if (searchTvId) return navigate(`/search/tv/${id}/${searchQuery}`);
+
+    if (favMovieId) return navigate(`/myFavorite/movie/${id}`);
+    if (favTvId) return navigate(`/myFavorite/tv/${id}`);
   };
+
   return (
     <Box
       layoutId={`${id}/${uuidv4()}`}
@@ -83,20 +96,20 @@ const HoverBox = ({
       transition={{ type: "tween" }}
     >
       <Image
-        src={makeImagePath(poster || backdrop)}
+        src={makeImagePath(poster_path || backdrop_path)}
         alt="poster"
         loading="lazy"
       />
       <Info variants={infoVariants}>
-        <h4>{title}</h4>
+        <h4>{title || name}</h4>
         <Genres>
-          {genreNames?.map((item) => (
+          {genres.map((item) => (
             <InfoBox key={item.id} info={item.name} />
           ))}
         </Genres>
         <ExtraInfo>
-          <span>{firstDate?.split("-").join(".")}</span>
-          <RateBox rate={rate} />
+          <span>{changeDateSeperator(release_date || first_air_date)}</span>
+          <RateBox rate={vote_average} />
         </ExtraInfo>
       </Info>
     </Box>
@@ -156,7 +169,7 @@ const Info = styled(motion.div)`
     height: 60px;
     bottom: -48px;
     font-size: 14px;
-    padding: 2px;
+    padding: 5px;
   }
 `;
 

@@ -157,10 +157,10 @@ export function getSearchTvShows(query: string | null) {
 }
 
 // Detail Api
-export function getDetail(category?: string, movieId?: string) {
-  if (movieId === undefined) return;
-  if (movieId)
-    return fetch(`${BASE_PATH}/${category}/${movieId}?api_key=${API_KEY}`).then(
-      (response) => response.json()
-    );
+export function getDetail(category?: string, contentsId?: number) {
+  if (contentsId === undefined) return;
+  if (contentsId)
+    return fetch(
+      `${BASE_PATH}/${category}/${contentsId}?api_key=${API_KEY}`
+    ).then((response) => response.json());
 }

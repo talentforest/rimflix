@@ -9,50 +9,50 @@ interface IGetGenres {
 
 interface PropsType {
   contents: IDetail;
+  searchMovieId?: number;
+  searchTvId?: number;
 }
 
-const Contents = ({ contents }: PropsType) => {
+const Contents = ({ contents, searchMovieId, searchTvId }: PropsType) => {
   const { pathname } = useLocation();
+  const { genre_ids, backdrop_path, poster_path } = contents;
 
-  const { data: movieGenres } = useQuery<IGetGenres>(
+  const { data: movieGenres, isLoading: genreIsLoading } = useQuery<IGetGenres>(
     ["genres", "MovieGenres"],
     getGenres
   );
-  const { data: tvGenres } = useQuery<IGetGenres>(
+  const { data: tvGenres, isLoading: tvGenreIsLoading } = useQuery<IGetGenres>(
     ["genres", "TvGenres"],
     getTvGenres
   );
 
-  const findMovieGenres = movieGenres?.genres?.filter((item) =>
-    contents.genre_ids.includes(item.id)
-  );
-  const findTvGenres = tvGenres?.genres?.filter((item) =>
-    contents.genre_ids.includes(item.id)
-  );
+  const contentsGenres = movieGenres?.genres
+    .filter((item) => genre_ids.includes(item.id))
+    .slice(0, 3);
+
+  const contentsTvGenres = tvGenres?.genres
+    .filter((item) => genre_ids.includes(item.id))
+    .slice(0, 3);
 
   return (
     <>
-      {pathname === "/tv" ? (
-        <HoverBox
-          id={contents.id}
-          poster={contents.poster_path}
-          backdrop={contents.backdrop_path}
-          title={contents.name}
-          firstDate={contents.first_air_date}
-          rate={contents.vote_average}
-          genreNames={findTvGenres?.slice(0, 3)}
-        />
-      ) : (
-        <HoverBox
-          id={contents.id}
-          poster={contents.poster_path}
-          backdrop={contents.backdrop_path}
-          title={contents.title}
-          firstDate={contents.release_date}
-          rate={contents.vote_average}
-          genreNames={findMovieGenres?.slice(0, 3)}
-        />
-      )}
+      {pathname === "/tv" || searchTvId
+        ? !tvGenreIsLoading &&
+          (backdrop_path || poster_path) && (
+            <HoverBox
+              contents={contents}
+              genres={contentsTvGenres}
+              searchTvId={searchTvId}
+            />
+          )
+        : !genreIsLoading &&
+          (backdrop_path || poster_path) && (
+            <HoverBox
+              contents={contents}
+              genres={contentsGenres}
+              searchMovieId={searchMovieId}
+            />
+          )}
     </>
   );
 };

@@ -12,11 +12,12 @@ function Router() {
       <Header />
       <Routes>
         <Route path="/" element={<Home />} />
-        <Route path="/tv" element={<Tv />} />
-        <Route path="/search" element={<Search />} />
         <Route path="/movie/:id" element={<Home />} />
+        <Route path="/tv" element={<Tv />} />
         <Route path="/tv/:id" element={<Tv />} />
-        <Route path="/search/:id" element={<Search />} />
+        <Route path="/search/" element={<Search />} />
+        <Route path="/search/movie/:id" element={<Search />} />
+        <Route path="/search/tv/:id" element={<Search />} />
         <Route path="/myFavorite" element={<MyFavorite />} />
         <Route path="/myFavorite/movie/:id" element={<MyFavorite />} />
         <Route path="/myFavorite/tv/:id" element={<MyFavorite />} />

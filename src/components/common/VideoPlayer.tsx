@@ -14,8 +14,8 @@ interface PropsType {
 }
 
 const VideoPlayer = ({ videoId, backdropPath, posterPath }: PropsType) => {
-  const pathname = useLocation().pathname;
   const [volume, setVolume] = useState(true);
+  const { pathname } = useLocation();
 
   const { data: movieTrailer, isLoading: movieTrailerLoading } =
     useQuery<IGetVideo>(
@@ -80,10 +80,12 @@ const VideoPlayer = ({ videoId, backdropPath, posterPath }: PropsType) => {
       ) : (
         <>
           <Overlay />
-          <BackdropImg
-            src={makeImagePath(backdropPath || posterPath)}
-            alt="backdrop"
-          />
+          {backdropPath && (
+            <BackdropImg
+              src={makeImagePath(backdropPath || posterPath)}
+              alt="backdrop"
+            />
+          )}
         </>
       )}
     </>

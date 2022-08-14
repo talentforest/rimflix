@@ -51,7 +51,7 @@ function Header() {
           </Link>
           <Link to="/myFavorite">
             <Item>
-              My Favorite {favoriteMatch && <Circle layoutId="circle" />}
+              Favorite {favoriteMatch && <Circle layoutId="circle" />}
             </Item>
           </Link>
         </Items>
@@ -72,7 +72,6 @@ const Nav = styled(motion.nav)`
   width: 100vw;
   top: 0;
   background-color: black;
-  font-size: 14px;
   padding: 20px 60px;
   color: white;
   z-index: 99;
@@ -104,6 +103,7 @@ const Item = styled.li`
     color: ${(props) => props.theme.white.lighter};
   }
   @media ${device.mobile} {
+    margin-right: 15px;
     font-size: 14px;
   }
 `;

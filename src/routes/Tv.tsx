@@ -12,8 +12,10 @@ import RowSlider from "../components/RowSlider";
 const Tv = () => {
   const { data: topTvShow, isLoading: topShowLoading } =
     useQuery<IGetMovieTvResult>(["tvs", "topTvShow"], getTopRatedTvShows);
+
   const { data: popularTvShow, isLoading: popularShowLoading } =
     useQuery<IGetMovieTvResult>(["tvs", "popularTvShow"], getPopularTvShows);
+
   const { data: onAirTvShow, isLoading: onAirShowLoading } =
     useQuery<IGetMovieTvResult>(["tvs", "onAirTvShow"], getAiringTodayTvShows);
 

@@ -1,67 +1,47 @@
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
-import { useMatch } from "react-router-dom";
+import { useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { myFavoriteMovieState, myFavoriteTvState } from "../../data/atoms";
 import styled from "styled-components";
 
-const FavoriteButton = () => {
-  const [like, setLike] = useState(false);
-  const [myFavoriteMovies, setMyFavoriteMovies] =
-    useRecoilState(myFavoriteMovieState);
-  const [myFavoriteTvs, setMyFavoriteTvs] = useRecoilState(myFavoriteTvState);
+interface PropsType {
+  contentsId: number;
+}
 
-  const searchIdMatch = useMatch(`/search/:movieId`)?.params.movieId;
-  const movieIdMatch = useMatch(`/movie/:movieId`)?.params.movieId;
-  const tvIdMatch = useMatch(`/tv/:tvShowId`)?.params.tvShowId;
-  const myFavMovieIdMatch = useMatch("/myFavorite/movie/:movieId")?.params
-    .movieId;
-  const myFavTvIdMatch = useMatch("myFavorite/tv/:tvShowId")?.params.tvShowId;
+const FavoriteButton = ({ contentsId }: PropsType) => {
+  const { pathname } = useLocation();
+
+  const [like, setLike] = useState(false);
+  const [favMovies, setFavMovies] = useRecoilState(myFavoriteMovieState);
+  const [favTvs, setFavTvs] = useRecoilState(myFavoriteTvState);
 
   useEffect(() => {
-    if (
-      myFavoriteMovies.includes(
-        movieIdMatch || searchIdMatch || myFavMovieIdMatch
-      )
-    )
-      return setLike(true);
+    if (favMovies.includes(contentsId)) return setLike(true);
 
-    if (myFavoriteTvs.includes(tvIdMatch || myFavTvIdMatch))
-      return setLike(true);
+    if (favTvs.includes(contentsId)) return setLike(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onAddClick = () => {
     setLike((prev) => !prev);
-    if (movieIdMatch || myFavMovieIdMatch)
-      return setMyFavoriteMovies((prev) => [
-        ...prev,
-        movieIdMatch || myFavMovieIdMatch,
-      ]);
-    if (tvIdMatch || myFavTvIdMatch)
-      return setMyFavoriteTvs((prev) => [...prev, tvIdMatch || myFavTvIdMatch]);
-    if (searchIdMatch)
-      return setMyFavoriteMovies((prev) => [...prev, searchIdMatch]);
+    if (pathname.includes("/movie") || pathname.includes("/search"))
+      return setFavMovies((prev) => [...prev, contentsId]);
+
+    if (pathname.includes("/tv"))
+      return setFavTvs((prev) => [...prev, contentsId]);
   };
 
   const onDeleteClick = () => {
     setLike((prev) => !prev);
-    if (movieIdMatch || myFavMovieIdMatch) {
-      setMyFavoriteMovies((prev) =>
-        prev.filter((item) => item !== (movieIdMatch || myFavMovieIdMatch))
-      );
+    if (pathname.includes("/movie") || pathname.includes("/search")) {
+      setFavMovies((prev) => prev.filter((item) => item !== contentsId));
     }
-    if (tvIdMatch || myFavTvIdMatch)
-      return setMyFavoriteTvs((prev) =>
-        prev.filter((item) => item !== (tvIdMatch || myFavTvIdMatch))
-      );
-    if (searchIdMatch) {
-      setMyFavoriteMovies((prev) =>
-        prev.filter((item) => item !== searchIdMatch)
-      );
-    }
+    if (pathname.includes("/tv"))
+      return setFavTvs((prev) => prev.filter((item) => item !== contentsId));
   };
+
   return (
     <>
       {like ? (

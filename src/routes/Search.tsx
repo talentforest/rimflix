@@ -1,48 +1,80 @@
+import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
-import { getSearchMovie, IGetMovieTvResult } from "../api/api";
+import {
+  getSearchMovie,
+  getSearchTvShows,
+  IGetMovieTvResult,
+} from "../api/api";
 import { AnimatePresence } from "framer-motion";
-import styled from "styled-components";
+import { useSetRecoilState } from "recoil";
+import { searchState } from "../data/atoms";
 import Contents from "../components/Contents";
 import Modal from "../components/Modal/Modal";
 import device from "../theme/mediaQueries";
+import styled from "styled-components";
 
 const Search = () => {
-  const location = useLocation();
-  const searchKeyword = location.search.split("=")[1];
+  const { search } = useLocation();
+  const searchKeyword = search?.split("/")[0]?.split("=")[1];
 
-  const { data: searchMovie, isLoading: searchMovieLoading } =
-    useQuery<IGetMovieTvResult>(
-      ["movies", searchKeyword],
-      () => getSearchMovie(searchKeyword),
-      {
-        enabled: Boolean(searchKeyword),
-      }
+  const setSearchQuery = useSetRecoilState(searchState);
+
+  const handleSearchQuery = () => {
+    setSearchQuery(search);
+  };
+
+  useEffect(() => {
+    handleSearchQuery();
+    // eslint-disable-next-line react-hooks/exhaustive-deps
+  }, []);
+
+  const { data: searchMovies, isLoading: searchMoviesLoading } =
+    useQuery<IGetMovieTvResult>(["search", "movies", searchKeyword], () =>
+      getSearchMovie(searchKeyword)
     );
-  const moviesWithPoster = searchMovie?.results.filter(
-    (item) => !(item.backdrop_path === null && item.poster_path === null)
-  );
+
+  const { data: searchTvShows, isLoading: searchTvShowsLoading } =
+    useQuery<IGetMovieTvResult>(["search", "tv", searchKeyword], () =>
+      getSearchTvShows(searchKeyword)
+    );
 
   return (
-    <Container>
-      <h1>검색 결과 {moviesWithPoster?.length}건</h1>
-      {searchMovieLoading ? (
+    <>
+      {searchMoviesLoading && searchTvShowsLoading ? (
         <Loader>Loading...</Loader>
       ) : (
-        <ul>
-          {moviesWithPoster ? (
-            moviesWithPoster?.map((contents) => (
-              <Contents contents={contents} key={contents.id} />
-            ))
-          ) : (
-            <></>
-          )}
-        </ul>
+        <Container>
+          <section>
+            <h1>Movies Result ({searchMovies?.results?.length})</h1>
+            <ul>
+              {searchMovies?.results?.map((contents) => (
+                <Contents
+                  key={contents.id}
+                  contents={contents}
+                  searchMovieId={contents.id}
+                />
+              ))}
+            </ul>
+          </section>
+          <section>
+            <h1>Tv Shows Result ({searchTvShows?.results?.length})</h1>
+            <ul>
+              {searchTvShows?.results?.map((contents) => (
+                <Contents
+                  key={contents.id}
+                  contents={contents}
+                  searchTvId={contents.id}
+                />
+              ))}
+            </ul>
+          </section>
+          <AnimatePresence>
+            <Modal />
+          </AnimatePresence>
+        </Container>
       )}
-      <AnimatePresence>
-        <Modal />
-      </AnimatePresence>
-    </Container>
+    </>
   );
 };
 
@@ -58,35 +90,44 @@ const Container = styled.div`
   padding: 0 30px;
   width: 100%;
   min-height: 100vh;
-  h1 {
-    margin-left: 10px;
-    font-size: 14px;
-  }
-  > ul {
-    display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
-    justify-items: center;
-    gap: 10px;
-    margin-top: 20px;
-    > div {
-      width: 200px;
+  > section {
+    margin-bottom: 50px;
+    h1 {
+      margin-left: 10px;
+      font-size: 20px;
+      font-weight: 700;
+    }
+    > ul {
+      display: grid;
+      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      justify-items: center;
+      gap: 10px;
+      margin-top: 20px;
+      > div {
+        width: 200px;
+      }
     }
   }
+
   @media ${device.tablet} {
-    > ul {
-      grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-      > div {
-        width: 180px;
+    > section {
+      > ul {
+        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
+        > div {
+          width: 180px;
+        }
       }
     }
   }
   @media ${device.mobile} {
     overflow: hidden;
     margin-top: 70px;
-    > ul {
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-      > div {
-        width: 120px;
+    > section {
+      > ul {
+        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+        > div {
+          width: 120px;
+        }
       }
     }
   }

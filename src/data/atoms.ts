@@ -1,7 +1,8 @@
 import { atom } from "recoil";
+import { v4 as uuidv4 } from "uuid";
 
-export const myFavoriteMovieState = atom({
-  key: "myFavoriteMovie",
+export const myFavoriteMovieState = atom<number[]>({
+  key: `myFavoriteMovie/${uuidv4()}`,
   default: [],
   effects: [
     ({ setSelf, onSet }) => {
@@ -22,8 +23,8 @@ export const myFavoriteMovieState = atom({
   ],
 });
 
-export const myFavoriteTvState = atom({
-  key: "myFavoriteTv",
+export const myFavoriteTvState = atom<number[]>({
+  key: `myFavoriteTv/${uuidv4()}`,
   default: [],
   effects: [
     ({ setSelf, onSet }) => {
@@ -42,4 +43,9 @@ export const myFavoriteTvState = atom({
       });
     },
   ],
+});
+
+export const searchState = atom<string>({
+  key: `search/${uuidv4}`,
+  default: "",
 });

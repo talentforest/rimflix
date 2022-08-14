@@ -1,11 +1,11 @@
-import styled from "styled-components";
+import { AnimatePresence, motion } from "framer-motion";
+import { IDetail } from "../api/api";
+import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
 import Modal from "./Modal/Modal";
 import useSlide from "../hook/useSlide";
 import Contents from "./Contents";
 import device from "../theme/mediaQueries";
-import { AnimatePresence, motion } from "framer-motion";
-import { IDetail } from "../api/api";
-import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import styled from "styled-components";
 
 const rowVariants = {
   hidden: (back: boolean) => ({
@@ -28,6 +28,8 @@ const RowSlider = ({ title, data }: PropsType) => {
   const { offset, back, index, toggleLeaving, increaseIndex, decreaseIndex } =
     useSlide(data);
 
+  const sliceSlideNum = data?.slice(offset * index, offset * index + offset);
+
   return (
     <>
       <RowTitle>{title}</RowTitle>
@@ -48,11 +50,9 @@ const RowSlider = ({ title, data }: PropsType) => {
               key={index}
               custom={back}
             >
-              {data
-                ?.slice(offset * index, offset * index + offset)
-                .map((contents) => (
-                  <Contents contents={contents} key={contents.id} />
-                ))}
+              {sliceSlideNum?.map((contents) => (
+                <Contents contents={contents} key={contents.id} />
+              ))}
             </Row>
           </AnimatePresence>
         </Slider>

@@ -13,23 +13,25 @@ const MyFavorite = () => {
   return (
     <Container>
       <h1>My Favorite Movies</h1>
-      <section>
-        {myFavoriteMovies.length === 0 ? (
-          <Empty>It's still empty.</Empty>
-        ) : (
-          myFavoriteMovies.map((movieId) => (
-            <FavContents key={movieId} movieId={movieId} />
-          ))
-        )}
-      </section>
+      {myFavoriteMovies.length === 0 ? (
+        <Empty>It's still empty.</Empty>
+      ) : (
+        <section>
+          {myFavoriteMovies.map((favMovieId) => (
+            <FavContents key={favMovieId} favMovieId={favMovieId} />
+          ))}
+        </section>
+      )}
       <h1>My Favorite Tv Shows</h1>
-      <section>
-        {myFavoriteTvs.length === 0 ? (
-          <Empty>It's still empty.</Empty>
-        ) : (
-          myFavoriteTvs.map((tvId) => <FavContents key={tvId} tvId={tvId} />)
-        )}
-      </section>
+      {myFavoriteTvs.length === 0 ? (
+        <Empty>It's still empty.</Empty>
+      ) : (
+        <section>
+          {myFavoriteTvs.map((favTvId) => (
+            <FavContents key={favTvId} favTvId={favTvId} />
+          ))}
+        </section>
+      )}
       <AnimatePresence>
         <Modal />
       </AnimatePresence>
@@ -38,7 +40,6 @@ const MyFavorite = () => {
 };
 
 const Empty = styled.div`
-  width: 100%;
   height: 100px;
   margin-bottom: 50px;
   padding: 10px;
@@ -69,7 +70,7 @@ const Container = styled.div`
   @media ${device.tablet} {
     padding: 10px 50px;
     > section {
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
     }
     h1 {
       font-size: 18px;
