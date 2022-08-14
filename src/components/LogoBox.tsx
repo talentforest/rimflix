@@ -37,7 +37,7 @@ const LogoBox = () => {
 
 const Box = styled(motion.svg)`
   margin-right: 50px;
-  width: fit-content;
+  width: 90px;
   height: 25px;
   cursor: pointer;
   path {
@@ -45,6 +45,7 @@ const Box = styled(motion.svg)`
     stroke-width: 1px;
   }
   @media ${device.mobile} {
+    width: 60px;
     height: 16px;
     margin-right: 10px;
   }
