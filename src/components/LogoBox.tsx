@@ -12,13 +12,7 @@ const logoVariants = {
 
 const LogoBox = () => {
   return (
-    <Box
-      xmlns="http://www.w3.org/2000/svg"
-      width="130"
-      height="39"
-      viewBox="0 0 130 39"
-      fill="none"
-    >
+    <Box viewBox="0 0 130 39">
       <motion.path
         variants={logoVariants}
         initial="start"

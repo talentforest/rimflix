@@ -64,13 +64,12 @@ function Header() {
 }
 
 const Nav = styled(motion.nav)`
-  overflow-x: hidden;
   display: flex;
   justify-content: space-between;
   align-items: center;
   position: fixed;
-  width: 100vw;
   top: 0;
+  width: 100%;
   background-color: black;
   padding: 20px 60px;
   color: white;
