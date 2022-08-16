@@ -75,6 +75,7 @@ const Collection = ({ officialPoster, posterPath, collection }: PropsType) => {
 const Box = styled.div`
   width: 100%;
   display: flex;
+  display: -webkit-flex;
   flex-direction: column;
   gap: 10px 0;
   margin: 20px 0 10px;
@@ -88,6 +89,7 @@ const Box = styled.div`
   button {
     margin-top: 20px;
     align-self: end;
+    -webkit-align-self: end;
     color: #fff;
     text-decoration: underline;
     background-color: transparent;
