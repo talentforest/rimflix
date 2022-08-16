@@ -12,6 +12,61 @@ export interface IGetMovieTvResult {
   total_results?: number;
 }
 
+interface ICrew {
+  adult: boolean;
+  credit_id: string;
+  department: string;
+  gender: number;
+  id: number;
+  job: string;
+  known_for_department: string;
+  name: string;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+}
+
+interface IGuestStar {
+  adult: boolean;
+  character: string;
+  credit_id: string;
+  gender: number;
+  id: number;
+  known_for_department: string;
+  name: string;
+  order: number;
+  original_name: string;
+  popularity: number;
+  profile_path: string;
+}
+
+export interface ISeasonEpisode {
+  air_date: string;
+  crew: ICrew[];
+  episode_number: number;
+  guest_stars: IGuestStar[];
+  id: number;
+  name: string;
+  overview: string;
+  production_code: string;
+  runtime: number;
+  season_number: number;
+  still_path: string;
+  vote_average: number;
+  vote_count: number;
+}
+
+export interface ISeasonDetail {
+  air_date: string;
+  episodes: ISeasonEpisode[];
+  id: number;
+  name: string;
+  overview: string;
+  poster_path: string;
+  season_number: number;
+  _id: string;
+}
+
 export interface ICollection {
   backdrop_path: string;
   id: number;
@@ -141,6 +196,23 @@ export function getTvTrailer(tvId: number) {
   return fetch(`${BASE_PATH}/tv/${tvId}/videos?api_key=${API_KEY}`).then(
     (response) => response.json()
   );
+}
+
+// Tv Season | Episode
+export function getSeasonDetail(tv_id: number, season_number: number) {
+  return fetch(
+    `${BASE_PATH}/tv/${tv_id}/season/${season_number}?api_key=${API_KEY}`
+  ).then((response) => response.json());
+}
+
+export function getEpisodeDetail(
+  tv_id: number,
+  season_number: number,
+  episode_number: number
+) {
+  return fetch(
+    `${BASE_PATH}/tv/${tv_id}/season/${season_number}/episode/${episode_number}?api_key=${API_KEY}`
+  ).then((response) => response.json());
 }
 
 // Search

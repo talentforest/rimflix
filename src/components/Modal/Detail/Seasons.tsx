@@ -1,8 +1,11 @@
-import { ISeason } from "../../../api/api";
+import { getSeasonDetail, ISeason } from "../../../api/api";
 import { makeImagePath } from "../../../utils/makeImagePath";
+import { changeDateSeperator } from "../../../utils/changeDateSeperator";
+import { useQueries } from "react-query";
+import { useParams } from "react-router-dom";
 import device from "../../../theme/mediaQueries";
 import styled from "styled-components";
-import { changeDateSeperator } from "../../../utils/changeDateSeperator";
+import SeasonsDetail from "./SeasonsDetail";
 
 interface PropsType {
   seasons: ISeason[];
@@ -10,25 +13,43 @@ interface PropsType {
 }
 
 const Seasons = ({ seasons, officialPosterPath }: PropsType) => {
+  const { id } = useParams();
+
+  const seasonDetailResult = useQueries(
+    seasons.map((item) => {
+      return {
+        queryKey: ["seasonNumber", item.season_number],
+        queryFn: () => getSeasonDetail(+id, item.season_number),
+      };
+    })
+  );
+
   return (
     <SeasonLists>
-      {seasons?.map((item) => (
-        <li key={item.id}>
-          {
+      {seasons?.map((detail) => (
+        <li key={detail.id}>
+          <Season>
             <img
-              src={makeImagePath(item.poster_path || officialPosterPath)}
+              src={makeImagePath(detail.poster_path || officialPosterPath)}
               alt="season poster"
+              loading="lazy"
             />
-          }
-          <BasicInfo>
-            <h6>{item.name}</h6>
-            <span>Episodes: {item.episode_count}</span>
-            <span>
-              {item.air_date &&
-                `Air Date: ${changeDateSeperator(item.air_date)}`}
-            </span>
-            {item.overview && <p>{item.overview}</p>}
-          </BasicInfo>
+            <div>
+              <h6>{detail.name}</h6>
+              <span>Episodes: {detail.episode_count}</span>
+              <span>
+                {detail.air_date &&
+                  `Air Date: ${changeDateSeperator(detail.air_date)}`}
+              </span>
+              {detail.overview && <p>{detail.overview}</p>}
+            </div>
+          </Season>
+          <Episode>
+            <SeasonsDetail
+              key={detail.id}
+              detail={seasonDetailResult[detail.season_number - 1].data}
+            />
+          </Episode>
         </li>
       ))}
     </SeasonLists>
@@ -39,21 +60,22 @@ const SeasonLists = styled.ul`
   margin-top: 20px;
   width: 100%;
   > li {
-    min-height: 150px;
-    margin-bottom: 10px;
-    background-color: ${(props) => props.theme.black.lighter};
-    padding: 10px;
-    border-radius: 5px;
-    > img {
-      width: 90px;
-      height: 130px;
-      margin-right: 10px;
-      float: left;
-    }
+    border: 1px solid red;
   }
 `;
 
-const BasicInfo = styled.div`
+const Season = styled.div`
+  min-height: 150px;
+  margin-bottom: 10px;
+  background-color: ${(props) => props.theme.black.lighter};
+  padding: 10px;
+  border-radius: 5px;
+  > img {
+    width: 90px;
+    height: 130px;
+    margin-right: 10px;
+    float: left;
+  }
   h6 {
     font-size: 20px;
     margin-bottom: 10px;
@@ -81,6 +103,14 @@ const BasicInfo = styled.div`
       font-size: 16px;
     }
   }
+`;
+
+const Episode = styled.ul`
+  min-height: 150px;
+  margin-bottom: 10px;
+  background-color: ${(props) => props.theme.black.lighter};
+  padding: 10px;
+  border-radius: 5px;
 `;
 
 export default Seasons;

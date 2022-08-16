@@ -28,7 +28,7 @@ const Home = () => {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          <Banner data={bannerData} />
+          {bannerData && <Banner data={bannerData} />}
           <RowSlider title={"Now Playing"} data={exceptBannerData} />
           <RowSlider title={"Top Rated Movies"} data={topRatedData} />
           <RowSlider title={"Upcoming Movies"} data={upcomingData} />
