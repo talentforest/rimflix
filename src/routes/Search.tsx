@@ -15,19 +15,19 @@ import device from "../theme/mediaQueries";
 import styled from "styled-components";
 
 const Search = () => {
-  const { search } = useLocation();
-  const searchKeyword = search?.split("/")[0]?.split("=")[1];
-
   const setSearchQuery = useSetRecoilState(searchState);
-
-  const handleSearchQuery = () => {
-    setSearchQuery(search);
-  };
+  const { search } = useLocation();
 
   useEffect(() => {
     handleSearchQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
-  }, []);
+  }, [search]);
+
+  const searchKeyword = search?.split("/")[0]?.split("=")[1];
+
+  const handleSearchQuery = () => {
+    setSearchQuery(search);
+  };
 
   const { data: searchMovies, isLoading: searchMoviesLoading } =
     useQuery<IGetMovieTvResult>(["search", "movies", searchKeyword], () =>

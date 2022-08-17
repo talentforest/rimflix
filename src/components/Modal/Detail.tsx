@@ -1,5 +1,5 @@
 import { motion, useViewportScroll } from "framer-motion";
-import { useNavigate } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { getCollection, IDetail } from "../../api/api";
 import { convertRunningTime } from "../../utils/convertRunningTime";
@@ -11,14 +11,21 @@ import InfoBox from "../common/InfoBox";
 import FavoriteButton from "../common/FavoriteButton";
 import Overlay from "../common/Overlay";
 import Collection from "./Detail/Collection";
-import Seasons from "./Detail/Seasons";
+import Episodes from "./Detail/Episodes";
 import LinkButton from "./Detail/LinkButton";
+import Seasons from "./Detail/Seasons";
+import { useRecoilValue } from "recoil";
+import { searchState } from "../../data/atoms";
 
 interface PropsType {
   detail: IDetail;
 }
 
 const Detail = ({ detail }: PropsType) => {
+  const searchQuery = useRecoilValue(searchState);
+  const { pathname } = useLocation();
+  const navigate = useNavigate();
+
   const { data: collection, isLoading: collectionIsLoading } = useQuery<any>(
     ["details", "collection"],
     () => getCollection(detail.belongs_to_collection.id),
@@ -27,11 +34,21 @@ const Detail = ({ detail }: PropsType) => {
     }
   );
 
-  const navigate = useNavigate();
   const { scrollY } = useViewportScroll();
 
   const onOverlayClicked = () => {
-    navigate(-1);
+    if (pathname.includes("search")) {
+      return navigate(`/search/${searchQuery}`);
+    }
+    if (pathname.includes("myFavorite")) {
+      return navigate("/myFavorite");
+    }
+    if (pathname.includes("movie")) {
+      return navigate("/");
+    }
+    if (pathname.includes("tv")) {
+      return navigate("/tv");
+    }
   };
 
   const {
@@ -50,6 +67,10 @@ const Detail = ({ detail }: PropsType) => {
     seasons,
     belongs_to_collection,
   } = detail;
+
+  const exceptCurrentSeason = seasons?.filter(
+    (season) => season.season_number !== detail.number_of_seasons
+  );
 
   return (
     <>
@@ -72,10 +93,10 @@ const Detail = ({ detail }: PropsType) => {
           <Info>
             <h5>Genre :</h5>
             <Genres>
-              {genres.length !== 0 ? (
+              {genres?.length !== 0 ? (
                 genres
-                  .slice(0, 3)
-                  .map((item) => <InfoBox key={item.id} info={item.name} />)
+                  ?.slice(0, 3)
+                  ?.map((item) => <InfoBox key={item.id} info={item.name} />)
               ) : (
                 <p>There is no information.</p>
               )}
@@ -109,27 +130,35 @@ const Detail = ({ detail }: PropsType) => {
             <h5>Overview</h5>
             <p>{overview || "There is no information"}</p>
           </Info>
-          {homepage && (
-            <LinkButton
-              homepage={detail.homepage}
-              contents="Official Homepage"
-            />
-          )}
           {number_of_seasons && (
             <Info $column="column">
-              <h5>{seasons.length > 1 ? "Seasons" : "Season"}</h5>
-              <Seasons seasons={seasons} officialPosterPath={poster_path} />
+              <Episodes seasonNumber={number_of_seasons} />
+            </Info>
+          )}
+          {exceptCurrentSeason && exceptCurrentSeason?.length !== 0 && (
+            <Info $column="column">
+              <h5>See Other Seasons</h5>
+              <Seasons
+                seasons={exceptCurrentSeason}
+                officialPosterPath={poster_path}
+              />
             </Info>
           )}
           {belongs_to_collection && !collectionIsLoading && (
             <Info $column="column">
               <h5>Movie Collection</h5>
               <Collection
-                officialPoster={detail.poster_path || detail.backdrop_path}
-                posterPath={detail.belongs_to_collection.poster_path}
+                officialPoster={poster_path || backdrop_path}
+                posterPath={belongs_to_collection.poster_path}
                 collection={collection}
               />
             </Info>
+          )}
+          {homepage && (
+            <LinkButton
+              homepage={detail.homepage}
+              contents="Official Homepage"
+            />
           )}
         </AllDetail>
       </ModalBox>
@@ -213,16 +242,16 @@ const AllDetail = styled.section`
 const Info = styled.div<{ $column?: string }>`
   display: flex;
   flex-direction: ${(props) => (props.$column ? "column" : "row")};
-  margin-bottom: 10px;
+  margin-bottom: ${(props) => (props.$column ? "25px" : "15px")};
   align-items: ${(props) => (props.$column ? "flex-start" : "center")};
   > h5 {
     font-size: 16px;
+    margin-bottom: ${(props) => (props.$column ? "5px" : "0")};
     margin-right: 5px;
     color: #ffcccc;
     width: max-content;
   }
   > p {
-    margin-top: 5px;
     font-size: 16px;
   }
   > img {
