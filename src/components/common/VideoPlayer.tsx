@@ -80,7 +80,7 @@ const VideoPlayer = ({ videoId, backdropPath, posterPath }: PropsType) => {
       ) : (
         <>
           <Overlay />
-          {backdropPath && (
+          {(backdropPath || posterPath) && (
             <BackdropImg
               src={makeImagePath(backdropPath || posterPath)}
               alt="backdrop"
