@@ -1,116 +1,68 @@
-import { getSeasonDetail, ISeason } from "../../../api/api";
+import { ISeason } from "../../../api/api";
 import { makeImagePath } from "../../../utils/makeImagePath";
-import { changeDateSeperator } from "../../../utils/changeDateSeperator";
-import { useQueries } from "react-query";
-import { useParams } from "react-router-dom";
-import device from "../../../theme/mediaQueries";
 import styled from "styled-components";
-import SeasonsDetail from "./SeasonsDetail";
 
 interface PropsType {
-  seasons: ISeason[];
+  seasons?: ISeason[];
   officialPosterPath: string;
 }
 
 const Seasons = ({ seasons, officialPosterPath }: PropsType) => {
-  const { id } = useParams();
-
-  const seasonDetailResult = useQueries(
-    seasons.map((item) => {
-      return {
-        queryKey: ["seasonNumber", item.season_number],
-        queryFn: () => getSeasonDetail(+id, item.season_number),
-      };
-    })
-  );
-
   return (
     <SeasonLists>
-      {seasons?.map((detail) => (
-        <li key={detail.id}>
-          <Season>
-            <img
-              src={makeImagePath(detail.poster_path || officialPosterPath)}
-              alt="season poster"
-              loading="lazy"
-            />
-            <div>
-              <h6>{detail.name}</h6>
-              <span>Episodes: {detail.episode_count}</span>
-              <span>
-                {detail.air_date &&
-                  `Air Date: ${changeDateSeperator(detail.air_date)}`}
-              </span>
-              {detail.overview && <p>{detail.overview}</p>}
-            </div>
-          </Season>
-          <Episode>
-            <SeasonsDetail
-              key={detail.id}
-              detail={seasonDetailResult[detail.season_number - 1].data}
-            />
-          </Episode>
-        </li>
+      {seasons?.map((season) => (
+        <Season key={season.id}>
+          <img
+            src={makeImagePath(season.poster_path || officialPosterPath)}
+            alt="season poster"
+            loading="lazy"
+          />
+          <h6>{season.name}</h6>
+        </Season>
       ))}
     </SeasonLists>
   );
 };
 
 const SeasonLists = styled.ul`
-  margin-top: 20px;
+  display: flex;
+  gap: 10px;
   width: 100%;
-  > li {
-    border: 1px solid red;
-  }
+  overflow: scroll;
+  -ms-overflow-style: none;
 `;
 
-const Season = styled.div`
-  min-height: 150px;
-  margin-bottom: 10px;
-  background-color: ${(props) => props.theme.black.lighter};
+const Season = styled.li`
+  position: relative;
   padding: 10px;
   border-radius: 5px;
+  background-color: ${(props) => props.theme.black.lighter};
+  cursor: pointer;
   > img {
-    width: 90px;
+    width: 95px;
     height: 130px;
-    margin-right: 10px;
-    float: left;
+    margin-bottom: 5px;
   }
   h6 {
-    font-size: 20px;
-    margin-bottom: 10px;
-  }
-  span {
-    display: block;
-    font-size: 14px;
-    color: #eee;
-    margin-top: 5px;
-  }
-  p {
-    margin-top: 10px;
+    width: 90px;
+    text-align: center;
     font-size: 16px;
   }
-  @media ${device.mobile} {
-    h6 {
-      font-size: 18px;
-      margin-bottom: 10px;
-      font-weight: 600;
-    }
-    p {
-      font-size: 15px;
-    }
+  > div {
+    position: absolute;
+    display: flex;
+    align-items: center;
+    bottom: 40px;
+    right: 10px;
     span {
-      font-size: 16px;
+      font-size: 12px;
+    }
+    svg {
+      width: 14px;
+      height: 14px;
+      fill: #eee;
     }
   }
-`;
-
-const Episode = styled.ul`
-  min-height: 150px;
-  margin-bottom: 10px;
-  background-color: ${(props) => props.theme.black.lighter};
-  padding: 10px;
-  border-radius: 5px;
 `;
 
 export default Seasons;

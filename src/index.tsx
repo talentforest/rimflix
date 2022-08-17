@@ -38,6 +38,10 @@ footer, header, hgroup, main, menu, nav, section {
 }
 * {
   box-sizing: border-box;
+  scrollbar-width: none;
+  &::-webkit-scrollbar {
+    display: none;
+  }
 }
 body {
   width: 100%;
