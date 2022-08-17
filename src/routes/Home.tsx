@@ -18,7 +18,7 @@ const Home = () => {
     useQuery<IGetMovieTvResult>(["movies", "upcomingMovie"], getUpcomingMovie);
 
   const bannerData = nowPlaying?.results[0];
-  const exceptBannerData = nowPlaying?.results.slice(1);
+  const exceptBannerData = nowPlaying?.results?.slice(1);
   const topRatedData = topRatedMovie?.results;
   const upcomingData = upcomingMovie?.results;
 
@@ -28,7 +28,7 @@ const Home = () => {
         <Loader>Loading...</Loader>
       ) : (
         <>
-          {bannerData && <Banner data={bannerData} />}
+          <Banner data={bannerData} />
           <RowSlider title={"Now Playing"} data={exceptBannerData} />
           <RowSlider title={"Top Rated Movies"} data={topRatedData} />
           <RowSlider title={"Upcoming Movies"} data={upcomingData} />

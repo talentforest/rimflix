@@ -19,22 +19,22 @@ const Banner = ({ data }: PropsType) => {
     setVideoClick((prev) => !prev);
   };
 
-  const { backdrop_path, poster_path, title, name, overview, id } = data;
-
   return !videoClick && !!data ? (
     <BannerContainer>
       <Picture>
         <source
-          srcSet={makeImagePath(backdrop_path)}
+          srcSet={makeImagePath(data.backdrop_path)}
           media="(min-width: 700px)"
         />
-        <img src={makeImagePath(poster_path)} alt="movie poster" />
+        <img src={makeImagePath(data.poster_path)} alt="movie poster" />
       </Picture>
       <BannerInfo>
-        {<h3>{title || name}</h3>}
-        <p>{overview}</p>
+        {<h3>{data.title || data.name}</h3>}
+        <p>{data.overview}</p>
         <ButtonsContainer>
-          <Link to={pathname === "/tv" ? `/tv/${id}` : `/movie/${id}`}>
+          <Link
+            to={pathname === "/tv" ? `/tv/${data.id}` : `/movie/${data.id}`}
+          >
             <ButtonBox buttonName="More Info" infoIcon={true} />
           </Link>
           <ButtonBox
@@ -52,7 +52,7 @@ const Banner = ({ data }: PropsType) => {
         handlePlayClick={handlePlayClick}
         closeIcon={true}
       />
-      <VideoPlayer videoId={id} />
+      <VideoPlayer videoId={data.id} />
     </VideoContainer>
   );
 };

@@ -4,6 +4,9 @@ import { v4 as uuidv4 } from "uuid";
 import { getCollection, IDetail } from "../../api/api";
 import { convertRunningTime } from "../../utils/convertRunningTime";
 import { useQuery } from "react-query";
+import { useRecoilValue } from "recoil";
+import { searchState } from "../../data/atoms";
+import { AccessTime } from "@mui/icons-material";
 import styled from "styled-components";
 import device from "../../theme/mediaQueries";
 import VideoPlayer from "../common/VideoPlayer";
@@ -14,8 +17,7 @@ import Collection from "./Detail/Collection";
 import Episodes from "./Detail/Episodes";
 import LinkButton from "./Detail/LinkButton";
 import Seasons from "./Detail/Seasons";
-import { useRecoilValue } from "recoil";
-import { searchState } from "../../data/atoms";
+import RateBox from "../common/RateBox";
 
 interface PropsType {
   detail: IDetail;
@@ -66,6 +68,7 @@ const Detail = ({ detail }: PropsType) => {
     number_of_seasons,
     seasons,
     belongs_to_collection,
+    vote_average,
   } = detail;
 
   const exceptCurrentSeason = seasons?.filter(
@@ -90,51 +93,50 @@ const Detail = ({ detail }: PropsType) => {
           <p>{tagline}</p>
           <h3>{title || name}</h3>
           <FavoriteButton contentsId={id} />
-          <Info>
-            <h5>Genre :</h5>
-            <Genres>
-              {genres?.length !== 0 ? (
-                genres
-                  ?.slice(0, 3)
-                  ?.map((item) => <InfoBox key={item.id} info={item.name} />)
+          {genres?.length !== 0 && (
+            <Info>
+              <Genres>
+                {genres?.map((item) => (
+                  <InfoBox key={item.id} info={item.name} />
+                ))}
+              </Genres>
+            </Info>
+          )}
+          <RateBox detail={true} rate={vote_average} />
+          {(runtime || runtime === 0) && (
+            <Info>
+              {runtime ? (
+                <>
+                  <AccessTime />
+                  <span>{`${convertRunningTime(runtime)}`}</span>
+                </>
               ) : (
-                <p>There is no information.</p>
+                <span>There is no informationsss</span>
               )}
-            </Genres>
-          </Info>
-          <Info>
-            {(runtime || runtime === 0) && (
-              <>
-                <h5>Running Time : </h5>
-                {runtime ? (
-                  <InfoBox info={`${convertRunningTime(runtime)}`} />
-                ) : (
-                  <span>There is no information</span>
-                )}
-              </>
-            )}
-            {episode_run_time && (
-              <>
-                <h5>Episode Running Time : </h5>
-                {Boolean(episode_run_time.length) ? (
-                  <InfoBox
-                    info={`${convertRunningTime(episode_run_time[0])}`}
-                  />
-                ) : (
-                  <span>There is no information</span>
-                )}
-              </>
-            )}
-          </Info>
+            </Info>
+          )}
+          {episode_run_time && (
+            <Info>
+              {Boolean(episode_run_time?.length) ? (
+                <>
+                  <AccessTime />
+                  <span>{`${convertRunningTime(episode_run_time[0])}`}</span>
+                </>
+              ) : (
+                <span>There is no information</span>
+              )}
+            </Info>
+          )}
           <Info $column="column">
             <h5>Overview</h5>
             <p>{overview || "There is no information"}</p>
+            {number_of_seasons && (
+              <Episodes
+                seasonNumber={number_of_seasons}
+                officialPosterPath={poster_path}
+              />
+            )}
           </Info>
-          {number_of_seasons && (
-            <Info $column="column">
-              <Episodes seasonNumber={number_of_seasons} />
-            </Info>
-          )}
           {exceptCurrentSeason && exceptCurrentSeason?.length !== 0 && (
             <Info $column="column">
               <h5>See Other Seasons</h5>
@@ -146,12 +148,7 @@ const Detail = ({ detail }: PropsType) => {
           )}
           {belongs_to_collection && !collectionIsLoading && (
             <Info $column="column">
-              <h5>Movie Collection</h5>
-              <Collection
-                officialPoster={poster_path || backdrop_path}
-                posterPath={belongs_to_collection.poster_path}
-                collection={collection}
-              />
+              <Collection collection={collection} />
             </Info>
           )}
           {homepage && (
@@ -177,11 +174,7 @@ const ModalBox = styled(motion.div)`
   border-radius: 15px;
   overflow: scroll;
   -ms-overflow-style: none;
-  scrollbar-width: none;
   background-color: ${(props) => props.theme.black.darker};
-  &::-webkit-scrollbar {
-    display: none;
-  }
   @media ${device.tablet} {
     width: 70vw;
   }
@@ -259,9 +252,12 @@ const Info = styled.div<{ $column?: string }>`
     height: 240px;
     margin: 10px 0;
   }
+  > svg {
+    width: 16px;
+    height: 16px;
+    margin-right: 3px;
+  }
   @media ${device.mobile} {
-    flex-direction: column;
-    align-items: flex-start;
     margin-bottom: 16px;
     > h5 {
       margin-bottom: 5px;
