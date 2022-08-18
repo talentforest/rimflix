@@ -97,6 +97,7 @@ export interface IDetail {
   title: string;
   first_air_date?: string;
   last_air_date?: string;
+  last_episode_to_air?: ISeasonEpisode;
   name?: string;
   seasons?: ISeason[];
   episode_run_time?: number[];
@@ -229,7 +230,7 @@ export function getSearchTvShows(query: string | null) {
 }
 
 // Detail Api
-export function getDetail(category?: string, contentsId?: number) {
+export function getDetail(category: string, contentsId: number) {
   if (contentsId === undefined) return;
   if (contentsId)
     return fetch(

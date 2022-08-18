@@ -1,7 +1,7 @@
 import { motion, useViewportScroll } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
-import { getCollection, IDetail } from "../../api/api";
+import { getCollection, ICollection, IDetail } from "../../api/api";
 import { convertRunningTime } from "../../utils/convertRunningTime";
 import { useQuery } from "react-query";
 import { useRecoilValue } from "recoil";
@@ -16,7 +16,6 @@ import Overlay from "../common/Overlay";
 import Collection from "./Detail/Collection";
 import Episodes from "./Detail/Episodes";
 import LinkButton from "./Detail/LinkButton";
-import Seasons from "./Detail/Seasons";
 import RateBox from "../common/RateBox";
 
 interface PropsType {
@@ -28,13 +27,14 @@ const Detail = ({ detail }: PropsType) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
-  const { data: collection, isLoading: collectionIsLoading } = useQuery<any>(
-    ["details", "collection"],
-    () => getCollection(detail.belongs_to_collection.id),
-    {
-      enabled: Boolean(detail.belongs_to_collection?.id),
-    }
-  );
+  const { data: collection, isLoading: collectionIsLoading } =
+    useQuery<ICollection>(
+      ["details", "collection"],
+      () => getCollection(detail.belongs_to_collection.id),
+      {
+        enabled: Boolean(detail.belongs_to_collection?.id),
+      }
+    );
 
   const { scrollY } = useViewportScroll();
 
@@ -71,10 +71,6 @@ const Detail = ({ detail }: PropsType) => {
     vote_average,
   } = detail;
 
-  const exceptCurrentSeason = seasons?.filter(
-    (season) => season.season_number !== detail.number_of_seasons
-  );
-
   return (
     <>
       <Overlay onOverlayClicked={onOverlayClicked} />
@@ -102,50 +98,46 @@ const Detail = ({ detail }: PropsType) => {
               </Genres>
             </Info>
           )}
-          <RateBox detail={true} rate={vote_average} />
-          {(runtime || runtime === 0) && (
-            <Info>
-              {runtime ? (
-                <>
-                  <AccessTime />
-                  <span>{`${convertRunningTime(runtime)}`}</span>
-                </>
-              ) : (
-                <span>There is no informationsss</span>
-              )}
-            </Info>
-          )}
-          {episode_run_time && (
-            <Info>
-              {Boolean(episode_run_time?.length) ? (
-                <>
-                  <AccessTime />
-                  <span>{`${convertRunningTime(episode_run_time[0])}`}</span>
-                </>
-              ) : (
-                <span>There is no information</span>
-              )}
-            </Info>
-          )}
+          <RateTime>
+            <RateBox detail={true} rate={vote_average} />
+            {(runtime || runtime === 0) && (
+              <>
+                {runtime ? (
+                  <div>
+                    <AccessTime />
+                    <span>{`${convertRunningTime(runtime)}`}</span>
+                  </div>
+                ) : (
+                  <span>There is no informationsss</span>
+                )}
+              </>
+            )}
+            {episode_run_time && (
+              <>
+                {Boolean(episode_run_time?.length) ? (
+                  <div>
+                    <AccessTime />
+                    <span>{`${convertRunningTime(episode_run_time[0])}`}</span>
+                  </div>
+                ) : (
+                  <span>There is no information</span>
+                )}
+              </>
+            )}
+          </RateTime>
           <Info $column="column">
             <h5>Overview</h5>
             <p>{overview || "There is no information"}</p>
+          </Info>
+          <Info $column="column">
             {number_of_seasons && (
               <Episodes
-                seasonNumber={number_of_seasons}
+                seasons={seasons}
+                lastSeasonNumber={number_of_seasons}
                 officialPosterPath={poster_path}
               />
             )}
           </Info>
-          {exceptCurrentSeason && exceptCurrentSeason?.length !== 0 && (
-            <Info $column="column">
-              <h5>See Other Seasons</h5>
-              <Seasons
-                seasons={exceptCurrentSeason}
-                officialPosterPath={poster_path}
-              />
-            </Info>
-          )}
           {belongs_to_collection && !collectionIsLoading && (
             <Info $column="column">
               <Collection collection={collection} />
@@ -232,6 +224,24 @@ const AllDetail = styled.section`
   }
 `;
 
+const RateTime = styled.div`
+  display: flex;
+  gap: 15px;
+  margin-bottom: 15px;
+  > div:last-child {
+    display: flex;
+    align-items: center;
+    gap: 5px;
+    > svg {
+      width: 16px;
+      height: 16px;
+    }
+    > span {
+      margin-right: 5px;
+    }
+  }
+`;
+
 const Info = styled.div<{ $column?: string }>`
   display: flex;
   flex-direction: ${(props) => (props.$column ? "column" : "row")};
@@ -239,7 +249,6 @@ const Info = styled.div<{ $column?: string }>`
   align-items: ${(props) => (props.$column ? "flex-start" : "center")};
   > h5 {
     font-size: 16px;
-    margin-bottom: ${(props) => (props.$column ? "5px" : "0")};
     margin-right: 5px;
     color: #ffcccc;
     width: max-content;
@@ -251,11 +260,6 @@ const Info = styled.div<{ $column?: string }>`
     width: 160px;
     height: 240px;
     margin: 10px 0;
-  }
-  > svg {
-    width: 16px;
-    height: 16px;
-    margin-right: 3px;
   }
   @media ${device.mobile} {
     margin-bottom: 16px;

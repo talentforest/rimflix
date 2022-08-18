@@ -1,18 +1,26 @@
 import { useState } from "react";
-import { getSeasonDetail, ISeasonDetail } from "../../../api/api";
+import { getSeasonDetail, ISeason, ISeasonDetail } from "../../../api/api";
 import { makeImagePath } from "../../../utils/makeImagePath";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { convertRunningTime } from "../../../utils/convertRunningTime";
 import { AccessTime } from "@mui/icons-material";
+import { changeDateSeperator } from "../../../utils/changeDateSeperator";
+import RateBox from "../../common/RateBox";
 import styled from "styled-components";
 
 interface PropsType {
-  seasonNumber: number;
+  seasons: ISeason[];
+  lastSeasonNumber: number;
   officialPosterPath: string;
 }
 
-const Episodes = ({ seasonNumber, officialPosterPath }: PropsType) => {
+const Episodes = ({
+  seasons,
+  lastSeasonNumber,
+  officialPosterPath,
+}: PropsType) => {
+  const [seasonNumber, setSeasonNumber] = useState(lastSeasonNumber);
   const [episodesCount, setEpisodesCount] = useState(10);
   const { id } = useParams();
 
@@ -21,6 +29,12 @@ const Episodes = ({ seasonNumber, officialPosterPath }: PropsType) => {
       getSeasonDetail(+id, seasonNumber)
     );
 
+  const onSeasonNumberChange = (
+    event: React.ChangeEvent<HTMLSelectElement>
+  ) => {
+    setSeasonNumber(+event.currentTarget.value);
+  };
+
   const handleLoadMoreClick = () => {
     setEpisodesCount((prev) => prev + 10);
   };
@@ -28,48 +42,86 @@ const Episodes = ({ seasonNumber, officialPosterPath }: PropsType) => {
   const episodes = seasonDetail?.episodes;
 
   const exceptNoneInfoEpisodes = episodes?.filter(
-    (episode) => episode.still_path && episode.overview !== ""
+    (episode) => episode.still_path || episode.overview !== ""
   );
 
-  const viewEpisode =
-    exceptNoneInfoEpisodes?.length > 0 && exceptNoneInfoEpisodes?.length < 50;
+  const viewEpisode = episodes?.length > 0 && episodes?.length < 100;
 
   const viewloadButton =
-    episodes?.length > 10 && episodes?.length > episodesCount;
+    exceptNoneInfoEpisodes?.length > 10 &&
+    exceptNoneInfoEpisodes?.length > episodesCount;
+
+  const today = new Date().toISOString().split("T")[0];
+
+  const checkScheduledAir =
+    new Date(`${seasonDetail?.air_date}`) < new Date(`${today}`);
 
   return (
     <>
       {!seasonDetailLoading && viewEpisode && (
-        <EpisodeList>
-          {exceptNoneInfoEpisodes?.slice(0, episodesCount)?.map((episode) => (
-            <Episode key={episode.id}>
-              <h6>{episode.name}</h6>
-              {episode.still_path ? (
-                <StillImg
-                  src={makeImagePath(episode.still_path)}
-                  alt="still"
-                  loading="lazy"
-                />
+        <>
+          <h5>Seasons</h5>
+          <Select defaultValue={seasonNumber} onChange={onSeasonNumberChange}>
+            {seasons.map((season) => (
+              <option key={season.season_number} value={season.season_number}>
+                {season.name}
+              </option>
+            ))}
+          </Select>
+          <EpisodeList>
+            <BasicInfo>
+              <img
+                src={makeImagePath(
+                  seasonDetail.poster_path || officialPosterPath
+                )}
+                alt={`${seasonDetail.name} poster`}
+              />
+              <h5>{seasonDetail.name}</h5>
+              {!seasonDetail.air_date || checkScheduledAir ? (
+                <span>{changeDateSeperator(seasonDetail.air_date)}</span>
               ) : (
-                <AlternateImg
-                  src={makeImagePath(
-                    seasonDetail?.poster_path || officialPosterPath
-                  )}
-                  alt="still"
-                  loading="lazy"
-                />
+                <>
+                  <span>{changeDateSeperator(seasonDetail.air_date)}</span>
+                  <span>This Tv Show is going to be aired.</span>
+                </>
               )}
-              <span>
-                <AccessTime />
-                {convertRunningTime(episode.runtime)}
-              </span>
-              <p>{episode.overview}</p>
-            </Episode>
-          ))}
-          {viewloadButton && (
-            <button onClick={handleLoadMoreClick}>Load More</button>
-          )}
-        </EpisodeList>
+              <p>{seasonDetail.overview}</p>
+            </BasicInfo>
+            {exceptNoneInfoEpisodes?.slice(0, episodesCount)?.map((episode) => (
+              <Episode key={episode.id}>
+                <h6>{episode.name}</h6>
+                {episode.still_path ? (
+                  <StillImg
+                    src={makeImagePath(episode.still_path)}
+                    alt="still"
+                    loading="lazy"
+                  />
+                ) : (
+                  <AlternateImg
+                    src={makeImagePath(
+                      seasonDetail?.poster_path || officialPosterPath
+                    )}
+                    alt="still"
+                    loading="lazy"
+                  />
+                )}
+                <div>
+                  <RateBox detail={true} rate={episode?.vote_average} />
+                  {episode.runtime && (
+                    <span>
+                      <AccessTime />
+                      {convertRunningTime(episode.runtime)}
+                    </span>
+                  )}
+                </div>
+                <p>{episode.overview}</p>
+              </Episode>
+            ))}
+            {viewloadButton && (
+              <button onClick={handleLoadMoreClick}>Load More</button>
+            )}
+          </EpisodeList>
+        </>
       )}
     </>
   );
@@ -103,19 +155,55 @@ const Episode = styled.li`
   h6 {
     font-weight: 700;
     margin-bottom: 10px;
+    color: #ffcccc;
+  }
+  > div {
+    display: flex;
+    gap: 10px;
+    align-items: center;
+    margin-bottom: 5px;
+    span {
+      display: flex;
+      align-items: center;
+      svg {
+        width: 16px;
+        height: 16px;
+        margin-right: 3px;
+      }
+    }
   }
   p {
     word-break: break-all;
   }
+`;
+
+const Select = styled.select`
+  margin-top: 5px;
+  height: 30px;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const BasicInfo = styled.div`
+  background-color: #c0c0c0;
+  color: #333;
+  padding: 10px;
+  border-radius: 5px;
+  img {
+    width: 80px;
+    height: 110px;
+    float: left;
+    margin-right: 10px;
+  }
   span {
-    display: flex;
-    align-items: center;
-    margin-bottom: 10px;
-    svg {
-      width: 16px;
-      height: 16px;
-      margin-right: 3px;
-    }
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  h5 {
+    font-weight: 700;
+    margin-bottom: 5px;
   }
 `;
 

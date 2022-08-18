@@ -57,10 +57,10 @@ const VideoPlayer = ({ videoId, backdropPath, posterPath }: PropsType) => {
                     movieResults[movieResults.length - 1]?.key
                   }`
             }
-            playing={true}
+            playing={false}
             muted={volume ? true : false}
             controls={false}
-            loop={true}
+            loop={false}
             width="100%"
             height="100%"
             config={{
