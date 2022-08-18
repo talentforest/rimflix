@@ -229,11 +229,24 @@ export function getSearchTvShows(query: string | null) {
   ).then((response) => response.json());
 }
 
-// Detail Api
+// Detail
 export function getDetail(category: string, contentsId: number) {
   if (contentsId === undefined) return;
   if (contentsId)
     return fetch(
       `${BASE_PATH}/${category}/${contentsId}?api_key=${API_KEY}`
     ).then((response) => response.json());
+}
+
+// Recommendation
+export function getTvRecommendation(tv_id: number) {
+  return fetch(
+    `${BASE_PATH}/tv/${tv_id}/recommendations?api_key=${API_KEY}`
+  ).then((response) => response.json());
+}
+
+export function getMovieRecommendation(movie_id: number) {
+  return fetch(
+    `${BASE_PATH}/movie/${movie_id}/recommendations?api_key=${API_KEY}`
+  ).then((response) => response.json());
 }

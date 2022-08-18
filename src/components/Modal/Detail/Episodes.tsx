@@ -12,14 +12,10 @@ import styled from "styled-components";
 interface PropsType {
   seasons: ISeason[];
   lastSeasonNumber: number;
-  officialPosterPath: string;
+  officialPoster: string;
 }
 
-const Episodes = ({
-  seasons,
-  lastSeasonNumber,
-  officialPosterPath,
-}: PropsType) => {
+const Episodes = ({ seasons, lastSeasonNumber, officialPoster }: PropsType) => {
   const [seasonNumber, setSeasonNumber] = useState(lastSeasonNumber);
   const [episodesCount, setEpisodesCount] = useState(10);
   const { id } = useParams();
@@ -60,7 +56,6 @@ const Episodes = ({
     <>
       {!seasonDetailLoading && viewEpisode && (
         <>
-          <h5>Seasons</h5>
           <Select defaultValue={seasonNumber} onChange={onSeasonNumberChange}>
             {seasons.map((season) => (
               <option key={season.season_number} value={season.season_number}>
@@ -71,9 +66,7 @@ const Episodes = ({
           <EpisodeList>
             <BasicInfo>
               <img
-                src={makeImagePath(
-                  seasonDetail.poster_path || officialPosterPath
-                )}
+                src={makeImagePath(seasonDetail.poster_path || officialPoster)}
                 alt={`${seasonDetail.name} poster`}
               />
               <h5>{seasonDetail.name}</h5>
@@ -99,7 +92,7 @@ const Episodes = ({
                 ) : (
                   <AlternateImg
                     src={makeImagePath(
-                      seasonDetail?.poster_path || officialPosterPath
+                      seasonDetail?.poster_path || officialPoster
                     )}
                     alt="still"
                     loading="lazy"
@@ -192,7 +185,7 @@ const BasicInfo = styled.div`
   border-radius: 5px;
   img {
     width: 80px;
-    height: 110px;
+    height: auto;
     float: left;
     margin-right: 10px;
   }
@@ -208,8 +201,8 @@ const BasicInfo = styled.div`
 `;
 
 const StillImg = styled.img`
-  height: 80px;
   width: 130px;
+  height: auto;
   float: right;
   margin-left: 10px;
 `;

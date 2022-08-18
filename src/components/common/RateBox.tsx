@@ -23,12 +23,15 @@ const Box = styled.div`
   align-items: center;
   width: fit-content;
   &.contents {
+    font-size: 14px;
     font-weight: 700;
     background-color: #9ed2ff;
     color: #313ef9;
     border-radius: 5px;
     padding: 2px;
     svg {
+      margin: 0;
+      padding: 0;
       path {
         stroke: #919191;
       }

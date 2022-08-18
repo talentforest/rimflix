@@ -69,7 +69,7 @@ const CollectionList = styled.ul`
     }
     img {
       width: 100px;
-      height: 140px;
+      height: auto;
     }
     h6 {
       font-weight: 700;

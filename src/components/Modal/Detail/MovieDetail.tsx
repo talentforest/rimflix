@@ -10,16 +10,16 @@ import LinkButton from "./LinkButton";
 import Collection from "./Collection";
 
 interface PropsType {
-  detail: IDetail;
+  movieDetail: IDetail;
 }
 
-const MovieDetail = ({ detail }: PropsType) => {
+const MovieDetail = ({ movieDetail }: PropsType) => {
   const { data: collection, isLoading: collectionIsLoading } =
     useQuery<ICollection>(
       ["details", "collection"],
-      () => getCollection(detail.belongs_to_collection.id),
+      () => getCollection(movieDetail.belongs_to_collection.id),
       {
-        enabled: Boolean(detail?.belongs_to_collection?.id),
+        enabled: Boolean(movieDetail?.belongs_to_collection?.id),
       }
     );
 
@@ -34,7 +34,7 @@ const MovieDetail = ({ detail }: PropsType) => {
     homepage,
     belongs_to_collection,
     vote_average,
-  } = detail;
+  } = movieDetail;
 
   return (
     <>
@@ -80,10 +80,7 @@ const MovieDetail = ({ detail }: PropsType) => {
             </Info>
           )}
           {homepage && (
-            <LinkButton
-              homepage={detail.homepage}
-              contents="Official Homepage"
-            />
+            <LinkButton homepage={homepage} contents="Official Homepage" />
           )}
         </>
       )}

@@ -1,6 +1,16 @@
 import { AccessTime } from "@mui/icons-material";
-import { IDetail } from "../../../api/api";
+import {
+  getTvRecommendation,
+  IDetail,
+  IGetMovieTvResult,
+} from "../../../api/api";
 import { convertRunningTime } from "../../../utils/convertRunningTime";
+import { useQuery } from "react-query";
+import { useState } from "react";
+import { makeImagePath } from "../../../utils/makeImagePath";
+import { changeDateSeperator } from "../../../utils/changeDateSeperator";
+import { Link } from "react-router-dom";
+import { motion } from "framer-motion";
 import FavoriteButton from "../../common/FavoriteButton";
 import InfoBox from "../../common/InfoBox";
 import RateBox from "../../common/RateBox";
@@ -10,10 +20,21 @@ import device from "../../../theme/mediaQueries";
 import styled from "styled-components";
 
 interface PropsType {
-  detail: IDetail;
+  tvDetail: IDetail;
 }
 
-const TvDetail = ({ detail }: PropsType) => {
+const TvDetail = ({ tvDetail }: PropsType) => {
+  const [category, setCategory] = useState("seasons");
+
+  const { data: recommendation, isLoading: recommendationLoading } =
+    useQuery<IGetMovieTvResult>(["recommendation", "tv", tvDetail.id], () =>
+      getTvRecommendation(+tvDetail.id)
+    );
+
+  const onCategoryClick = (name: string) => {
+    setCategory(name);
+  };
+
   const {
     id,
     poster_path,
@@ -26,52 +47,95 @@ const TvDetail = ({ detail }: PropsType) => {
     seasons,
     number_of_seasons,
     vote_average,
-  } = detail;
+  } = tvDetail;
 
   return (
     <>
-      <p>{tagline}</p>
-      <h3>{name}</h3>
-      {genres?.length !== 0 && (
-        <Info>
-          <Genres>
-            {genres?.map((item) => (
-              <InfoBox key={item.id} info={item.name} />
-            ))}
-          </Genres>
-        </Info>
-      )}
-      <FavoriteButton contentsId={id} />
-      <RateTime>
-        <RateBox detail={true} rate={vote_average} />
-        {episode_run_time && (
-          <>
-            {Boolean(episode_run_time?.length) ? (
-              <div>
-                <AccessTime />
-                <span>{`${convertRunningTime(episode_run_time[0])}`}</span>
-              </div>
-            ) : (
-              <span>There is no information</span>
+      {!recommendationLoading && (
+        <>
+          <p>{tagline}</p>
+          <h3>{name}</h3>
+          {genres?.length !== 0 && (
+            <Info>
+              <Genres>
+                {genres?.map((item) => (
+                  <InfoBox key={item.id} info={item.name} />
+                ))}
+              </Genres>
+            </Info>
+          )}
+          <FavoriteButton contentsId={id} />
+          <RateTime>
+            <RateBox detail={true} rate={vote_average} />
+            {episode_run_time && (
+              <>
+                {Boolean(episode_run_time?.length) ? (
+                  <div>
+                    <AccessTime />
+                    <span>{`${convertRunningTime(episode_run_time[0])}`}</span>
+                  </div>
+                ) : (
+                  <span>There is no information</span>
+                )}
+              </>
             )}
-          </>
-        )}
-      </RateTime>
-      <Info $column="column">
-        <h5>Overview</h5>
-        <p>{overview || "There is no information"}</p>
-      </Info>
-      {number_of_seasons && (
-        <Info $column="column">
-          <Episodes
-            seasons={seasons}
-            lastSeasonNumber={number_of_seasons}
-            officialPosterPath={poster_path}
-          />
-        </Info>
-      )}
-      {homepage && (
-        <LinkButton homepage={detail.homepage} contents="Official Homepage" />
+          </RateTime>
+          <Info $column="column">
+            <h5>Overview</h5>
+            <p>{overview || "There is no information"}</p>
+          </Info>
+          <Info $column="column">
+            <Category>
+              <motion.li
+                onClick={() => onCategoryClick("seasons")}
+                animate={
+                  category === "seasons"
+                    ? { scale: 1.1, color: "#ffcccc" }
+                    : { scale: 1 }
+                }
+              >
+                <span>Seasons</span>
+              </motion.li>
+              <motion.li
+                onClick={() => onCategoryClick("similar")}
+                animate={
+                  category === "similar"
+                    ? { scale: 1.1, color: "#ffcccc" }
+                    : { scale: 1 }
+                }
+              >
+                <span>Similar Contents</span>
+              </motion.li>
+            </Category>
+            {category === "seasons" && number_of_seasons && (
+              <Episodes
+                seasons={seasons}
+                lastSeasonNumber={number_of_seasons}
+                officialPoster={poster_path}
+              />
+            )}
+            {category === "similar" && (
+              <Recommendation>
+                {recommendation?.results?.map((item) => (
+                  <Link to={`/tv/${item.id}`}>
+                    <img
+                      src={makeImagePath(item.poster_path)}
+                      alt={`${item.name} poster`}
+                    />
+                    <h5>{item.name}</h5>
+                    <div>
+                      <span>{changeDateSeperator(item.first_air_date)}</span>
+                      <RateBox rate={item.vote_average} />
+                    </div>
+                  </Link>
+                ))}
+              </Recommendation>
+            )}
+          </Info>
+          {homepage && (
+            <LinkButton homepage={homepage} contents="Official Homepage" />
+          )}
+        </>
       )}
     </>
   );
@@ -93,7 +157,7 @@ export const Info = styled.div<{ $column?: string }>`
   }
   > img {
     width: 160px;
-    height: 240px;
+    height: auto;
     margin: 10px 0;
   }
   @media ${device.mobile} {
@@ -106,7 +170,7 @@ export const Info = styled.div<{ $column?: string }>`
     }
     > img {
       width: 120px;
-      height: 180px;
+      height: auto;
       margin: 10px 0;
     }
   }
@@ -132,6 +196,61 @@ export const RateTime = styled.div`
     }
     > span {
       margin-right: 5px;
+    }
+  }
+`;
+
+export const Category = styled(motion.div)`
+  display: flex;
+  gap: 15px;
+  li {
+    display: flex;
+    align-items: center;
+    font-size: 16px;
+    margin-bottom: 5px;
+    height: 30px;
+    color: #888;
+    cursor: pointer;
+  }
+`;
+
+export const Recommendation = styled.ul`
+  display: flex;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 10px;
+  width: 100%;
+  list-style: none;
+  margin-top: 5px;
+  > a {
+    width: 47%;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: space-between;
+    border-radius: 5px;
+    padding: 10px;
+    background-color: ${(props) => props.theme.black.lighter};
+    cursor: pointer;
+    &:hover {
+      background-color: #444;
+    }
+    img {
+      width: 90px;
+      height: auto;
+    }
+    h5 {
+      margin: 5px 0;
+      text-align: center;
+    }
+    > div {
+      display: flex;
+      justify-content: space-between;
+      align-items: center;
+      gap: 5px;
+      span {
+        font-size: 14px;
+      }
     }
   }
 `;

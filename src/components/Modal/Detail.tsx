@@ -55,9 +55,9 @@ const Detail = ({ detail }: PropsType) => {
         </VideoContainer>
         <AllDetail>
           {(pathname.includes("movie") || pathname === "/") && (
-            <MovieDetail detail={detail} />
+            <MovieDetail movieDetail={detail} />
           )}
-          {pathname.includes("tv") && <TvDetail detail={detail} />}
+          {pathname.includes("tv") && <TvDetail tvDetail={detail} />}
         </AllDetail>
       </ModalBox>
     </>
