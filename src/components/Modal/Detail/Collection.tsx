@@ -7,9 +7,10 @@ import styled from "styled-components";
 
 interface PropsType {
   collection: ICollection;
+  officailPoster: string;
 }
 
-const Collection = ({ collection }: PropsType) => {
+const Collection = ({ collection, officailPoster }: PropsType) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -32,7 +33,7 @@ const Collection = ({ collection }: PropsType) => {
         {parts.map((item) => (
           <li key={item.id} onClick={() => handleNavigateClick(item.id)}>
             <img
-              src={makeImagePath(item.poster_path)}
+              src={makeImagePath(item.poster_path || officailPoster)}
               alt="collection poster"
             />
             <h6 key={item.id}>{item.original_title}</h6>
