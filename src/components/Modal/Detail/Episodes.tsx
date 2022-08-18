@@ -6,8 +6,10 @@ import { useQuery } from "react-query";
 import { convertRunningTime } from "../../../utils/convertRunningTime";
 import { AccessTime } from "@mui/icons-material";
 import { changeDateSeperator } from "../../../utils/changeDateSeperator";
+import { checkScheduledAir } from "../../../utils/checkScheduledAir";
 import RateBox from "../../common/RateBox";
 import styled from "styled-components";
+import Loading from "../../common/Loading";
 
 interface PropsType {
   seasons: ISeason[];
@@ -21,7 +23,7 @@ const Episodes = ({ seasons, lastSeasonNumber, officialPoster }: PropsType) => {
   const { id } = useParams();
 
   const { data: seasonDetail, isLoading: seasonDetailLoading } =
-    useQuery<ISeasonDetail>(["season", "episodes", seasonNumber], () =>
+    useQuery<ISeasonDetail>(["season", "episodes", id, seasonNumber], () =>
       getSeasonDetail(+id, seasonNumber)
     );
 
@@ -36,50 +38,48 @@ const Episodes = ({ seasons, lastSeasonNumber, officialPoster }: PropsType) => {
   };
 
   const episodes = seasonDetail?.episodes;
-
   const exceptNoneInfoEpisodes = episodes?.filter(
     (episode) => episode.still_path || episode.overview !== ""
   );
 
-  const viewEpisode = episodes?.length > 0 && episodes?.length < 100;
+  const viewEpisode =
+    exceptNoneInfoEpisodes?.length > 0 && exceptNoneInfoEpisodes?.length < 80;
 
-  const viewloadButton =
+  const viewLoadButton =
     exceptNoneInfoEpisodes?.length > 10 &&
     exceptNoneInfoEpisodes?.length > episodesCount;
 
-  const today = new Date().toISOString().split("T")[0];
-
-  const checkScheduledAir =
-    new Date(`${seasonDetail?.air_date}`) < new Date(`${today}`);
-
   return (
     <>
-      {!seasonDetailLoading && viewEpisode && (
-        <>
-          <Select defaultValue={seasonNumber} onChange={onSeasonNumberChange}>
-            {seasons.map((season) => (
-              <option key={season.season_number} value={season.season_number}>
-                {season.name}
-              </option>
-            ))}
-          </Select>
+      <Select defaultValue={seasonNumber} onChange={onSeasonNumberChange}>
+        {seasons.map((season) => (
+          <option key={season.id} value={season.season_number}>
+            {season.name}
+          </option>
+        ))}
+      </Select>
+      <BasicInfo>
+        <img
+          src={makeImagePath(seasonDetail?.poster_path || officialPoster)}
+          alt={`${seasonDetail?.name} poster`}
+          loading="lazy"
+        />
+        <h5>{seasonDetail?.name}</h5>
+        {checkScheduledAir(seasonDetail?.air_date) ? (
+          <span>{changeDateSeperator(seasonDetail?.air_date)}</span>
+        ) : (
+          <>
+            <span>{changeDateSeperator(seasonDetail?.air_date)}</span>
+            <span>This Tv Show is going to be aired.</span>
+          </>
+        )}
+        <p>{seasonDetail?.overview}</p>
+      </BasicInfo>
+      {seasonDetailLoading ? (
+        <Loading />
+      ) : (
+        viewEpisode && (
           <EpisodeList>
-            <BasicInfo>
-              <img
-                src={makeImagePath(seasonDetail.poster_path || officialPoster)}
-                alt={`${seasonDetail.name} poster`}
-              />
-              <h5>{seasonDetail.name}</h5>
-              {!seasonDetail.air_date || checkScheduledAir ? (
-                <span>{changeDateSeperator(seasonDetail.air_date)}</span>
-              ) : (
-                <>
-                  <span>{changeDateSeperator(seasonDetail.air_date)}</span>
-                  <span>This Tv Show is going to be aired.</span>
-                </>
-              )}
-              <p>{seasonDetail.overview}</p>
-            </BasicInfo>
             {exceptNoneInfoEpisodes?.slice(0, episodesCount)?.map((episode) => (
               <Episode key={episode.id}>
                 <h6>{episode.name}</h6>
@@ -110,16 +110,47 @@ const Episodes = ({ seasons, lastSeasonNumber, officialPoster }: PropsType) => {
                 <p>{episode.overview}</p>
               </Episode>
             ))}
-            {viewloadButton && (
+            {viewLoadButton && (
               <button onClick={handleLoadMoreClick}>Load More</button>
             )}
           </EpisodeList>
-        </>
+        )
       )}
     </>
   );
 };
 
+const Select = styled.select`
+  margin-top: 5px;
+  height: 30px;
+  &:focus {
+    outline: none;
+  }
+`;
+
+const BasicInfo = styled.div`
+  background-color: #c0c0c0;
+  color: #333;
+  width: 100%;
+  padding: 10px;
+  border-radius: 5px;
+  margin-top: 10px;
+  img {
+    width: 80px;
+    height: auto;
+    float: left;
+    margin-right: 10px;
+  }
+  span {
+    display: block;
+    font-size: 14px;
+    margin-bottom: 5px;
+  }
+  h5 {
+    font-weight: 700;
+    margin-bottom: 5px;
+  }
+`;
 const EpisodeList = styled.ul`
   display: flex;
   display: -webkit-flex;
@@ -167,36 +198,6 @@ const Episode = styled.li`
   }
   p {
     word-break: break-all;
-  }
-`;
-
-const Select = styled.select`
-  margin-top: 5px;
-  height: 30px;
-  &:focus {
-    outline: none;
-  }
-`;
-
-const BasicInfo = styled.div`
-  background-color: #c0c0c0;
-  color: #333;
-  padding: 10px;
-  border-radius: 5px;
-  img {
-    width: 80px;
-    height: auto;
-    float: left;
-    margin-right: 10px;
-  }
-  span {
-    display: block;
-    font-size: 14px;
-    margin-bottom: 5px;
-  }
-  h5 {
-    font-weight: 700;
-    margin-bottom: 5px;
   }
 `;
 

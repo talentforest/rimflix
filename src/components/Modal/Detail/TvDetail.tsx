@@ -35,6 +35,10 @@ const TvDetail = ({ tvDetail }: PropsType) => {
     setCategory(name);
   };
 
+  const animate = (name: string) => {
+    return category === name ? { scale: 1.1, color: "#ffcccc" } : { scale: 1 };
+  };
+
   const {
     id,
     poster_path,
@@ -88,24 +92,18 @@ const TvDetail = ({ tvDetail }: PropsType) => {
             <Category>
               <motion.li
                 onClick={() => onCategoryClick("seasons")}
-                animate={
-                  category === "seasons"
-                    ? { scale: 1.1, color: "#ffcccc" }
-                    : { scale: 1 }
-                }
+                animate={animate("seasons")}
               >
                 <span>Seasons</span>
               </motion.li>
-              <motion.li
-                onClick={() => onCategoryClick("similar")}
-                animate={
-                  category === "similar"
-                    ? { scale: 1.1, color: "#ffcccc" }
-                    : { scale: 1 }
-                }
-              >
-                <span>Similar Contents</span>
-              </motion.li>
+              {!!recommendation?.results.length && (
+                <motion.li
+                  onClick={() => onCategoryClick("similar")}
+                  animate={animate("similar")}
+                >
+                  <span>Similar Contents</span>
+                </motion.li>
+              )}
             </Category>
             {category === "seasons" && number_of_seasons && (
               <Episodes
@@ -114,10 +112,10 @@ const TvDetail = ({ tvDetail }: PropsType) => {
                 officialPoster={poster_path}
               />
             )}
-            {category === "similar" && (
+            {category === "similar" && recommendation?.results && (
               <Recommendation>
                 {recommendation?.results?.map((item) => (
-                  <Link to={`/tv/${item.id}`}>
+                  <Link to={`/tv/${item.id}`} key={item.id}>
                     <img
                       src={makeImagePath(item.poster_path)}
                       alt={`${item.name} poster`}
