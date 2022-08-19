@@ -250,3 +250,16 @@ export function getMovieRecommendation(movie_id: number) {
     `${BASE_PATH}/movie/${movie_id}/recommendations?api_key=${API_KEY}`
   ).then((response) => response.json());
 }
+
+// Similar
+export function getTvSimilar(tv_id: number) {
+  return fetch(`${BASE_PATH}/tv/${tv_id}/similar?api_key=${API_KEY}`).then(
+    (response) => response.json()
+  );
+}
+
+export function getMovieSimilar(movie_id: number) {
+  return fetch(
+    `${BASE_PATH}/movie/${movie_id}/similar?api_key=${API_KEY}`
+  ).then((response) => response.json());
+}

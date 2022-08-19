@@ -53,6 +53,7 @@ const CollectionList = styled.ul`
   gap: 10px;
   overflow: scroll;
   width: 100%;
+  margin-top: 10px;
   > li {
     width: 130px;
     display: flex;
@@ -64,24 +65,24 @@ const CollectionList = styled.ul`
     background-color: ${(props) => props.theme.black.lighter};
     cursor: pointer;
     &:hover {
-      background-color: #ffcccc;
-      color: #333;
+      background-color: #444;
     }
     img {
       width: 100px;
       height: auto;
     }
     h6 {
-      font-weight: 700;
-      font-size: 16px;
+      margin: 5px 0;
       text-align: center;
-      margin: 5px 0 10px;
     }
     > div {
       display: flex;
       justify-content: space-between;
       align-items: center;
       gap: 0 5px;
+      span {
+        font-size: 14px;
+      }
     }
   }
 `;

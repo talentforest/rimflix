@@ -48,7 +48,7 @@ interface PropsType {
   searchMovieId?: number;
   searchTvId?: number;
   contents: IDetail;
-  genres: IGenres[];
+  genres?: IGenres[];
 }
 
 const HoverBox = ({
@@ -95,15 +95,11 @@ const HoverBox = ({
       initial="normal"
       transition={{ type: "tween" }}
     >
-      <Image
-        src={makeImagePath(poster_path || backdrop_path)}
-        alt="poster"
-        loading="lazy"
-      />
+      <Image src={makeImagePath(poster_path || backdrop_path)} alt="poster" />
       <Info variants={infoVariants}>
         <h4>{title || name}</h4>
         <Genres>
-          {genres.map((item) => (
+          {genres?.map((item) => (
             <InfoBox key={item.id} info={item.name} />
           ))}
         </Genres>

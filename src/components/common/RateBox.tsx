@@ -21,7 +21,7 @@ const Box = styled.div`
   display: flex;
   justify-content: center;
   align-items: center;
-  width: fit-content;
+
   &.contents {
     font-size: 14px;
     font-weight: 700;

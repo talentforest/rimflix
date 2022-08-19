@@ -1,76 +1,79 @@
-import { getCollection, ICollection, IDetail } from "../../../api/api";
+import {
+  getCollection,
+  getMovieRecommendation,
+  getMovieSimilar,
+  ICollection,
+  IDetail,
+  IGetMovieTvResult,
+} from "../../../api/api";
 import { useQuery } from "react-query";
 import { convertRunningTime } from "../../../utils/convertRunningTime";
 import { AccessTime } from "@mui/icons-material";
-import { Genres, Info, RateTime } from "./TvDetail";
-import FavoriteButton from "../../common/FavoriteButton";
-import InfoBox from "../../common/InfoBox";
+import { Category, RateTime } from "./TvDetail";
+import { Info } from "../Detail";
+import { motion } from "framer-motion";
 import RateBox from "../../common/RateBox";
-import LinkButton from "./LinkButton";
 import Collection from "./Collection";
+import useCategory from "../../../hook/useCategory";
+import SimilarRecommendationList from "./SimilarRecommendationList";
 
 interface PropsType {
   movieDetail: IDetail;
 }
 
 const MovieDetail = ({ movieDetail }: PropsType) => {
+  const { category, onCategoryClick, animate } = useCategory("similar");
+
   const { data: collection, isLoading: collectionIsLoading } =
     useQuery<ICollection>(
-      ["details", "collection"],
-      () => getCollection(movieDetail.belongs_to_collection.id),
+      ["details", "collection", movieDetail?.belongs_to_collection?.id],
+      () => getCollection(movieDetail?.belongs_to_collection?.id),
       {
-        enabled: Boolean(movieDetail?.belongs_to_collection?.id),
+        enabled: !!movieDetail?.belongs_to_collection?.id,
       }
     );
 
+  const { data: recommendation, isLoading: recommendationLoading } =
+    useQuery<IGetMovieTvResult>(["recommendation", "tv", movieDetail.id], () =>
+      getMovieRecommendation(+movieDetail.id)
+    );
+
+  const { data: similar, isLoading: similarLoading } =
+    useQuery<IGetMovieTvResult>(["similar", "tv", movieDetail.id], () =>
+      getMovieSimilar(+movieDetail.id)
+    );
+
   const {
-    id,
     poster_path,
-    title,
-    tagline,
     overview,
-    genres,
     runtime,
-    homepage,
     belongs_to_collection,
     vote_average,
   } = movieDetail;
 
   return (
     <>
+      <RateTime>
+        <RateBox detail={true} rate={vote_average} />
+        {(runtime || runtime === 0) && (
+          <>
+            {runtime ? (
+              <div>
+                <AccessTime />
+                <span>{`${convertRunningTime(runtime)}`}</span>
+              </div>
+            ) : (
+              <span>There is no informationsss</span>
+            )}
+          </>
+        )}
+      </RateTime>
+      <Info $column="column">
+        <h5>Overview</h5>
+        <p>{overview || "There is no information"}</p>
+      </Info>
       {!collectionIsLoading && (
         <>
-          <p>{tagline}</p>
-          <h3>{title}</h3>
-          {genres?.length !== 0 && (
-            <Info>
-              <Genres>
-                {genres?.map((item) => (
-                  <InfoBox key={item.id} info={item.name} />
-                ))}
-              </Genres>
-            </Info>
-          )}
-          <FavoriteButton contentsId={id} />
-          <RateTime>
-            <RateBox detail={true} rate={vote_average} />
-            {(runtime || runtime === 0) && (
-              <>
-                {runtime ? (
-                  <div>
-                    <AccessTime />
-                    <span>{`${convertRunningTime(runtime)}`}</span>
-                  </div>
-                ) : (
-                  <span>There is no informationsss</span>
-                )}
-              </>
-            )}
-          </RateTime>
-          <Info $column="column">
-            <h5>Overview</h5>
-            <p>{overview || "There is no information"}</p>
-          </Info>
           {belongs_to_collection && (
             <Info $column="column">
               <Collection
@@ -79,10 +82,35 @@ const MovieDetail = ({ movieDetail }: PropsType) => {
               />
             </Info>
           )}
-          {homepage && (
-            <LinkButton homepage={homepage} contents="Official Homepage" />
-          )}
         </>
+      )}
+      {!recommendationLoading && !similarLoading && (
+        <Info $column="column">
+          <Category>
+            {!!similar?.results?.length && (
+              <motion.li
+                onClick={() => onCategoryClick("similar")}
+                animate={animate("similar")}
+              >
+                <span>Similar</span>
+              </motion.li>
+            )}
+            {!!recommendation?.results?.length && (
+              <motion.li
+                onClick={() => onCategoryClick("recommendation")}
+                animate={animate("recommendation")}
+              >
+                <span>How about this?</span>
+              </motion.li>
+            )}
+          </Category>
+          <SimilarRecommendationList
+            route="movie"
+            category={category}
+            recommendation={recommendation.results}
+            similar={similar.results}
+          />
+        </Info>
       )}
     </>
   );
