@@ -92,7 +92,7 @@ const Detail = ({ detail }: PropsType) => {
 };
 
 const ModalBox = styled(motion.div)`
-  z-index: 3;
+  z-index: 2;
   width: 50vw;
   position: absolute;
   height: 80vh;

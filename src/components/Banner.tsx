@@ -64,7 +64,6 @@ const BannerContainer = styled.div`
   flex-direction: column;
   justify-content: center;
   color: #fff;
-  margin-bottom: 30px;
 `;
 
 const Picture = styled.picture`

@@ -66,28 +66,24 @@ const RowSlider = ({ title, data }: PropsType) => {
 };
 
 const RowTitle = styled.h2`
-  padding: 0 60px;
+  padding: 20px 60px;
   font-size: 30px;
   font-weight: 700;
   @media ${device.tablet} {
-    padding: 0px 50px 20px;
+    padding: 20px 50px;
     font-size: 26px;
   }
   @media ${device.mobile} {
-    padding: 10px 30px 10px;
+    padding: 20px 30px;
     font-size: 18px;
   }
 `;
 
 const SliderContainer = styled.div`
-  box-sizing: border-box;
-  overflow: hidden;
   display: flex;
   width: 100%;
-  height: 420px;
-  padding: 50px 0;
-  margin-top: -30px;
-  margin-bottom: 50px;
+  height: 300px;
+  margin-bottom: 20px;
   > svg {
     padding: 0 10px;
     height: 100%;
@@ -95,9 +91,7 @@ const SliderContainer = styled.div`
     cursor: pointer;
   }
   @media ${device.tablet} {
-    height: 320px;
-    padding: 35px 0;
-    margin-top: -40px;
+    height: 300px;
     > svg {
       width: 35px;
       padding: 0 5px;
@@ -106,7 +100,6 @@ const SliderContainer = styled.div`
   @media ${device.mobile} {
     height: 280px;
     margin-top: -30px;
-    margin-bottom: 10px;
     > svg {
       width: 30px;
     }

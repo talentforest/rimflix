@@ -1,15 +1,14 @@
 import { motion } from "framer-motion";
-import { v4 as uuidv4 } from "uuid";
 import { useLocation, useNavigate } from "react-router-dom";
 import { makeImagePath } from "../../utils/makeImagePath";
 import { IDetail, IGenres } from "../../api/api";
 import { changeDateSeperator } from "../../utils/changeDateSeperator";
+import { useRecoilValue } from "recoil";
+import { searchState } from "../../data/atoms";
 import InfoBox from "./InfoBox";
 import RateBox from "./RateBox";
 import styled from "styled-components";
 import device from "../../theme/mediaQueries";
-import { useRecoilValue } from "recoil";
-import { searchState } from "../../data/atoms";
 
 const boxVariants = {
   normal: {
@@ -87,13 +86,11 @@ const HoverBox = ({
 
   return (
     <Box
-      layoutId={`${id}/${uuidv4()}`}
       key={id}
       onClick={() => onBoxClicked(id)}
       variants={boxVariants}
       whileHover="hover"
       initial="normal"
-      transition={{ type: "tween" }}
     >
       <Image src={makeImagePath(poster_path || backdrop_path)} alt="poster" />
       <Info variants={infoVariants}>
@@ -116,13 +113,15 @@ const Box = styled(motion.div)`
   position: relative;
   height: 100%;
   border-radius: 5px;
-  margin-bottom: 30px;
   cursor: pointer;
-  @media ${device.tablet} {
-    height: 240px;
+  &:first-child,
+  &:last-child {
+    -webkit-transform-origin: center left;
+    transform-origin: center left;
   }
-  @media ${device.mobile} {
-    height: 180px;
+  &:last-child {
+    -webkit-transform-origin: center right;
+    transform-origin: center right;
   }
 `;
 
@@ -135,11 +134,11 @@ const Image = styled.img`
   width: 100%;
   height: 100%;
   object-fit: cover;
+  border-radius: 5px;
 `;
 
 const Info = styled(motion.div)`
   position: absolute;
-  bottom: -40px;
   display: flex;
   flex-direction: column;
   justify-content: space-between;
