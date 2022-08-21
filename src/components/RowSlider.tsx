@@ -9,13 +9,13 @@ import styled from "styled-components";
 
 const rowVariants = {
   hidden: (back: boolean) => ({
-    x: back ? -window.outerWidth + 5 : window.outerWidth - 5,
+    x: back ? -window.outerWidth + 300 : window.outerWidth - 300,
   }),
   visible: {
     x: 0,
   },
   exit: (back: boolean) => ({
-    x: back ? window.outerWidth - 5 : -window.outerWidth + 5,
+    x: back ? window.outerWidth - 300 : -window.outerWidth + 300,
   }),
 };
 
@@ -82,26 +82,26 @@ const RowTitle = styled.h2`
 const SliderContainer = styled.div`
   display: flex;
   width: 100%;
-  height: 300px;
+  height: 260px;
   margin-bottom: 20px;
   > svg {
+    z-index: 1;
     padding: 0 10px;
     height: 100%;
     width: 50px;
     cursor: pointer;
   }
   @media ${device.tablet} {
-    height: 300px;
+    height: 240px;
     > svg {
-      width: 35px;
+      width: 30px;
       padding: 0 5px;
     }
   }
   @media ${device.mobile} {
-    height: 280px;
-    margin-top: -30px;
+    height: 180px;
     > svg {
-      width: 30px;
+      width: 28px;
     }
   }
 `;
@@ -121,9 +121,9 @@ const Row = styled(motion.div)`
   height: 100%;
   display: grid;
   gap: 0 15px;
-  grid-template-columns: repeat(5, 1fr);
+  grid-template-columns: repeat(6, 1fr);
   @media ${device.tablet} {
-    grid-template-columns: repeat(4, 1fr);
+    grid-template-columns: repeat(5, 1fr);
     gap: 0 10px;
   }
   @media ${device.mobile} {

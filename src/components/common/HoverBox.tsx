@@ -91,6 +91,7 @@ const HoverBox = ({
       variants={boxVariants}
       whileHover="hover"
       initial="normal"
+      $height={pathname.includes("search") ? true : false}
     >
       <Image src={makeImagePath(poster_path || backdrop_path)} alt="poster" />
       <Info variants={infoVariants}>
@@ -109,10 +110,10 @@ const HoverBox = ({
   );
 };
 
-const Box = styled(motion.div)`
+const Box = styled(motion.div)<{ $height: boolean }>`
   position: relative;
   width: 100%;
-  height: 260px;
+  height: ${(props) => (props.$height ? "260px" : "100%")};
   border-radius: 5px;
   cursor: pointer;
   &:first-child {
@@ -124,10 +125,10 @@ const Box = styled(motion.div)`
     transform-origin: center right;
   }
   @media ${device.tablet} {
-    height: 220px;
+    height: ${(props) => (props.$height ? "220px" : "100%")};
   }
   @media ${device.mobile} {
-    height: 160px;
+    height: ${(props) => (props.$height ? "160px" : "100%")};
   }
 `;
 

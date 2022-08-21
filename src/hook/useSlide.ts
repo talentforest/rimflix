@@ -9,11 +9,11 @@ const useSlide = (data: IDetail[]) => {
 
   const { windowSize } = useWindowSize();
 
-  let offset = 5;
+  let offset = 6;
   if (windowSize.width <= 500) {
     offset = 3;
   } else if (windowSize.width <= 1023) {
-    offset = 4;
+    offset = 5;
   }
 
   const toggleLeaving = () => setLeaving((prev) => !prev);
