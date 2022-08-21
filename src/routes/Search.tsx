@@ -1,11 +1,7 @@
 import { useEffect } from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
-import {
-  getSearchMovie,
-  getSearchTvShows,
-  IGetMovieTvResult,
-} from "../api/api";
+import { getSearch, IGetMovieTvResult } from "../api/api";
 import { AnimatePresence } from "framer-motion";
 import { useSetRecoilState } from "recoil";
 import { searchState } from "../data/atoms";
@@ -31,12 +27,12 @@ const Search = () => {
 
   const { data: searchMovies, isLoading: searchMoviesLoading } =
     useQuery<IGetMovieTvResult>(["search", "movies", searchKeyword], () =>
-      getSearchMovie(searchKeyword)
+      getSearch("movie", searchKeyword)
     );
 
   const { data: searchTvShows, isLoading: searchTvShowsLoading } =
     useQuery<IGetMovieTvResult>(["search", "tv", searchKeyword], () =>
-      getSearchTvShows(searchKeyword)
+      getSearch("tv", searchKeyword)
     );
 
   return (
@@ -99,23 +95,16 @@ const Container = styled.div`
     }
     > ul {
       display: grid;
-      grid-template-columns: repeat(auto-fill, minmax(200px, 1fr));
+      grid-template-columns: repeat(6, 1fr);
       justify-items: center;
-      gap: 10px;
+      gap: 15px;
       margin-top: 20px;
-      > div {
-        width: 200px;
-      }
     }
   }
-
   @media ${device.tablet} {
     > section {
       > ul {
-        grid-template-columns: repeat(auto-fill, minmax(180px, 1fr));
-        > div {
-          width: 180px;
-        }
+        grid-template-columns: repeat(5, 1fr);
       }
     }
   }
@@ -124,10 +113,7 @@ const Container = styled.div`
     margin-top: 70px;
     > section {
       > ul {
-        grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
-        > div {
-          width: 120px;
-        }
+        grid-template-columns: repeat(3, 1fr);
       }
     }
   }

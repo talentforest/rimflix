@@ -129,27 +129,7 @@ interface IVideo {
   name?: string;
 }
 
-// get Movie Collection info
-export function getCollection(collectionId: number) {
-  return fetch(
-    `${BASE_PATH}/collection/${collectionId}?api_key=${API_KEY}`
-  ).then((response) => response.json());
-}
-
-// get Genre Ids
-export function getGenres() {
-  return fetch(`${BASE_PATH}/genre/movie/list?api_key=${API_KEY}`).then(
-    (response) => response.json()
-  );
-}
-
-export function getTvGenres() {
-  return fetch(`${BASE_PATH}/genre/tv/list?api_key=${API_KEY}`).then(
-    (response) => response.json()
-  );
-}
-
-// Movie Api
+// Movie Lists Api
 export function getNowPlayingMovies() {
   return fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}`).then(
     (response) => response.json()
@@ -168,13 +148,7 @@ export function getUpcomingMovie() {
   );
 }
 
-export function getMovieTrailer(movieId: number) {
-  return fetch(`${BASE_PATH}/movie/${movieId}/videos?api_key=${API_KEY}`).then(
-    (response) => response.json()
-  );
-}
-
-// Tv show Api
+// Tv show Lists Api
 export function getTopRatedTvShows() {
   return fetch(`${BASE_PATH}/tv/top_rated?api_key=${API_KEY}`).then(
     (response) => response.json()
@@ -193,13 +167,43 @@ export function getAiringTodayTvShows() {
   );
 }
 
-export function getTvTrailer(tvId: number) {
-  return fetch(`${BASE_PATH}/tv/${tvId}/videos?api_key=${API_KEY}`).then(
+export function getTrailer(category: string, movieId: number) {
+  return fetch(
+    `${BASE_PATH}/${category}/${movieId}/videos?api_key=${API_KEY}`
+  ).then((response) => response.json());
+}
+
+// Genres
+export function getGenres(category: string) {
+  return fetch(`${BASE_PATH}/genre/${category}/list?api_key=${API_KEY}`).then(
     (response) => response.json()
   );
 }
 
-// Tv Season | Episode
+// Search
+export function getSearch(category: string, query: string | null) {
+  return fetch(
+    `${BASE_PATH}/search/${category}?api_key=${API_KEY}&query=${query}}&page=1&include_adult=false`
+  ).then((response) => response.json());
+}
+
+// Detail
+export function getDetail(category: string, contents_id: number) {
+  if (contents_id === undefined) return;
+  if (contents_id)
+    return fetch(
+      `${BASE_PATH}/${category}/${contents_id}?api_key=${API_KEY}`
+    ).then((response) => response.json());
+}
+
+// Movie Detail
+export function getCollection(collectionId: number) {
+  return fetch(
+    `${BASE_PATH}/collection/${collectionId}?api_key=${API_KEY}`
+  ).then((response) => response.json());
+}
+
+// Tv Season Detail
 export function getSeasonDetail(tv_id: number, season_number: number) {
   return fetch(
     `${BASE_PATH}/tv/${tv_id}/season/${season_number}?api_key=${API_KEY}`
@@ -216,50 +220,15 @@ export function getEpisodeDetail(
   ).then((response) => response.json());
 }
 
-// Search
-export function getSearchMovie(query: string | null) {
+// Another Contents Lists
+export function getRecommendation(category: string, contents_id: number) {
   return fetch(
-    `${BASE_PATH}/search/movie?api_key=${API_KEY}&query=${query}}&page=1&include_adult=false`
+    `${BASE_PATH}/${category}/${contents_id}/recommendations?api_key=${API_KEY}`
   ).then((response) => response.json());
 }
 
-export function getSearchTvShows(query: string | null) {
+export function getSimilar(category: string, contents_id: number) {
   return fetch(
-    `${BASE_PATH}/search/tv?api_key=${API_KEY}&query=${query}}&page=1&include_adult=false`
-  ).then((response) => response.json());
-}
-
-// Detail
-export function getDetail(category: string, contentsId: number) {
-  if (contentsId === undefined) return;
-  if (contentsId)
-    return fetch(
-      `${BASE_PATH}/${category}/${contentsId}?api_key=${API_KEY}`
-    ).then((response) => response.json());
-}
-
-// Recommendation
-export function getTvRecommendation(tv_id: number) {
-  return fetch(
-    `${BASE_PATH}/tv/${tv_id}/recommendations?api_key=${API_KEY}`
-  ).then((response) => response.json());
-}
-
-export function getMovieRecommendation(movie_id: number) {
-  return fetch(
-    `${BASE_PATH}/movie/${movie_id}/recommendations?api_key=${API_KEY}`
-  ).then((response) => response.json());
-}
-
-// Similar
-export function getTvSimilar(tv_id: number) {
-  return fetch(`${BASE_PATH}/tv/${tv_id}/similar?api_key=${API_KEY}`).then(
-    (response) => response.json()
-  );
-}
-
-export function getMovieSimilar(movie_id: number) {
-  return fetch(
-    `${BASE_PATH}/movie/${movie_id}/similar?api_key=${API_KEY}`
+    `${BASE_PATH}/${category}/${contents_id}/similar?api_key=${API_KEY}`
   ).then((response) => response.json());
 }

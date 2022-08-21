@@ -111,17 +111,23 @@ const HoverBox = ({
 
 const Box = styled(motion.div)`
   position: relative;
-  height: 100%;
+  width: 100%;
+  height: 260px;
   border-radius: 5px;
   cursor: pointer;
-  &:first-child,
-  &:last-child {
+  &:first-child {
     -webkit-transform-origin: center left;
     transform-origin: center left;
   }
   &:last-child {
     -webkit-transform-origin: center right;
     transform-origin: center right;
+  }
+  @media ${device.tablet} {
+    height: 220px;
+  }
+  @media ${device.mobile} {
+    height: 160px;
   }
 `;
 

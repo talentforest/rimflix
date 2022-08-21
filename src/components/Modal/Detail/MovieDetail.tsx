@@ -1,7 +1,7 @@
 import {
   getCollection,
-  getMovieRecommendation,
-  getMovieSimilar,
+  getRecommendation,
+  getSimilar,
   ICollection,
   IDetail,
   IGetMovieTvResult,
@@ -34,13 +34,14 @@ const MovieDetail = ({ movieDetail }: PropsType) => {
     );
 
   const { data: recommendation, isLoading: recommendationLoading } =
-    useQuery<IGetMovieTvResult>(["recommendation", "tv", movieDetail.id], () =>
-      getMovieRecommendation(+movieDetail.id)
+    useQuery<IGetMovieTvResult>(
+      ["recommendation", "movie", movieDetail.id],
+      () => getRecommendation("movie", +movieDetail.id)
     );
 
   const { data: similar, isLoading: similarLoading } =
-    useQuery<IGetMovieTvResult>(["similar", "tv", movieDetail.id], () =>
-      getMovieSimilar(+movieDetail.id)
+    useQuery<IGetMovieTvResult>(["similar", "movie", movieDetail.id], () =>
+      getSimilar("movie", +movieDetail.id)
     );
 
   const {

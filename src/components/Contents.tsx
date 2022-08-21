@@ -1,5 +1,5 @@
 import { useLocation } from "react-router-dom";
-import { getGenres, getTvGenres, IDetail, IGenres } from "../api/api";
+import { getGenres, IDetail, IGenres } from "../api/api";
 import { useQuery } from "react-query";
 import HoverBox from "./common/HoverBox";
 
@@ -19,11 +19,11 @@ const Contents = ({ contents, searchMovieId, searchTvId }: PropsType) => {
 
   const { data: movieGenres, isLoading: genreIsLoading } = useQuery<IGetGenres>(
     ["genres", "MovieGenres"],
-    getGenres
+    () => getGenres("movie")
   );
   const { data: tvGenres, isLoading: tvGenreIsLoading } = useQuery<IGetGenres>(
     ["genres", "TvGenres"],
-    getTvGenres
+    () => getGenres("tv")
   );
 
   const contentsGenres = movieGenres?.genres

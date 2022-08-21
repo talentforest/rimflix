@@ -2,7 +2,7 @@ import { VolumeOff, VolumeUp } from "@mui/icons-material";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
-import { getMovieTrailer, getTvTrailer, IGetVideo } from "../../api/api";
+import { getTrailer, IGetVideo } from "../../api/api";
 import { makeImagePath } from "../../utils/makeImagePath";
 import ReactPlayer from "react-player/lazy";
 import styled from "styled-components";
@@ -20,17 +20,17 @@ const VideoPlayer = ({ videoId, backdropPath, posterPath }: PropsType) => {
   const { data: movieTrailer, isLoading: movieTrailerLoading } =
     useQuery<IGetVideo>(
       ["movieTrailer", videoId],
-      () => getMovieTrailer(videoId),
+      () => getTrailer("movie", videoId),
       {
-        enabled: pathname === "/" || pathname.includes("/movie"),
+        enabled: (pathname === "/" || pathname.includes("/movie")) && !!videoId,
       }
     );
 
   const { data: tvTrailer, isLoading: tvTrailerLoading } = useQuery<IGetVideo>(
     ["tvTrailer", videoId],
-    () => getTvTrailer(videoId),
+    () => getTrailer("tv", videoId),
     {
-      enabled: pathname.includes("/tv"),
+      enabled: pathname.includes("/tv") && !!videoId,
     }
   );
 

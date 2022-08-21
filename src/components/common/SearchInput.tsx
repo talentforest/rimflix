@@ -79,7 +79,7 @@ const Box = styled.form`
   cursor: pointer;
   svg {
     height: 26px;
-    z-index: 2;
+    z-index: 3;
     cursor: pointer;
     margin-top: 2px;
   }
@@ -96,7 +96,7 @@ const Input = styled(motion.input)`
   position: absolute;
   right: 0;
   padding: 5px 5px 5px 30px;
-  z-index: 1;
+  z-index: 2;
   color: white;
   font-size: 16px;
   background-color: #000;

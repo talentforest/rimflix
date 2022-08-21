@@ -71,12 +71,16 @@ const SimilarRecommendationList = ({
                 >
                   <img
                     src={makeImagePath(item.poster_path)}
-                    alt={`${item.name} poster`}
+                    alt={`${item.name || item.title} poster`}
                   />
                   <ContentsInfo variants={infoVariants}>
-                    <h5>{item.name}</h5>
+                    <h5>{item.name || item.title}</h5>
                     <RateBox detail={true} rate={item.vote_average} />
-                    <span>{changeDateSeperator(item.first_air_date)}</span>
+                    <span>
+                      {changeDateSeperator(
+                        item.first_air_date || item.release_date
+                      )}
+                    </span>
                   </ContentsInfo>
                 </Contents>
               )
@@ -100,12 +104,16 @@ const SimilarRecommendationList = ({
                 >
                   <img
                     src={makeImagePath(item.poster_path)}
-                    alt={`${item.name} poster`}
+                    alt={`${item.name || item.title} poster`}
                   />
                   <ContentsInfo variants={infoVariants}>
-                    <h5>{item.name}</h5>
+                    <h5>{item.name || item.title}</h5>
                     <RateBox detail={true} rate={item.vote_average} />
-                    <span>{changeDateSeperator(item.first_air_date)}</span>
+                    <span>
+                      {changeDateSeperator(
+                        item.first_air_date || item.release_date
+                      )}
+                    </span>
                   </ContentsInfo>
                 </Contents>
               )

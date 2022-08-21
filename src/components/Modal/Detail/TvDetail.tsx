@@ -1,7 +1,7 @@
 import { AccessTime } from "@mui/icons-material";
 import {
-  getTvRecommendation,
-  getTvSimilar,
+  getRecommendation,
+  getSimilar,
   IDetail,
   IGetMovieTvResult,
 } from "../../../api/api";
@@ -26,7 +26,7 @@ const TvDetail = ({ tvDetail }: PropsType) => {
   const { data: recommendation, isLoading: recommendationLoading } =
     useQuery<IGetMovieTvResult>(
       ["recommendation", "tv", tvDetail.id],
-      () => getTvRecommendation(+tvDetail.id),
+      () => getRecommendation("tv", +tvDetail.id),
       {
         enabled: !!tvDetail.id,
       }
@@ -34,7 +34,7 @@ const TvDetail = ({ tvDetail }: PropsType) => {
 
   const { data: similar, isLoading: similarLoading } =
     useQuery<IGetMovieTvResult>(["similar", "tv", tvDetail.id], () =>
-      getTvSimilar(+tvDetail.id)
+      getSimilar("tv", +tvDetail.id)
     );
 
   const {
