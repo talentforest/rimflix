@@ -6,11 +6,13 @@ import {
   IGetMovieTvResult,
   getTvSeasonCrews,
   ICastCrew,
+  IKeywords,
+  getKeyword,
 } from "../../../api/api";
 import { useQuery } from "react-query";
 import { convertRunningTime } from "../../../utils/convertRunningTime";
 import { motion } from "framer-motion";
-import { Info } from "../Detail";
+import { GenresKeyword, Info } from "../Detail";
 import { useState } from "react";
 import RateBox from "../../common/RateBox";
 import Episodes from "./Episodes";
@@ -19,6 +21,7 @@ import useCategory from "../../../hook/useCategory";
 import device from "../../../theme/mediaQueries";
 import SimilarRecommendationList from "./SimilarRecommendationList";
 import Cast from "./Cast";
+import InfoBox from "../../common/InfoBox";
 
 interface PropsType {
   tvDetail: IDetail;
@@ -47,6 +50,11 @@ const TvDetail = ({ tvDetail }: PropsType) => {
       getTvSeasonCrews(+tvDetail.id, seasonNumber)
     );
 
+  const { data: keyword, isLoading: keywordLoading } = useQuery<IKeywords>(
+    ["keyword", "tv", tvDetail.id],
+    () => getKeyword("tv", +tvDetail.id)
+  );
+
   const {
     poster_path,
     overview,
@@ -58,6 +66,16 @@ const TvDetail = ({ tvDetail }: PropsType) => {
 
   return (
     <>
+      {!keywordLoading && keyword.results?.length !== 0 && (
+        <GenresKeyword>
+          <h5>Keywords</h5>
+          <Keywords>
+            {keyword.results?.map((item) => (
+              <InfoBox info={item.name} />
+            ))}
+          </Keywords>
+        </GenresKeyword>
+      )}
       <RateTime>
         <RateBox detail={true} rate={vote_average} />
         {episode_run_time && (
@@ -129,6 +147,12 @@ const TvDetail = ({ tvDetail }: PropsType) => {
   );
 };
 
+export const Keywords = styled.li`
+  display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
+`;
+
 export const RateTime = styled.div`
   display: flex;
   gap: 15px;
@@ -149,7 +173,7 @@ export const RateTime = styled.div`
 
 export const Category = styled(motion.ul)`
   display: flex;
-  gap: 15px;
+  gap: 20px;
   li {
     display: flex;
     align-items: center;
@@ -161,6 +185,7 @@ export const Category = styled(motion.ul)`
     cursor: pointer;
   }
   @media ${device.mobile} {
+    gap: 10px;
     li {
       font-size: 14px;
     }

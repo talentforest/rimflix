@@ -135,6 +135,17 @@ interface IVideo {
   name?: string;
 }
 
+export interface IKeywords {
+  id: number;
+  keywords: IKeyword[];
+  results: IKeyword[];
+}
+
+export interface IKeyword {
+  id: number;
+  name: string;
+}
+
 // Movie Lists Api
 export function getNowPlayingMovies() {
   return fetch(`${BASE_PATH}/movie/now_playing?api_key=${API_KEY}`).then(
@@ -183,6 +194,13 @@ export function getOnAirTvShows() {
   return fetch(`${BASE_PATH}/tv/on_the_air?api_key=${API_KEY}`).then(
     (response) => response.json()
   );
+}
+
+// Keyword
+export function getKeyword(category: string, movieId: number) {
+  return fetch(
+    `${BASE_PATH}/${category}/${movieId}/keywords?api_key=${API_KEY}`
+  ).then((response) => response.json());
 }
 
 // Trailer

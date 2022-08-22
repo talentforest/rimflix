@@ -1,24 +1,27 @@
 import {
   getCollection,
   getCrews,
+  getKeyword,
   getRecommendation,
   getSimilar,
   ICastCrew,
   ICollection,
   IDetail,
   IGetMovieTvResult,
+  IKeywords,
 } from "../../../api/api";
 import { useQuery } from "react-query";
 import { convertRunningTime } from "../../../utils/convertRunningTime";
 import { AccessTime } from "@mui/icons-material";
-import { Category, RateTime } from "./TvDetail";
-import { Info } from "../Detail";
+import { Category, Keywords, RateTime } from "./TvDetail";
+import { GenresKeyword, Info } from "../Detail";
 import { motion } from "framer-motion";
 import RateBox from "../../common/RateBox";
 import Collection from "./Collection";
 import useCategory from "../../../hook/useCategory";
 import SimilarRecommendationList from "./SimilarRecommendationList";
 import Cast from "./Cast";
+import InfoBox from "../../common/InfoBox";
 
 interface PropsType {
   movieDetail: IDetail;
@@ -52,6 +55,11 @@ const MovieDetail = ({ movieDetail }: PropsType) => {
     () => getCrews("movie", +movieDetail.id)
   );
 
+  const { data: keyword, isLoading: keywordLoading } = useQuery<IKeywords>(
+    ["keyword", "movie", movieDetail.id],
+    () => getKeyword("movie", +movieDetail.id)
+  );
+
   const {
     poster_path,
     overview,
@@ -62,6 +70,16 @@ const MovieDetail = ({ movieDetail }: PropsType) => {
 
   return (
     <>
+      {!keywordLoading && keyword.keywords?.length !== 0 && (
+        <GenresKeyword>
+          <h5>Keywords</h5>
+          <Keywords>
+            {keyword.keywords?.map((item) => (
+              <InfoBox info={item.name} />
+            ))}
+          </Keywords>
+        </GenresKeyword>
+      )}
       <RateTime>
         <RateBox detail={true} rate={vote_average} />
         {(runtime || runtime === 0) && (

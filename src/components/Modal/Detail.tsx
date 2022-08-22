@@ -68,16 +68,17 @@ const Detail = ({ detail }: PropsType) => {
         <AllDetail>
           <p>{tagline}</p>
           <h3>{title || name}</h3>
+          <FavoriteButton contentsId={id} />
           {genres?.length !== 0 && (
-            <Info>
+            <GenresKeyword>
+              <h5>Genres</h5>
               <Genres>
                 {genres?.map((item) => (
                   <InfoBox key={item.id} info={item.name} />
                 ))}
               </Genres>
-            </Info>
+            </GenresKeyword>
           )}
-          <FavoriteButton contentsId={id} />
           {(pathname.includes("movie") || pathname === "/") && (
             <MovieDetail movieDetail={detail} />
           )}
@@ -162,6 +163,8 @@ const AllDetail = styled.section`
 
 export const Info = styled.section<{ $column?: string }>`
   display: flex;
+  flex-wrap: wrap;
+  gap: 5px;
   flex-direction: ${(props) => (props.$column ? "column" : "row")};
   margin-bottom: ${(props) => (props.$column ? "25px" : "15px")};
   align-items: ${(props) => (props.$column ? "flex-start" : "center")};
@@ -193,6 +196,14 @@ export const Info = styled.section<{ $column?: string }>`
       height: auto;
       margin: 10px 0;
     }
+  }
+`;
+
+export const GenresKeyword = styled.section`
+  margin-bottom: 10px;
+  h5 {
+    font-size: 12px;
+    margin-bottom: 5px;
   }
 `;
 
