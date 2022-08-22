@@ -75,7 +75,7 @@ const MovieDetail = ({ movieDetail }: PropsType) => {
           <h5>Keywords</h5>
           <Keywords>
             {keyword.keywords?.map((item) => (
-              <InfoBox info={item.name} />
+              <InfoBox key={item.id} info={item.name} />
             ))}
           </Keywords>
         </GenresKeyword>
