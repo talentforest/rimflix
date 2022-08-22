@@ -4,23 +4,28 @@ import {
   getSimilar,
   IDetail,
   IGetMovieTvResult,
+  getTvSeasonCrews,
+  ICastCrew,
 } from "../../../api/api";
 import { useQuery } from "react-query";
 import { convertRunningTime } from "../../../utils/convertRunningTime";
 import { motion } from "framer-motion";
 import { Info } from "../Detail";
+import { useState } from "react";
 import RateBox from "../../common/RateBox";
 import Episodes from "./Episodes";
 import styled from "styled-components";
 import useCategory from "../../../hook/useCategory";
 import device from "../../../theme/mediaQueries";
 import SimilarRecommendationList from "./SimilarRecommendationList";
+import Cast from "./Cast";
 
 interface PropsType {
   tvDetail: IDetail;
 }
 
 const TvDetail = ({ tvDetail }: PropsType) => {
+  const [seasonNumber, setSeasonNumber] = useState(tvDetail.number_of_seasons);
   const { category, onCategoryClick, animate } = useCategory("seasons");
 
   const { data: recommendation, isLoading: recommendationLoading } =
@@ -35,6 +40,11 @@ const TvDetail = ({ tvDetail }: PropsType) => {
   const { data: similar, isLoading: similarLoading } =
     useQuery<IGetMovieTvResult>(["similar", "tv", tvDetail.id], () =>
       getSimilar("tv", +tvDetail.id)
+    );
+
+  const { data: seasonCrew, isLoading: seasonCrewLoading } =
+    useQuery<ICastCrew>(["episodes", tvDetail.id, seasonNumber], () =>
+      getTvSeasonCrews(+tvDetail.id, seasonNumber)
     );
 
   const {
@@ -67,6 +77,12 @@ const TvDetail = ({ tvDetail }: PropsType) => {
         <h5>Overview</h5>
         <p>{overview || "There is no information"}</p>
       </Info>
+      {!seasonCrewLoading && seasonCrew?.cast?.length !== 0 && (
+        <Info $column="column">
+          <h5>The Cast of the Series</h5>
+          <Cast cast={seasonCrew.cast} />
+        </Info>
+      )}
       {!recommendationLoading && !similarLoading && (
         <Info $column="column">
           <Category>
@@ -96,8 +112,9 @@ const TvDetail = ({ tvDetail }: PropsType) => {
           {category === "seasons" && number_of_seasons && (
             <Episodes
               seasons={seasons}
-              lastSeasonNumber={number_of_seasons}
               officialPoster={poster_path}
+              setSeasonNumber={setSeasonNumber}
+              seasonNumber={seasonNumber}
             />
           )}
           <SimilarRecommendationList
@@ -130,7 +147,7 @@ export const RateTime = styled.div`
   }
 `;
 
-export const Category = styled(motion.div)`
+export const Category = styled(motion.ul)`
   display: flex;
   gap: 15px;
   li {

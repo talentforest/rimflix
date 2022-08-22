@@ -13,12 +13,17 @@ import Loading from "../../common/Loading";
 
 interface PropsType {
   seasons: ISeason[];
-  lastSeasonNumber: number;
   officialPoster: string;
+  seasonNumber: number;
+  setSeasonNumber: (seasonNumber: number) => void;
 }
 
-const Episodes = ({ seasons, lastSeasonNumber, officialPoster }: PropsType) => {
-  const [seasonNumber, setSeasonNumber] = useState(lastSeasonNumber);
+const Episodes = ({
+  seasons,
+  officialPoster,
+  seasonNumber,
+  setSeasonNumber,
+}: PropsType) => {
   const [episodesCount, setEpisodesCount] = useState(10);
   const { id } = useParams();
 
@@ -70,7 +75,9 @@ const Episodes = ({ seasons, lastSeasonNumber, officialPoster }: PropsType) => {
         ) : (
           <>
             <span>{changeDateSeperator(seasonDetail?.air_date)}</span>
-            <span>This Tv Show is going to be aired.</span>
+            <span className="willBeAired">
+              This Tv Show is going to be aired.
+            </span>
           </>
         )}
         <p>{seasonDetail?.overview}</p>
@@ -145,6 +152,9 @@ const BasicInfo = styled.div`
     display: block;
     font-size: 14px;
     margin-bottom: 5px;
+    &.willBeAired {
+      color: #896a6a;
+    }
   }
   h5 {
     font-weight: 700;

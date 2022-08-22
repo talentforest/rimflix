@@ -160,7 +160,7 @@ const AllDetail = styled.section`
   }
 `;
 
-export const Info = styled.div<{ $column?: string }>`
+export const Info = styled.section<{ $column?: string }>`
   display: flex;
   flex-direction: ${(props) => (props.$column ? "column" : "row")};
   margin-bottom: ${(props) => (props.$column ? "25px" : "15px")};
@@ -168,6 +168,7 @@ export const Info = styled.div<{ $column?: string }>`
   > h5 {
     font-size: 16px;
     margin-right: 5px;
+    margin-bottom: 5px;
     color: #ffcccc;
     width: max-content;
   }
@@ -180,7 +181,7 @@ export const Info = styled.div<{ $column?: string }>`
     margin: 10px 0;
   }
   @media ${device.mobile} {
-    margin-bottom: 16px;
+    margin-bottom: 30px;
     > h5 {
       margin-bottom: 5px;
     }

@@ -9,13 +9,13 @@ import styled from "styled-components";
 
 const rowVariants = {
   hidden: (back: boolean) => ({
-    x: back ? -window.outerWidth + 300 : window.outerWidth - 300,
+    x: back ? -window.outerWidth + 50 : window.outerWidth - 50,
   }),
   visible: {
     x: 0,
   },
   exit: (back: boolean) => ({
-    x: back ? window.outerWidth - 300 : -window.outerWidth + 300,
+    x: back ? window.outerWidth - 50 : -window.outerWidth + 50,
   }),
 };
 

@@ -1,7 +1,9 @@
 import {
   getCollection,
+  getCrews,
   getRecommendation,
   getSimilar,
+  ICastCrew,
   ICollection,
   IDetail,
   IGetMovieTvResult,
@@ -16,13 +18,14 @@ import RateBox from "../../common/RateBox";
 import Collection from "./Collection";
 import useCategory from "../../../hook/useCategory";
 import SimilarRecommendationList from "./SimilarRecommendationList";
+import Cast from "./Cast";
 
 interface PropsType {
   movieDetail: IDetail;
 }
 
 const MovieDetail = ({ movieDetail }: PropsType) => {
-  const { category, onCategoryClick, animate } = useCategory("similar");
+  const { category, onCategoryClick, animate } = useCategory("collection");
 
   const { data: collection, isLoading: collectionIsLoading } =
     useQuery<ICollection>(
@@ -43,6 +46,11 @@ const MovieDetail = ({ movieDetail }: PropsType) => {
     useQuery<IGetMovieTvResult>(["similar", "movie", movieDetail.id], () =>
       getSimilar("movie", +movieDetail.id)
     );
+
+  const { data: crew, isLoading: crewLoading } = useQuery<ICastCrew>(
+    ["crew", movieDetail.id],
+    () => getCrews("movie", +movieDetail.id)
+  );
 
   const {
     poster_path,
@@ -73,21 +81,23 @@ const MovieDetail = ({ movieDetail }: PropsType) => {
         <h5>Overview</h5>
         <p>{overview || "There is no information"}</p>
       </Info>
-      {!collectionIsLoading && (
-        <>
-          {belongs_to_collection && (
-            <Info $column="column">
-              <Collection
-                collection={collection}
-                officailPoster={poster_path}
-              />
-            </Info>
-          )}
-        </>
+      {!crewLoading && (
+        <Info $column="column">
+          <h5>Cast</h5>
+          <Cast cast={crew?.cast} />
+        </Info>
       )}
-      {!recommendationLoading && !similarLoading && (
+      {!recommendationLoading && !similarLoading && !collectionIsLoading && (
         <Info $column="column">
           <Category>
+            {belongs_to_collection && (
+              <motion.li
+                onClick={() => onCategoryClick("collection")}
+                animate={animate("collection")}
+              >
+                <span>Collection</span>
+              </motion.li>
+            )}
             {!!similar?.results?.length && (
               <motion.li
                 onClick={() => onCategoryClick("similar")}
@@ -105,6 +115,9 @@ const MovieDetail = ({ movieDetail }: PropsType) => {
               </motion.li>
             )}
           </Category>
+          {category === "collection" && belongs_to_collection && (
+            <Collection parts={collection.parts} officailPoster={poster_path} />
+          )}
           <SimilarRecommendationList
             route="movie"
             category={category}

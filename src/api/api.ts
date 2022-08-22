@@ -12,7 +12,13 @@ export interface IGetMovieTvResult {
   total_results?: number;
 }
 
-interface ICrew {
+export interface ICastCrew {
+  id: number;
+  cast: IGuestStar[];
+  crew: ICrew[];
+}
+
+export interface ICrew {
   adult: boolean;
   credit_id: string;
   department: string;
@@ -26,7 +32,7 @@ interface ICrew {
   profile_path: string;
 }
 
-interface IGuestStar {
+export interface IGuestStar {
   adult: boolean;
   character: string;
   credit_id: string;
@@ -230,5 +236,17 @@ export function getRecommendation(category: string, contents_id: number) {
 export function getSimilar(category: string, contents_id: number) {
   return fetch(
     `${BASE_PATH}/${category}/${contents_id}/similar?api_key=${API_KEY}`
+  ).then((response) => response.json());
+}
+
+export function getCrews(category: string, contents_id: number) {
+  return fetch(
+    `${BASE_PATH}/${category}/${contents_id}/credits?api_key=${API_KEY}`
+  ).then((response) => response.json());
+}
+
+export function getTvSeasonCrews(tv_id: number, season_number: number) {
+  return fetch(
+    `${BASE_PATH}/tv/${tv_id}/season/${season_number}/credits?api_key=${API_KEY}`
   ).then((response) => response.json());
 }
