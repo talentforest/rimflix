@@ -162,7 +162,7 @@ export const Category = styled(motion.ul)`
   }
   @media ${device.mobile} {
     li {
-      font-size: 15px;
+      font-size: 14px;
     }
   }
 `;

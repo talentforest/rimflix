@@ -2,6 +2,7 @@ import styled from "styled-components";
 import { useQuery } from "react-query";
 import {
   getNowPlayingMovies,
+  getPopularMovies,
   getTopRatedMovie,
   getUpcomingMovie,
   IGetMovieTvResult,
@@ -12,26 +13,33 @@ import RowSlider from "../components/RowSlider";
 const Home = () => {
   const { data: nowPlaying, isLoading: nowPlayingLoading } =
     useQuery<IGetMovieTvResult>(["movies", "nowPlaying"], getNowPlayingMovies);
+
   const { data: topRatedMovie, isLoading: topRatedMovieLoading } =
-    useQuery<IGetMovieTvResult>(["movies", "topRatedMovie"], getTopRatedMovie);
+    useQuery<IGetMovieTvResult>(["movies", "topRated"], getTopRatedMovie);
+
   const { data: upcomingMovie, isLoading: upcomingMovieLoading } =
-    useQuery<IGetMovieTvResult>(["movies", "upcomingMovie"], getUpcomingMovie);
+    useQuery<IGetMovieTvResult>(["movies", "upcoming"], getUpcomingMovie);
+
+  const { data: popularMovie, isLoading: popularMovieLoading } =
+    useQuery<IGetMovieTvResult>(["movies", "popular"], getPopularMovies);
 
   const bannerData = nowPlaying?.results[0];
   const exceptBannerData = nowPlaying?.results?.slice(1);
-  const topRatedData = topRatedMovie?.results;
-  const upcomingData = upcomingMovie?.results;
 
   return (
     <Wrapper>
-      {nowPlayingLoading && topRatedMovieLoading && upcomingMovieLoading ? (
+      {nowPlayingLoading &&
+      topRatedMovieLoading &&
+      upcomingMovieLoading &&
+      popularMovieLoading ? (
         <Loader>Loading...</Loader>
       ) : (
         <>
           <Banner data={bannerData} />
           <RowSlider title={"Now Playing"} data={exceptBannerData} />
-          <RowSlider title={"Top Rated Movies"} data={topRatedData} />
-          <RowSlider title={"Upcoming Movies"} data={upcomingData} />
+          <RowSlider title={"Popular Now"} data={popularMovie?.results} />
+          <RowSlider title={"Top Rated Movies"} data={topRatedMovie?.results} />
+          <RowSlider title={"Upcoming Movies"} data={upcomingMovie?.results} />
         </>
       )}
     </Wrapper>
