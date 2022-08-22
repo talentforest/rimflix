@@ -10,6 +10,7 @@ import { checkScheduledAir } from "../../../utils/checkScheduledAir";
 import RateBox from "../../common/RateBox";
 import styled from "styled-components";
 import Loading from "../../common/Loading";
+import device from "../../../theme/mediaQueries";
 
 interface PropsType {
   seasons: ISeason[];
@@ -161,6 +162,7 @@ const BasicInfo = styled.div`
     margin-bottom: 5px;
   }
 `;
+
 const EpisodeList = styled.ul`
   display: flex;
   display: -webkit-flex;
@@ -195,7 +197,7 @@ const Episode = styled.li`
     display: flex;
     gap: 10px;
     align-items: center;
-    margin-bottom: 5px;
+    margin-bottom: 10px;
     span {
       display: flex;
       align-items: center;
@@ -208,6 +210,13 @@ const Episode = styled.li`
   }
   p {
     word-break: break-all;
+  }
+  @media ${device.mobile} {
+    > div {
+      flex-direction: column;
+      align-items: flex-start;
+      gap: 5px;
+    }
   }
 `;
 

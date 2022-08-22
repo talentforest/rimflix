@@ -49,28 +49,28 @@ const Empty = styled.div`
 `;
 
 const Container = styled.div`
-  margin-top: 100px;
-  padding: 10px 80px;
-  width: 100%;
-  min-height: 100vh;
+  padding: 100px 40px;
+  min-height: 85vh;
   > section {
-    width: 100%;
     display: grid;
-    grid-template-columns: repeat(auto-fill, minmax(250px, 1fr));
-    justify-items: center;
-    gap: 0 20px;
+    grid-template-columns: repeat(auto-fill, minmax(140px, auto));
+    gap: 15px;
+    justify-content: center;
+    margin: 0 auto;
   }
   h1 {
     font-size: 24px;
+    font-weight: 700;
     margin-bottom: 20px;
     &:nth-child(3) {
       margin-top: 50px;
     }
   }
   @media ${device.tablet} {
-    padding: 10px 50px;
+    padding: 80px 40px;
     > section {
-      grid-template-columns: repeat(auto-fill, minmax(150px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(120px, auto));
+      gap: 10px;
     }
     h1 {
       font-size: 18px;
@@ -78,10 +78,9 @@ const Container = styled.div`
     }
   }
   @media ${device.mobile} {
-    padding: 10px 20px 20px;
-    margin-top: 50px;
+    padding: 50px 20px;
     > section {
-      grid-template-columns: repeat(auto-fill, minmax(120px, 1fr));
+      grid-template-columns: repeat(auto-fill, minmax(100px, auto));
     }
   }
 `;

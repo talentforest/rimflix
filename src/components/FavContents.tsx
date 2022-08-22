@@ -50,16 +50,16 @@ const FavContents = ({ favMovieId, favTvId }: PropsType) => {
 
 const Box = styled.div`
   position: relative;
-  width: 250px;
-  height: 180px;
-  margin-bottom: 30px;
+  width: 140px;
+  height: 200px;
+  margin: 0 auto 30px;
   @media ${device.tablet} {
-    width: 160px;
-    height: 250px;
-  }
-  @media ${device.mobile} {
     width: 120px;
     height: 180px;
+  }
+  @media ${device.mobile} {
+    width: 100px;
+    height: 140px;
   }
 `;
 
