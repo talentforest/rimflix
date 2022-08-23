@@ -3,7 +3,7 @@ import { useNavigate } from "react-router-dom";
 import { IDetail } from "../../../api/api";
 import { changeDateSeperator } from "../../../utils/changeDateSeperator";
 import { makeImagePath } from "../../../utils/makeImagePath";
-import { Contents, OtherContents } from "./TvDetail";
+import { Contents, OtherContents } from "../TvDetail";
 import RateBox from "../../common/RateBox";
 import styled from "styled-components";
 

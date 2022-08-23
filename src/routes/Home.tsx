@@ -1,4 +1,3 @@
-import styled from "styled-components";
 import { useQuery } from "react-query";
 import {
   getNowPlayingMovies,
@@ -9,6 +8,7 @@ import {
 } from "../api/api";
 import Banner from "../components/Banner";
 import RowSlider from "../components/RowSlider";
+import styled from "styled-components";
 
 const Home = () => {
   const { data: nowPlaying, isLoading: nowPlayingLoading } =
