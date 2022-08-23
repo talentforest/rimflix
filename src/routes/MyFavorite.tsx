@@ -48,7 +48,7 @@ const Empty = styled.div`
   background-color: #202020;
 `;
 
-const Container = styled.div`
+const Container = styled.main`
   padding: 100px 40px;
   min-height: 85vh;
   > section {

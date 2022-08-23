@@ -46,7 +46,7 @@ const Home = () => {
   );
 };
 
-const Wrapper = styled.div`
+const Wrapper = styled.main`
   overflow-x: hidden;
 `;
 

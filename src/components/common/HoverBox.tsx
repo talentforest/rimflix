@@ -98,7 +98,7 @@ const HoverBox = ({
         alt={`${title || name} poster`}
       />
       <Info variants={infoVariants}>
-        <h4>{title || name}</h4>
+        <h1>{title || name}</h1>
         <Genres>
           {genres?.map((item) => (
             <InfoBox key={item.id} info={item.name} />
@@ -161,7 +161,7 @@ const Info = styled(motion.div)`
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   font-size: 16px;
-  > h4 {
+  > h1 {
     width: 100%;
     text-align: center;
     font-weight: 600;

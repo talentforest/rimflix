@@ -37,7 +37,7 @@ function Header() {
   return (
     <Nav variants={navBoxVariants} animate={navBoxAnimation} initial={"top"}>
       <Col>
-        <Link to="/">
+        <Link to="/" aria-label="Rimflix">
           <LogoBox />
         </Link>
         <Items>
@@ -84,12 +84,12 @@ const Col = styled.div`
   align-items: center;
 `;
 
-const Items = styled.ul`
+const Items = styled.div`
   display: flex;
   align-items: center;
 `;
 
-const Item = styled.li`
+const Item = styled.div`
   margin-right: 20px;
   color: ${(props) => props.theme.white.darker};
   transition: color 0.3s ease-in-out;

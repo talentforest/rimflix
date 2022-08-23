@@ -81,7 +81,7 @@ const Loader = styled.div`
   align-items: center;
 `;
 
-const Container = styled.div`
+const Container = styled.main`
   margin-top: 100px;
   padding: 0 30px;
   width: 100%;

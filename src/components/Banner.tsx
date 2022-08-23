@@ -32,7 +32,7 @@ const Banner = ({ data }: PropsType) => {
         />
       </Picture>
       <BannerInfo>
-        {<h3>{data.title || data.name}</h3>}
+        <h1>{data.title || data.name}</h1>
         <p>{data.overview}</p>
         <ButtonsContainer>
           <Link
@@ -60,7 +60,7 @@ const Banner = ({ data }: PropsType) => {
   );
 };
 
-const BannerContainer = styled.div`
+const BannerContainer = styled.section`
   height: 70vh;
   position: relative;
   display: flex;
@@ -94,7 +94,7 @@ const BannerInfo = styled.div`
   position: absolute;
   bottom: 50px;
   padding: 0 10px;
-  h3 {
+  h1 {
     font-size: 40px;
     font-weight: 700;
     margin-bottom: 10px;
@@ -112,7 +112,7 @@ const BannerInfo = styled.div`
     width: 100%;
     bottom: 100px;
     margin: 0;
-    h3 {
+    h1 {
       text-align: center;
       font-size: 45px;
       width: 100%;
@@ -125,7 +125,7 @@ const BannerInfo = styled.div`
   @media ${device.mobile} {
     font-size: 28px;
     bottom: 50px;
-    h3 {
+    h1 {
       font-size: 28px;
     }
   }
