@@ -28,7 +28,7 @@ const Collection = ({ parts, officailPoster }: PropsType) => {
         <li key={item.id} onClick={() => handleNavigateClick(item.id)}>
           <img
             src={makeImagePath(item.poster_path || officailPoster)}
-            alt="collection poster"
+            alt={`${item.title} collection poster`}
           />
           <div>
             <h6 key={item.id}>{item.original_title}</h6>

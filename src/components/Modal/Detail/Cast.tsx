@@ -13,7 +13,10 @@ const Cast = ({ cast }: PropsType) => {
       {cast?.slice(0, 10)?.map((item) => (
         <Actor key={item.id}>
           {item.profile_path ? (
-            <img src={makeImagePath(item.profile_path)} alt="actor profile" />
+            <img
+              src={makeImagePath(item.profile_path)}
+              alt={`${item.name} profile`}
+            />
           ) : (
             <Person />
           )}
@@ -59,7 +62,7 @@ export const Actor = styled.li`
   }
   span {
     display: block;
-    font-size: 12px;
+    font-size: 13px;
   }
 `;
 

@@ -28,6 +28,7 @@ interface PropsType {
 }
 
 const TvDetail = ({ tvDetail }: PropsType) => {
+  const [showAllKeywords, setShowAllKeywords] = useState(false);
   const [seasonNumber, setSeasonNumber] = useState(tvDetail.number_of_seasons);
   const { category, onCategoryClick, animate } = useCategory("seasons");
 
@@ -55,6 +56,10 @@ const TvDetail = ({ tvDetail }: PropsType) => {
     () => getKeyword("tv", +tvDetail.id)
   );
 
+  const handleKeywordNumberClick = () => {
+    setShowAllKeywords((prev) => !prev);
+  };
+
   const {
     poster_path,
     overview,
@@ -70,9 +75,16 @@ const TvDetail = ({ tvDetail }: PropsType) => {
         <GenresKeyword>
           <h5>Keywords</h5>
           <Keywords>
-            {keyword.results?.map((item) => (
-              <InfoBox key={item.id} info={item.name} />
-            ))}
+            {keyword.results
+              ?.slice(0, showAllKeywords ? keyword.results?.length : 5)
+              ?.map((item) => (
+                <InfoBox key={item.id} info={item.name} />
+              ))}
+            {keyword.results?.length > 5 && (
+              <button onClick={handleKeywordNumberClick}>
+                {showAllKeywords ? "Fold Keywords" : "See More Keywords"}
+              </button>
+            )}
           </Keywords>
         </GenresKeyword>
       )}
@@ -147,7 +159,7 @@ const TvDetail = ({ tvDetail }: PropsType) => {
   );
 };
 
-export const Keywords = styled.li`
+export const Keywords = styled.ul`
   display: flex;
   flex-wrap: wrap;
   gap: 5px;
@@ -156,7 +168,7 @@ export const Keywords = styled.li`
 export const RateTime = styled.div`
   display: flex;
   gap: 15px;
-  margin-bottom: 15px;
+  margin: 10px 0 15px;
   > div:last-child {
     display: flex;
     align-items: center;
@@ -179,13 +191,11 @@ export const Category = styled(motion.ul)`
     align-items: center;
     font-size: 16px;
     font-weight: 700;
-    margin-bottom: 5px;
     height: 30px;
     color: #888;
     cursor: pointer;
   }
   @media ${device.mobile} {
-    gap: 10px;
     li {
       font-size: 14px;
     }

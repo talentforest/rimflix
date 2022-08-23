@@ -26,7 +26,10 @@ const Banner = ({ data }: PropsType) => {
           srcSet={makeImagePath(data.backdrop_path)}
           media="(min-width: 700px)"
         />
-        <img src={makeImagePath(data.poster_path)} alt="movie poster" />
+        <img
+          src={makeImagePath(data.poster_path)}
+          alt={`${data.title || data.name}poster`}
+        />
       </Picture>
       <BannerInfo>
         {<h3>{data.title || data.name}</h3>}
@@ -90,6 +93,7 @@ const BannerInfo = styled.div`
   margin-left: 40px;
   position: absolute;
   bottom: 50px;
+  padding: 0 10px;
   h3 {
     font-size: 40px;
     font-weight: 700;

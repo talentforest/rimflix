@@ -57,7 +57,7 @@ const VideoPlayer = ({ videoId, backdropPath, posterPath }: PropsType) => {
                     movieResults[movieResults.length - 1]?.key
                   }`
             }
-            playing={false}
+            playing={true}
             muted={volume ? true : false}
             controls={false}
             loop={false}
@@ -84,6 +84,7 @@ const VideoPlayer = ({ videoId, backdropPath, posterPath }: PropsType) => {
             <BackdropImg
               src={makeImagePath(backdropPath || posterPath)}
               alt="backdrop"
+              loading="lazy"
             />
           )}
         </>

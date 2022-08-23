@@ -201,9 +201,21 @@ export const Info = styled.section<{ $column?: string }>`
 
 export const GenresKeyword = styled.section`
   margin-bottom: 10px;
+  display: flex;
+  flex-direction: column;
   h5 {
     font-size: 12px;
     margin-bottom: 5px;
+  }
+  button {
+    font-size: 12px;
+    border: none;
+    background-color: transparent;
+    color: #ffcccc;
+    width: fit-content;
+
+    padding: 5px;
+    cursor: pointer;
   }
 `;
 

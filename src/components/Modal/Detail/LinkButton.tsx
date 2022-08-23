@@ -15,7 +15,8 @@ const LinkButton = ({ homepage, contents }: PropsType) => {
 
 const OfficialPage = styled.a`
   padding: 10px 0;
-  align-self: end;
+  align-self: flex-end;
+  -webkit-align-self: flex-end;
   text-decoration: underline;
   font-size: 14px;
   cursor: pointer;

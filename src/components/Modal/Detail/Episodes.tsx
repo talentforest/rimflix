@@ -94,7 +94,7 @@ const Episodes = ({
                 {episode.still_path ? (
                   <StillImg
                     src={makeImagePath(episode.still_path)}
-                    alt="still"
+                    alt={`${episode.name} ${episode.episode_number} still`}
                     loading="lazy"
                   />
                 ) : (
@@ -102,7 +102,7 @@ const Episodes = ({
                     src={makeImagePath(
                       seasonDetail?.poster_path || officialPoster
                     )}
-                    alt="still"
+                    alt={`${episode.name} ${episode.episode_number} still`}
                     loading="lazy"
                   />
                 )}
@@ -119,7 +119,7 @@ const Episodes = ({
               </Episode>
             ))}
             {viewLoadButton && (
-              <button onClick={handleLoadMoreClick}>Load More</button>
+              <button onClick={handleLoadMoreClick}>Load More Episodes</button>
             )}
           </EpisodeList>
         )
@@ -131,6 +131,7 @@ const Episodes = ({
 const Select = styled.select`
   margin-top: 5px;
   height: 30px;
+  font-size: 16px;
   &:focus {
     outline: none;
   }

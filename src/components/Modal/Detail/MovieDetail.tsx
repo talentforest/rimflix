@@ -10,25 +10,29 @@ import {
   IGetMovieTvResult,
   IKeywords,
 } from "../../../api/api";
+import { useState } from "react";
 import { useQuery } from "react-query";
 import { convertRunningTime } from "../../../utils/convertRunningTime";
 import { AccessTime } from "@mui/icons-material";
 import { Category, Keywords, RateTime } from "./TvDetail";
 import { GenresKeyword, Info } from "../Detail";
 import { motion } from "framer-motion";
-import RateBox from "../../common/RateBox";
 import Collection from "./Collection";
 import useCategory from "../../../hook/useCategory";
 import SimilarRecommendationList from "./SimilarRecommendationList";
 import Cast from "./Cast";
 import InfoBox from "../../common/InfoBox";
+import RateBox from "../../common/RateBox";
 
 interface PropsType {
   movieDetail: IDetail;
 }
 
 const MovieDetail = ({ movieDetail }: PropsType) => {
-  const { category, onCategoryClick, animate } = useCategory("collection");
+  const [showAllKeywords, setShowAllKeywords] = useState(false);
+  const { category, onCategoryClick, animate } = useCategory(
+    movieDetail?.belongs_to_collection ? "collection" : "similar"
+  );
 
   const { data: collection, isLoading: collectionIsLoading } =
     useQuery<ICollection>(
@@ -60,6 +64,9 @@ const MovieDetail = ({ movieDetail }: PropsType) => {
     () => getKeyword("movie", +movieDetail.id)
   );
 
+  const handleKeywordNumberClick = () => {
+    setShowAllKeywords((prev) => !prev);
+  };
   const {
     poster_path,
     overview,
@@ -74,23 +81,28 @@ const MovieDetail = ({ movieDetail }: PropsType) => {
         <GenresKeyword>
           <h5>Keywords</h5>
           <Keywords>
-            {keyword.keywords?.map((item) => (
-              <InfoBox key={item.id} info={item.name} />
-            ))}
+            {keyword.keywords
+              ?.slice(0, showAllKeywords ? keyword.keywords?.length : 5)
+              ?.map((item) => (
+                <InfoBox key={item.id} info={item.name} />
+              ))}
+            {keyword.keywords?.length > 5 && (
+              <button onClick={handleKeywordNumberClick}>
+                {showAllKeywords ? "Fold Keywords" : "See More Keywords"}
+              </button>
+            )}
           </Keywords>
         </GenresKeyword>
       )}
       <RateTime>
-        <RateBox detail={true} rate={vote_average} />
         {(runtime || runtime === 0) && (
           <>
-            {runtime ? (
+            <RateBox detail={true} rate={vote_average} />
+            {!!runtime && (
               <div>
                 <AccessTime />
                 <span>{`${convertRunningTime(runtime)}`}</span>
               </div>
-            ) : (
-              <span>There is no informationsss</span>
             )}
           </>
         )}
@@ -102,7 +114,11 @@ const MovieDetail = ({ movieDetail }: PropsType) => {
       {!crewLoading && (
         <Info $column="column">
           <h5>Cast</h5>
-          <Cast cast={crew?.cast} />
+          {crew?.cast?.length !== 0 ? (
+            <Cast cast={crew?.cast} />
+          ) : (
+            "There is no information"
+          )}
         </Info>
       )}
       {!recommendationLoading && !similarLoading && !collectionIsLoading && (

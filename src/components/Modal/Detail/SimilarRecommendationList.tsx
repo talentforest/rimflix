@@ -72,6 +72,7 @@ const SimilarRecommendationList = ({
                   <img
                     src={makeImagePath(item.poster_path)}
                     alt={`${item.name || item.title} poster`}
+                    loading="lazy"
                   />
                   <ContentsInfo variants={infoVariants}>
                     <h5>{item.name || item.title}</h5>
@@ -105,6 +106,7 @@ const SimilarRecommendationList = ({
                   <img
                     src={makeImagePath(item.poster_path)}
                     alt={`${item.name || item.title} poster`}
+                    loading="lazy"
                   />
                   <ContentsInfo variants={infoVariants}>
                     <h5>{item.name || item.title}</h5>

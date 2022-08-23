@@ -14,9 +14,8 @@ const Foot = styled.footer`
   background-color: ${(props) => props.theme.black.darker};
   color: ${(props) => props.theme.white.darker};
   font-size: 10px;
-  padding: 30px 45px 0px;
-  height: 10vh;
-  margin-top: 80px;
+  padding: 20px 45px;
+  margin-top: 50px;
   span {
     display: block;
     margin-top: 10px;

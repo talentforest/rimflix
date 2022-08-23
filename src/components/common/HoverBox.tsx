@@ -93,7 +93,10 @@ const HoverBox = ({
       initial="normal"
       $height={pathname.includes("search") ? true : false}
     >
-      <Image src={makeImagePath(poster_path || backdrop_path)} alt="poster" />
+      <Image
+        src={makeImagePath(poster_path || backdrop_path)}
+        alt={`${title || name} poster`}
+      />
       <Info variants={infoVariants}>
         <h4>{title || name}</h4>
         <Genres>

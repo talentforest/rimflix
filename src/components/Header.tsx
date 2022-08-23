@@ -26,7 +26,7 @@ function Header() {
 
   useEffect(() => {
     scrollY.onChange(() => {
-      if (scrollY.get() > 80) {
+      if (scrollY.get() > 50) {
         navBoxAnimation.start("scroll");
       } else {
         navBoxAnimation.start("top");
