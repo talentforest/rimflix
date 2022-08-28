@@ -1,6 +1,6 @@
 import { Link, useLocation } from "react-router-dom";
 import { IDetail } from "../api/api";
-import { makeImagePath } from "../utils/makeImagePath";
+import { sizeImagePath } from "../utils/sizeImagePath";
 import { useState } from "react";
 import VideoPlayer from "./common/VideoPlayer";
 import device from "../theme/mediaQueries";
@@ -23,11 +23,11 @@ const Banner = ({ data }: PropsType) => {
     <BannerContainer>
       <Picture>
         <source
-          srcSet={makeImagePath(data.backdrop_path)}
+          srcSet={sizeImagePath("original", data.backdrop_path)}
           media="(min-width: 700px)"
         />
         <img
-          src={makeImagePath(data.poster_path)}
+          src={sizeImagePath("original", data.poster_path)}
           alt={`${data.title || data.name}poster`}
         />
       </Picture>

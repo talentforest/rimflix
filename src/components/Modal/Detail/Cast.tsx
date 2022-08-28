@@ -1,5 +1,5 @@
 import { IGuestStar } from "../../../api/api";
-import { makeImagePath } from "../../../utils/makeImagePath";
+import { sizeImagePath } from "../../../utils/sizeImagePath";
 import styled from "styled-components";
 import { Person } from "@mui/icons-material";
 
@@ -14,7 +14,7 @@ const Cast = ({ cast }: PropsType) => {
         <Actor key={item.id}>
           {item.profile_path ? (
             <img
-              src={makeImagePath(item.profile_path)}
+              src={sizeImagePath("w185", item.profile_path)}
               alt={`${item.name} profile`}
             />
           ) : (

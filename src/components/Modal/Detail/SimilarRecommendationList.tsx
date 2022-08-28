@@ -2,7 +2,7 @@ import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
 import { IDetail } from "../../../api/api";
 import { changeDateSeperator } from "../../../utils/changeDateSeperator";
-import { makeImagePath } from "../../../utils/makeImagePath";
+import { sizeImagePath } from "../../../utils/sizeImagePath";
 import { Contents, OtherContents } from "../TvDetail";
 import RateBox from "../../common/RateBox";
 import styled from "styled-components";
@@ -70,7 +70,7 @@ const SimilarRecommendationList = ({
                   transition={{ type: "tween" }}
                 >
                   <img
-                    src={makeImagePath(item.poster_path)}
+                    src={sizeImagePath("w342", item.poster_path)}
                     alt={`${item.name || item.title} poster`}
                     loading="lazy"
                   />
@@ -104,7 +104,7 @@ const SimilarRecommendationList = ({
                   transition={{ type: "tween" }}
                 >
                   <img
-                    src={makeImagePath(item.poster_path)}
+                    src={sizeImagePath("w342", item.poster_path)}
                     alt={`${item.name || item.title} poster`}
                     loading="lazy"
                   />

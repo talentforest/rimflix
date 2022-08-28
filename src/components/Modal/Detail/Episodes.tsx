@@ -1,6 +1,6 @@
 import { useState } from "react";
 import { getSeasonDetail, ISeason, ISeasonDetail } from "../../../api/api";
-import { makeImagePath } from "../../../utils/makeImagePath";
+import { sizeImagePath } from "../../../utils/sizeImagePath";
 import { useParams } from "react-router-dom";
 import { useQuery } from "react-query";
 import { convertRunningTime } from "../../../utils/convertRunningTime";
@@ -66,7 +66,10 @@ const Episodes = ({
       </Select>
       <BasicInfo>
         <img
-          src={makeImagePath(seasonDetail?.poster_path || officialPoster)}
+          src={sizeImagePath(
+            "w342",
+            seasonDetail?.poster_path || officialPoster
+          )}
           alt={`${seasonDetail?.name} poster`}
           loading="lazy"
         />
@@ -93,13 +96,14 @@ const Episodes = ({
                 <h6>{episode.name}</h6>
                 {episode.still_path ? (
                   <StillImg
-                    src={makeImagePath(episode.still_path)}
+                    src={sizeImagePath("w185", episode.still_path)}
                     alt={`${episode.name} ${episode.episode_number} still`}
                     loading="lazy"
                   />
                 ) : (
                   <AlternateImg
-                    src={makeImagePath(
+                    src={sizeImagePath(
+                      "w342",
                       seasonDetail?.poster_path || officialPoster
                     )}
                     alt={`${episode.name} ${episode.episode_number} still`}

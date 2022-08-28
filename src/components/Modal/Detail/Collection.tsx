@@ -1,5 +1,5 @@
 import { IDetail } from "../../../api/api";
-import { makeImagePath } from "../../../utils/makeImagePath";
+import { sizeImagePath } from "../../../utils/sizeImagePath";
 import { changeDateSeperator } from "../../../utils/changeDateSeperator";
 import { useLocation, useNavigate } from "react-router-dom";
 import RateBox from "../../common/RateBox";
@@ -27,7 +27,7 @@ const Collection = ({ parts, officailPoster }: PropsType) => {
       {parts.map((item) => (
         <li key={item.id} onClick={() => handleNavigateClick(item.id)}>
           <img
-            src={makeImagePath(item.poster_path || officailPoster)}
+            src={sizeImagePath("w342", item.poster_path || officailPoster)}
             alt={`${item.title} collection poster`}
           />
           <div>

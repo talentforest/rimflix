@@ -3,7 +3,7 @@ import { useState } from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import { getTrailer, IGetVideo } from "../../api/api";
-import { makeImagePath } from "../../utils/makeImagePath";
+import { sizeImagePath } from "../../utils/sizeImagePath";
 import ReactPlayer from "react-player/lazy";
 import styled from "styled-components";
 
@@ -82,7 +82,7 @@ const VideoPlayer = ({ videoId, backdropPath, posterPath }: PropsType) => {
           <Overlay />
           {(backdropPath || posterPath) && (
             <BackdropImg
-              src={makeImagePath(backdropPath || posterPath)}
+              src={sizeImagePath("original", backdropPath || posterPath)}
               alt="backdrop"
               loading="lazy"
             />
