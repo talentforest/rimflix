@@ -40,16 +40,7 @@ const Detail = ({ detail }: PropsType) => {
     }
   };
 
-  const {
-    id,
-    backdrop_path,
-    poster_path,
-    tagline,
-    name,
-    title,
-    genres,
-    homepage,
-  } = detail;
+  const { id, backdrop_path, tagline, name, title, genres, homepage } = detail;
 
   return (
     <>
@@ -59,11 +50,7 @@ const Detail = ({ detail }: PropsType) => {
         layoutId={`${detail?.id}${uuidv4}`}
       >
         <VideoContainer>
-          <VideoPlayer
-            videoId={id}
-            backdropPath={backdrop_path}
-            posterPath={poster_path}
-          />
+          <VideoPlayer videoId={id} backdropPath={backdrop_path} />
         </VideoContainer>
         <AllDetail>
           <p>{tagline}</p>

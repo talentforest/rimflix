@@ -1,19 +1,18 @@
-import { VolumeOff, VolumeUp } from "@mui/icons-material";
+import { MovieCreation, VolumeOff, VolumeUp } from "@mui/icons-material";
 import { useState } from "react";
 import { useQuery } from "react-query";
 import { useLocation } from "react-router-dom";
 import { getTrailer, IGetVideo } from "../../api/api";
-import { sizeImagePath } from "../../utils/sizeImagePath";
+import { backdropSizes, sizeImagePath } from "../../utils/sizeImagePath";
 import ReactPlayer from "react-player/lazy";
 import styled from "styled-components";
 
 interface PropsType {
   videoId: number;
   backdropPath?: string;
-  posterPath?: string;
 }
 
-const VideoPlayer = ({ videoId, backdropPath, posterPath }: PropsType) => {
+const VideoPlayer = ({ videoId, backdropPath }: PropsType) => {
   const [volume, setVolume] = useState(true);
   const { pathname } = useLocation();
 
@@ -80,12 +79,14 @@ const VideoPlayer = ({ videoId, backdropPath, posterPath }: PropsType) => {
       ) : (
         <>
           <Overlay />
-          {(backdropPath || posterPath) && (
+          {backdropPath ? (
             <BackdropImg
-              src={sizeImagePath("original", backdropPath || posterPath)}
+              src={sizeImagePath(backdropSizes.original, backdropPath)}
               alt="backdrop"
               loading="lazy"
             />
+          ) : (
+            <MovieCreation />
           )}
         </>
       )}

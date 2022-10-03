@@ -1,6 +1,10 @@
 import { Link, useLocation } from "react-router-dom";
 import { IDetail } from "../api/api";
-import { sizeImagePath } from "../utils/sizeImagePath";
+import {
+  backdropSizes,
+  posterSizes,
+  sizeImagePath,
+} from "../utils/sizeImagePath";
 import ButtonBox from "./common/ButtonBox";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
@@ -17,11 +21,11 @@ const Banner = ({ data }: PropsType) => {
     <BannerContainer>
       <Poster>
         <source
-          srcSet={sizeImagePath("original", backdrop_path)}
+          srcSet={sizeImagePath(backdropSizes.original, backdrop_path)}
           media="(min-width: 700px)"
         />
         <img
-          src={sizeImagePath("original", poster_path)}
+          src={sizeImagePath(posterSizes.w780, poster_path)}
           alt={`${title || name}poster`}
         />
       </Poster>
@@ -30,7 +34,7 @@ const Banner = ({ data }: PropsType) => {
         <p>{overview}</p>
         <ButtonsContainer>
           <Link to={pathname === "/tv" ? `/tv/${id}` : `/movie/${id}`}>
-            <ButtonBox buttonName="More Info" infoIcon={true} />
+            <ButtonBox buttonName="More Info" />
           </Link>
         </ButtonsContainer>
       </PosterInfo>

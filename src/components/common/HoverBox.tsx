@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import { useLocation, useNavigate } from "react-router-dom";
-import { sizeImagePath } from "../../utils/sizeImagePath";
+import { posterSizes, sizeImagePath } from "../../utils/sizeImagePath";
 import { IDetail, IGenres } from "../../api/api";
 import { changeDateSeperator } from "../../utils/changeDateSeperator";
 import { useRecoilValue } from "recoil";
@@ -67,7 +67,6 @@ const HoverBox = ({
     id,
     name,
     poster_path,
-    backdrop_path,
     first_air_date,
     release_date,
     vote_average,
@@ -94,7 +93,7 @@ const HoverBox = ({
       $height={pathname.includes("search") ? true : false}
     >
       <Image
-        src={sizeImagePath("w342", poster_path || backdrop_path)}
+        src={sizeImagePath(posterSizes.w342, poster_path)}
         alt={`${title || name} poster`}
       />
       <Info variants={infoVariants}>

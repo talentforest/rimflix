@@ -68,11 +68,10 @@ const MovieDetail = ({ movieDetail }: PropsType) => {
     setShowAllKeywords((prev) => !prev);
   };
   const {
-    poster_path,
     overview,
     runtime,
     belongs_to_collection,
-    vote_average,
+    vote_average, //
   } = movieDetail;
 
   return (
@@ -150,7 +149,7 @@ const MovieDetail = ({ movieDetail }: PropsType) => {
             )}
           </Category>
           {category === "collection" && belongs_to_collection && (
-            <Collection parts={collection.parts} officailPoster={poster_path} />
+            <Collection parts={collection.parts} />
           )}
           <SimilarRecommendationList
             route="movie"

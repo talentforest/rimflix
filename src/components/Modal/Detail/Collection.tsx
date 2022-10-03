@@ -1,16 +1,16 @@
 import { IDetail } from "../../../api/api";
-import { sizeImagePath } from "../../../utils/sizeImagePath";
+import { posterSizes, sizeImagePath } from "../../../utils/sizeImagePath";
 import { changeDateSeperator } from "../../../utils/changeDateSeperator";
 import { useLocation, useNavigate } from "react-router-dom";
 import RateBox from "../../common/RateBox";
 import styled from "styled-components";
+import { MovieCreation } from "@mui/icons-material";
 
 interface PropsType {
   parts: IDetail[];
-  officailPoster: string;
 }
 
-const Collection = ({ parts, officailPoster }: PropsType) => {
+const Collection = ({ parts }: PropsType) => {
   const { pathname } = useLocation();
   const navigate = useNavigate();
 
@@ -26,10 +26,14 @@ const Collection = ({ parts, officailPoster }: PropsType) => {
     <CollectionList>
       {parts.map((item) => (
         <li key={item.id} onClick={() => handleNavigateClick(item.id)}>
-          <img
-            src={sizeImagePath("w342", item.poster_path || officailPoster)}
-            alt={`${item.title} collection poster`}
-          />
+          {item.poster_path ? (
+            <img
+              src={sizeImagePath(posterSizes.w342, item.poster_path)}
+              alt={`${item.title} collection poster`}
+            />
+          ) : (
+            <MovieCreation />
+          )}
           <div>
             <h6 key={item.id}>{item.original_title}</h6>
             <span>{changeDateSeperator(item.release_date)}</span>
