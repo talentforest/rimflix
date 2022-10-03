@@ -1,62 +1,40 @@
 import { Link, useLocation } from "react-router-dom";
 import { IDetail } from "../api/api";
 import { sizeImagePath } from "../utils/sizeImagePath";
-import { useState } from "react";
-import VideoPlayer from "./common/VideoPlayer";
+import ButtonBox from "./common/ButtonBox";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
-import ButtonBox from "./common/ButtonBox";
 
 interface PropsType {
   data: IDetail;
 }
 
 const Banner = ({ data }: PropsType) => {
-  const [videoClick, setVideoClick] = useState(false);
   const { pathname } = useLocation();
+  const { backdrop_path, poster_path, title, name, overview, id } = data;
 
-  const handlePlayClick = () => {
-    setVideoClick((prev) => !prev);
-  };
-
-  return !videoClick && !!data ? (
+  return (
     <BannerContainer>
-      <Picture>
+      <Poster>
         <source
-          srcSet={sizeImagePath("original", data.backdrop_path)}
+          srcSet={sizeImagePath("original", backdrop_path)}
           media="(min-width: 700px)"
         />
         <img
-          src={sizeImagePath("original", data.poster_path)}
-          alt={`${data.title || data.name}poster`}
+          src={sizeImagePath("original", poster_path)}
+          alt={`${title || name}poster`}
         />
-      </Picture>
-      <BannerInfo>
-        <h1>{data.title || data.name}</h1>
-        <p>{data.overview}</p>
+      </Poster>
+      <PosterInfo>
+        <h1>{title || name}</h1>
+        <p>{overview}</p>
         <ButtonsContainer>
-          <Link
-            to={pathname === "/tv" ? `/tv/${data.id}` : `/movie/${data.id}`}
-          >
+          <Link to={pathname === "/tv" ? `/tv/${id}` : `/movie/${id}`}>
             <ButtonBox buttonName="More Info" infoIcon={true} />
           </Link>
-          <ButtonBox
-            buttonName="Trailer"
-            handlePlayClick={handlePlayClick}
-            playIcon={true}
-          />
         </ButtonsContainer>
-      </BannerInfo>
+      </PosterInfo>
     </BannerContainer>
-  ) : (
-    <VideoContainer>
-      <ButtonBox
-        buttonName="Close"
-        handlePlayClick={handlePlayClick}
-        closeIcon={true}
-      />
-      <VideoPlayer videoId={data?.id} />
-    </VideoContainer>
   );
 };
 
@@ -67,9 +45,10 @@ const BannerContainer = styled.section`
   flex-direction: column;
   justify-content: center;
   color: #fff;
+  border: 1px solid red;
 `;
 
-const Picture = styled.picture`
+const Poster = styled.picture`
   position: absolute;
   top: 0;
   bottom: 0;
@@ -89,7 +68,7 @@ const Picture = styled.picture`
   }
 `;
 
-const BannerInfo = styled.div`
+const PosterInfo = styled.div`
   margin-left: 40px;
   position: absolute;
   bottom: 50px;
@@ -139,28 +118,6 @@ const ButtonsContainer = styled.div`
   }
   @media ${device.mobile} {
     gap: 10px;
-  }
-`;
-
-const VideoContainer = styled.div`
-  margin: 130px 0 80px;
-  position: relative;
-  height: 450px;
-  box-shadow: 1px 2px 50px rgba(249, 249, 249, 0.3);
-  svg {
-    width: 40px;
-    height: 40px;
-  }
-  @media ${device.tablet} {
-    height: 400px;
-  }
-  @media ${device.mobile} {
-    margin: 90px 0 50px;
-    height: 300px;
-    svg {
-      width: 30px;
-      height: 30px;
-    }
   }
 `;
 
