@@ -34,7 +34,7 @@ const Banner = ({ data }: PropsType) => {
         <p>{overview}</p>
         <ButtonsContainer>
           <Link to={pathname === "/tv" ? `/tv/${id}` : `/movie/${id}`}>
-            <ButtonBox buttonName="More Info" />
+            <ButtonBox buttonName="More Info" infoIcon={true} />
           </Link>
         </ButtonsContainer>
       </PosterInfo>
@@ -49,7 +49,6 @@ const BannerContainer = styled.section`
   flex-direction: column;
   justify-content: center;
   color: #fff;
-  border: 1px solid red;
 `;
 
 const Poster = styled.picture`

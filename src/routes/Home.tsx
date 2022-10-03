@@ -27,7 +27,7 @@ const Home = () => {
   const exceptBannerData = nowPlaying?.results?.slice(1);
 
   return (
-    <Wrapper>
+    <>
       {nowPlayingLoading &&
       topRatedMovieLoading &&
       upcomingMovieLoading &&
@@ -42,13 +42,9 @@ const Home = () => {
           <RowSlider title={"Upcoming Movies"} data={upcomingMovie?.results} />
         </>
       )}
-    </Wrapper>
+    </>
   );
 };
-
-const Wrapper = styled.main`
-  overflow-x: hidden;
-`;
 
 const Loader = styled.div`
   height: 20vh;
