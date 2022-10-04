@@ -2,7 +2,7 @@ import { Link, useMatch } from "react-router-dom";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
 import { useEffect } from "react";
 import LogoBox from "./LogoBox";
-import SearchInput from "./common/SearchInput";
+import SearchInput from "../components/common/SearchInput";
 import styled from "styled-components";
 import device from "../theme/mediaQueries";
 

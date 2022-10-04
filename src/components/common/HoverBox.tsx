@@ -4,7 +4,7 @@ import { posterSizes, sizeImagePath } from "../../utils/sizeImagePath";
 import { IDetail, IGenres } from "../../api/api";
 import { changeDateSeperator } from "../../utils/changeDateSeperator";
 import { useRecoilValue } from "recoil";
-import { searchState } from "../../data/atoms";
+import { searchState } from "../../data/favoriteAtoms";
 import InfoBox from "./InfoBox";
 import RateBox from "./RateBox";
 import styled from "styled-components";

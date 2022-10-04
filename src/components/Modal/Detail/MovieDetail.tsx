@@ -9,20 +9,20 @@ import {
   IDetail,
   IGetMovieTvResult,
   IKeywords,
-} from "../../api/api";
+} from "../../../api/api";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { convertRunningTime } from "../../utils/convertRunningTime";
+import { convertRunningTime } from "../../../utils/convertRunningTime";
 import { AccessTime } from "@mui/icons-material";
 import { Category, Keywords, RateTime } from "./TvDetail";
-import { GenresKeyword, Info } from "./Detail";
+import { GenresKeyword, Info } from "../Detail";
 import { motion } from "framer-motion";
-import Collection from "./Detail/Collection";
-import useCategory from "../../hook/useCategory";
-import SimilarRecommendationList from "./Detail/SimilarRecommendationList";
-import Cast from "./Detail/Cast";
-import InfoBox from "../common/InfoBox";
-import RateBox from "../common/RateBox";
+import Collection from "./Collection";
+import useCategory from "../../../hook/useCategory";
+import SimilarRecommendationList from "./SimilarRecommendationList";
+import Cast from "./Cast";
+import InfoBox from "../../common/InfoBox";
+import RateBox from "../../common/RateBox";
 
 interface PropsType {
   movieDetail: IDetail;

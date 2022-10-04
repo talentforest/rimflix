@@ -3,7 +3,10 @@ import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import { myFavoriteMovieState, myFavoriteTvState } from "../../data/atoms";
+import {
+  myFavoriteMovieState,
+  myFavoriteTvState,
+} from "../../data/favoriteAtoms";
 import styled from "styled-components";
 
 interface PropsType {

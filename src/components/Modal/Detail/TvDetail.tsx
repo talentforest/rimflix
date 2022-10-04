@@ -8,20 +8,20 @@ import {
   ICastCrew,
   IKeywords,
   getKeyword,
-} from "../../api/api";
+} from "../../../api/api";
 import { useQuery } from "react-query";
-import { convertRunningTime } from "../../utils/convertRunningTime";
+import { convertRunningTime } from "../../../utils/convertRunningTime";
 import { motion } from "framer-motion";
-import { GenresKeyword, Info } from "./Detail";
+import { GenresKeyword, Info } from "../Detail";
 import { useState } from "react";
-import RateBox from "../common/RateBox";
-import Episodes from "./Detail/Episodes";
+import RateBox from "../../common/RateBox";
+import Episodes from "./Episodes";
 import styled from "styled-components";
-import useCategory from "../../hook/useCategory";
-import device from "../../theme/mediaQueries";
-import SimilarRecommendationList from "./Detail/SimilarRecommendationList";
-import Cast from "./Detail/Cast";
-import InfoBox from "../common/InfoBox";
+import useCategory from "../../../hook/useCategory";
+import device from "../../../theme/mediaQueries";
+import SimilarRecommendationList from "./SimilarRecommendationList";
+import Cast from "./Cast";
+import InfoBox from "../../common/InfoBox";
 
 interface PropsType {
   tvDetail: IDetail;

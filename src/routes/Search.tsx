@@ -4,7 +4,7 @@ import { useLocation } from "react-router-dom";
 import { getSearch, IGetMovieTvResult } from "../api/api";
 import { AnimatePresence } from "framer-motion";
 import { useSetRecoilState } from "recoil";
-import { searchState } from "../data/atoms";
+import { searchState } from "../data/favoriteAtoms";
 import Contents from "../components/Contents";
 import Modal from "../components/Modal/Modal";
 import device from "../theme/mediaQueries";
