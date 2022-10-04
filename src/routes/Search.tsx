@@ -9,6 +9,7 @@ import Contents from "../components/Contents";
 import Modal from "../components/Modal/Modal";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
+import Loading from "../components/common/Loading";
 
 const Search = () => {
   const setSearchQuery = useSetRecoilState(searchState);
@@ -38,7 +39,7 @@ const Search = () => {
   return (
     <>
       {searchMoviesLoading && searchTvShowsLoading ? (
-        <Loader>Loading...</Loader>
+        <Loading screenSize="part" />
       ) : (
         <Container>
           <section>
@@ -73,13 +74,6 @@ const Search = () => {
     </>
   );
 };
-
-const Loader = styled.div`
-  height: 20vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 const Container = styled.main`
   margin-top: 100px;

@@ -88,7 +88,7 @@ const Episodes = ({
         <p>{seasonDetail?.overview}</p>
       </BasicInfo>
       {seasonDetailLoading ? (
-        <Loading />
+        <Loading screenSize="part" />
       ) : (
         viewEpisode && (
           <EpisodeList>

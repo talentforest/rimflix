@@ -3,6 +3,7 @@ import { getDetail, IDetail } from "../api/api";
 import device from "../theme/mediaQueries";
 import HoverBox from "./common/HoverBox";
 import styled from "styled-components";
+import Loading from "./common/Loading";
 
 interface PropsType {
   favMovieId?: number;
@@ -27,7 +28,7 @@ const FavContents = ({ favMovieId, favTvId }: PropsType) => {
   );
 
   return detailIsLoading && tvDetailIsLoading ? (
-    <div>Loading...</div>
+    <Loading screenSize="part" />
   ) : (
     <Box>
       {tvDetail && (

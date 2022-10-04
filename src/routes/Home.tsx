@@ -8,7 +8,7 @@ import {
 } from "../api/api";
 import Banner from "../components/Banner";
 import RowSlider from "../components/RowSlider";
-import styled from "styled-components";
+import Loading from "../components/common/Loading";
 
 const Home = () => {
   const { data: nowPlaying, isLoading: nowPlayingLoading } =
@@ -31,8 +31,9 @@ const Home = () => {
       {nowPlayingLoading &&
       topRatedMovieLoading &&
       upcomingMovieLoading &&
-      popularMovieLoading ? (
-        <Loader>Loading...</Loader>
+      popularMovieLoading &&
+      !bannerData ? (
+        <Loading screenSize="entire" />
       ) : (
         <>
           <Banner data={bannerData} />
@@ -45,12 +46,5 @@ const Home = () => {
     </>
   );
 };
-
-const Loader = styled.div`
-  height: 20vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 export default Home;

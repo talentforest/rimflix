@@ -1,5 +1,4 @@
 import { useQuery } from "react-query";
-import styled from "styled-components";
 import {
   getAiringTodayTvShows,
   getOnAirTvShows,
@@ -8,6 +7,7 @@ import {
   IGetMovieTvResult,
 } from "../api/api";
 import Banner from "../components/Banner";
+import Loading from "../components/common/Loading";
 import RowSlider from "../components/RowSlider";
 
 const Tv = () => {
@@ -27,12 +27,13 @@ const Tv = () => {
   const exceptBannerData = topTvShow?.results.slice(1);
 
   return (
-    <Wrapper>
+    <>
       {topTvShowLoading &&
       popularTvShowLoading &&
       onAirTvShowLoading &&
-      airingTodayTvShowLoading ? (
-        <Loader>Loading...</Loader>
+      airingTodayTvShowLoading &&
+      !bannerData ? (
+        <Loading screenSize="part" />
       ) : (
         <>
           <Banner data={bannerData} />
@@ -45,19 +46,8 @@ const Tv = () => {
           <RowSlider title={"Popular Tv Shows"} data={popularTvShow?.results} />
         </>
       )}
-    </Wrapper>
+    </>
   );
 };
-
-const Wrapper = styled.main`
-  overflow-x: hidden;
-`;
-
-const Loader = styled.div`
-  height: 20vh;
-  display: flex;
-  justify-content: center;
-  align-items: center;
-`;
 
 export default Tv;
