@@ -1,4 +1,5 @@
 import { useQuery } from "react-query";
+import styled from "styled-components";
 import {
   getAiringTodayTvShows,
   getOnAirTvShows,
@@ -37,17 +38,27 @@ const Tv = () => {
       ) : (
         <>
           <Banner data={bannerData} />
-          <RowSlider title={"Top Ranked Tv Shows"} data={exceptBannerData} />
-          <RowSlider
-            title={"Airing Today Tv Shows"}
-            data={airingTodayTvShow?.results}
-          />
-          <RowSlider title={"On Air Tv Shows"} data={onAirTvShow?.results} />
-          <RowSlider title={"Popular Tv Shows"} data={popularTvShow?.results} />
+          <Sliders>
+            <RowSlider title={"Top Ranked Tv Shows"} data={exceptBannerData} />
+            <RowSlider
+              title={"Airing Today Tv Shows"}
+              data={airingTodayTvShow?.results}
+            />
+            <RowSlider title={"On Air Tv Shows"} data={onAirTvShow?.results} />
+            <RowSlider
+              title={"Popular Tv Shows"}
+              data={popularTvShow?.results}
+            />
+          </Sliders>
         </>
       )}
     </>
   );
 };
+
+const Sliders = styled.section`
+  position: relative;
+  margin-top: -100px;
+`;
 
 export default Tv;

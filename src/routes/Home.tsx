@@ -38,7 +38,7 @@ const Home = () => {
       ) : (
         <>
           <Banner data={bannerData} />
-          <Container>
+          <Sliders>
             <RowSlider title={"Now Playing"} data={exceptBannerData} />
             <RowSlider title={"Popular Now"} data={popularMovie?.results} />
             <RowSlider
@@ -49,15 +49,16 @@ const Home = () => {
               title={"Upcoming Movies"}
               data={upcomingMovie?.results}
             />
-          </Container>
+          </Sliders>
         </>
       )}
     </>
   );
 };
 
-const Container = styled.section`
+const Sliders = styled.section`
   position: relative;
-  z-index: 1;
+  margin-top: -15vh;
 `;
+
 export default Home;

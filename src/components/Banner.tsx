@@ -111,7 +111,7 @@ const PosterInfo = styled.div`
     p {
       display: block;
       width: 70%;
-      font-size: 20px;
+      font-size: 18px;
       line-height: 1.3;
       text-align: center;
     }
@@ -119,7 +119,7 @@ const PosterInfo = styled.div`
   @media ${device.desktop} {
     align-items: flex-start;
     padding-left: 50px;
-    margin-top: 20px;
+    margin-top: 10px;
     p {
       text-align: left;
     }
@@ -131,7 +131,7 @@ const Genres = styled.ul`
   gap: 12px;
   @media ${device.tablet} {
     margin-bottom: 10px;
-    font-size: 18px;
+    font-size: 20px;
   }
 `;
 
