@@ -5,9 +5,12 @@ import {
   posterSizes,
   sizeImagePath,
 } from "../utils/sizeImagePath";
-import ButtonBox from "./common/ButtonBox";
+import { Info } from "@mui/icons-material";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
+import useGenresQuery from "../hook/useGenresQuery";
+import FavoriteButton from "./common/FavoriteButton";
+import { Button } from "../theme/buttonStyle";
 
 interface PropsType {
   data: IDetail;
@@ -15,40 +18,54 @@ interface PropsType {
 
 const Banner = ({ data }: PropsType) => {
   const { pathname } = useLocation();
-  const { backdrop_path, poster_path, title, name, overview, id } = data;
+  const correctPathModal =
+    pathname === "/tv" ? `/tv/${data?.id}` : `/movie/${data?.id}`;
+
+  const genreList = useGenresQuery().data?.genres;
+  const contentsGenres = genreList
+    ?.filter((item) => data.genre_ids.includes(item.id))
+    .slice(0, 3);
 
   return (
-    <BannerContainer>
-      <Poster>
-        <source
-          srcSet={sizeImagePath(backdropSizes.original, backdrop_path)}
-          media="(min-width: 700px)"
-        />
-        <img
-          src={sizeImagePath(posterSizes.w780, poster_path)}
-          alt={`${title || name}poster`}
-        />
-      </Poster>
-      <PosterInfo>
-        <h1>{title || name}</h1>
-        <p>{overview}</p>
-        <ButtonsContainer>
-          <Link to={pathname === "/tv" ? `/tv/${id}` : `/movie/${id}`}>
-            <ButtonBox buttonName="More Info" infoIcon={true} />
-          </Link>
-        </ButtonsContainer>
-      </PosterInfo>
-    </BannerContainer>
+    data && (
+      <Container>
+        <Poster>
+          <source
+            srcSet={sizeImagePath(backdropSizes.original, data.backdrop_path)}
+            media="(min-width: 1024px)"
+          />
+          <img
+            src={sizeImagePath(posterSizes.original, data.poster_path)}
+            alt={`${data.title || data.name}poster`}
+          />
+        </Poster>
+        <PosterInfo>
+          <h1>{data.title || data.name}</h1>
+          <Genres>
+            {contentsGenres?.map((genre) => (
+              <li key={genre.id}>{genre.name}</li>
+            ))}
+          </Genres>
+          <p>{data.overview}</p>
+          <Btns>
+            <FavoriteButton contentsId={data.id} />
+            <Button as={Link} to={correctPathModal}>
+              More Info <Info />
+            </Button>
+          </Btns>
+        </PosterInfo>
+      </Container>
+    )
   );
 };
 
-const BannerContainer = styled.section`
-  height: 70vh;
+const Container = styled.section`
+  height: 80vh;
   position: relative;
   display: flex;
   flex-direction: column;
   justify-content: center;
-  color: #fff;
+  align-items: center;
 `;
 
 const Poster = styled.picture`
@@ -63,65 +80,65 @@ const Poster = styled.picture`
     rgba(0, 0, 0, 1) 100%
   );
   img {
+    position: relative;
     width: 100%;
     height: 100%;
     object-fit: cover;
-    position: relative;
     z-index: -1;
   }
 `;
 
 const PosterInfo = styled.div`
-  margin-left: 40px;
   position: absolute;
-  bottom: 50px;
-  padding: 0 10px;
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  margin-top: 100px;
   h1 {
-    font-size: 40px;
+    font-size: 30px;
     font-weight: 700;
     margin-bottom: 10px;
   }
   p {
-    font-size: 20px;
-    width: 650px;
-    line-height: 1.2;
-    margin-bottom: 20px;
+    display: none;
   }
   @media ${device.tablet} {
-    text-align: center;
-    font-size: 45px;
-    display: block;
-    width: 100%;
-    bottom: 100px;
-    margin: 0;
     h1 {
-      text-align: center;
-      font-size: 45px;
-      width: 100%;
-      margin-bottom: 30px;
+      font-size: 40px;
+      margin-bottom: 15px;
     }
     p {
-      display: none;
+      display: block;
+      width: 70%;
+      font-size: 20px;
+      line-height: 1.3;
+      text-align: center;
     }
   }
-  @media ${device.mobile} {
-    font-size: 28px;
-    bottom: 50px;
-    h1 {
-      font-size: 28px;
+  @media ${device.desktop} {
+    align-items: flex-start;
+    padding-left: 50px;
+    margin-top: 20px;
+    p {
+      text-align: left;
     }
   }
 `;
 
-const ButtonsContainer = styled.div`
+const Genres = styled.ul`
   display: flex;
-  gap: 20px;
+  gap: 12px;
   @media ${device.tablet} {
-    justify-content: center;
+    margin-bottom: 10px;
+    font-size: 18px;
   }
-  @media ${device.mobile} {
-    gap: 10px;
-  }
+`;
+
+const Btns = styled.div`
+  display: flex;
+  gap: 10px;
+  margin-top: 30px;
 `;
 
 export default Banner;

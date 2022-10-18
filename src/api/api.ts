@@ -109,6 +109,10 @@ export interface IDetail {
   episode_run_time?: number[];
 }
 
+export interface IGetGenres {
+  genres: IGenres[];
+}
+
 export interface IGenres {
   id: number;
   name: string;

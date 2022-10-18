@@ -1,13 +1,13 @@
 export const deviceSizes = {
-  mobile: "500",
-  tablet: "1023",
-  desktop: "3000",
+  mobile: "280",
+  tablet: "768",
+  desktop: "1024",
 };
 
 const device = {
-  mobile: `only screen and (max-width: ${deviceSizes.mobile}px)`,
-  tablet: `only screen and (max-width: ${deviceSizes.tablet}px)`,
-  desktop: `only screen and (max-width: ${deviceSizes.desktop}px)`,
+  mobile: `only screen and (min-width: ${deviceSizes.mobile}px)`,
+  tablet: `only screen and (min-width: ${deviceSizes.tablet}px)`,
+  desktop: `only screen and (min-width: ${deviceSizes.desktop}px)`,
 };
 
 export default device;

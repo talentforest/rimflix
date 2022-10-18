@@ -1,5 +1,4 @@
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
-import { motion } from "framer-motion";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
@@ -8,6 +7,7 @@ import {
   myFavoriteTvState,
 } from "../../data/favoriteAtoms";
 import styled from "styled-components";
+import { Button } from "../../theme/buttonStyle";
 
 interface PropsType {
   contentsId: number;
@@ -15,69 +15,54 @@ interface PropsType {
 
 const FavoriteButton = ({ contentsId }: PropsType) => {
   const { pathname } = useLocation();
-
   const [like, setLike] = useState(false);
   const [favMovies, setFavMovies] = useRecoilState(myFavoriteMovieState);
   const [favTvs, setFavTvs] = useRecoilState(myFavoriteTvState);
 
   useEffect(() => {
-    if (favMovies.includes(contentsId)) return setLike(true);
-
-    if (favTvs.includes(contentsId)) return setLike(true);
+    if ((favTvs || favMovies).includes(contentsId)) return setLike(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onAddClick = () => {
     setLike((prev) => !prev);
-    if (pathname.includes("/movie"))
-      return setFavMovies((prev) => [...prev, contentsId]);
-
-    if (pathname.includes("/tv"))
+    if (pathname.includes("/tv")) {
       return setFavTvs((prev) => [...prev, contentsId]);
+    } else {
+      return setFavMovies((prev) => [...prev, contentsId]);
+    }
   };
 
   const onDeleteClick = () => {
     setLike((prev) => !prev);
-    if (pathname.includes("/movie")) {
+    if (pathname.includes("/tv")) {
+      return setFavTvs((prev) => prev.filter((item) => item !== contentsId));
+    } else {
       setFavMovies((prev) => prev.filter((item) => item !== contentsId));
     }
-    if (pathname.includes("/tv"))
-      return setFavTvs((prev) => prev.filter((item) => item !== contentsId));
   };
 
   return (
     <>
       {like ? (
         <MyFavarite onClick={onDeleteClick}>
-          <span>My Favorite</span>
-          <Favorite />
+          My List <Favorite />
         </MyFavarite>
       ) : (
         <MyFavarite onClick={onAddClick}>
-          <span>Add My Favorite</span>
-          <FavoriteBorder />
+          Add My List <FavoriteBorder />
         </MyFavarite>
       )}
     </>
   );
 };
 
-const MyFavarite = styled(motion.button)`
-  display: flex;
-  align-items: center;
-  width: fit-content;
-  border-radius: 5px;
-  border: 1px solid #aaa;
-  color: #333;
+const MyFavarite = styled(Button)`
   background-color: #ffaa9f;
-  cursor: pointer;
-  margin-bottom: 20px;
-  padding: 4px 8px;
-  font-weight: 700;
+  border: none;
   > svg {
-    height: 20px;
-    width: 20px;
-    margin-left: 5px;
+    height: 18px;
+    width: 18px;
     fill: #ff0000;
   }
 `;

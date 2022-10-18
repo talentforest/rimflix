@@ -9,6 +9,7 @@ import {
 import Banner from "../components/Banner";
 import RowSlider from "../components/RowSlider";
 import Loading from "../components/common/Loading";
+import styled from "styled-components";
 
 const Home = () => {
   const { data: nowPlaying, isLoading: nowPlayingLoading } =
@@ -37,14 +38,26 @@ const Home = () => {
       ) : (
         <>
           <Banner data={bannerData} />
-          <RowSlider title={"Now Playing"} data={exceptBannerData} />
-          <RowSlider title={"Popular Now"} data={popularMovie?.results} />
-          <RowSlider title={"Top Rated Movies"} data={topRatedMovie?.results} />
-          <RowSlider title={"Upcoming Movies"} data={upcomingMovie?.results} />
+          <Container>
+            <RowSlider title={"Now Playing"} data={exceptBannerData} />
+            <RowSlider title={"Popular Now"} data={popularMovie?.results} />
+            <RowSlider
+              title={"Top Rated Movies"}
+              data={topRatedMovie?.results}
+            />
+            <RowSlider
+              title={"Upcoming Movies"}
+              data={upcomingMovie?.results}
+            />
+          </Container>
         </>
       )}
     </>
   );
 };
 
+const Container = styled.section`
+  position: relative;
+  z-index: 1;
+`;
 export default Home;

@@ -1,11 +1,7 @@
 import { useLocation } from "react-router-dom";
-import { getGenres, IDetail, IGenres } from "../api/api";
+import { getGenres, IDetail, IGetGenres } from "../api/api";
 import { useQuery } from "react-query";
 import HoverBox from "./common/HoverBox";
-
-interface IGetGenres {
-  genres: IGenres[];
-}
 
 interface PropsType {
   contents: IDetail;

@@ -51,6 +51,10 @@ body {
   color: ${(props) => props.theme.white.lighter};
   font-family: 'Source Sans Pro', sans-serif;
 }
+button {
+  cursor: pointer;
+  font-family: 'Source Sans Pro', sans-serif;
+}
 menu, ol, ul, li {
   list-style: none;
 }
