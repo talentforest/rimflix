@@ -1,38 +1,20 @@
-import { useQuery } from "react-query";
-import {
-  getNowPlayingMovies,
-  getPopularMovies,
-  getTopRatedMovie,
-  getUpcomingMovie,
-  IGetMovieTvResult,
-} from "../api/api";
 import Banner from "../components/Banner";
 import RowSlider from "../components/RowSlider";
 import Loading from "../components/common/Loading";
 import styled from "styled-components";
+import useMovieListsQuery from "../hook/useMovieListsQuery";
 
 const Home = () => {
-  const { data: nowPlaying, isLoading: nowPlayingLoading } =
-    useQuery<IGetMovieTvResult>(["movies", "nowPlaying"], getNowPlayingMovies);
-
-  const { data: topRatedMovie, isLoading: topRatedMovieLoading } =
-    useQuery<IGetMovieTvResult>(["movies", "topRated"], getTopRatedMovie);
-
-  const { data: upcomingMovie, isLoading: upcomingMovieLoading } =
-    useQuery<IGetMovieTvResult>(["movies", "upcoming"], getUpcomingMovie);
-
-  const { data: popularMovie, isLoading: popularMovieLoading } =
-    useQuery<IGetMovieTvResult>(["movies", "popular"], getPopularMovies);
-
-  const bannerData = nowPlaying?.results[0];
-  const exceptBannerData = nowPlaying?.results?.slice(1);
+  const { nowPlaying, topRated, upcoming, popular } = useMovieListsQuery();
+  const bannerData = nowPlaying?.data?.results[0];
+  const exceptBannerData = nowPlaying?.data?.results?.slice(1);
 
   return (
     <>
-      {nowPlayingLoading &&
-      topRatedMovieLoading &&
-      upcomingMovieLoading &&
-      popularMovieLoading &&
+      {nowPlaying.isLoading &&
+      topRated.isLoading &&
+      upcoming.isLoading &&
+      popular.isLoading &&
       !bannerData ? (
         <Loading screenSize="entire" />
       ) : (
@@ -40,14 +22,14 @@ const Home = () => {
           <Banner data={bannerData} />
           <Sliders>
             <RowSlider title={"Now Playing"} data={exceptBannerData} />
-            <RowSlider title={"Popular Now"} data={popularMovie?.results} />
+            <RowSlider title={"Popular Now"} data={popular?.data?.results} />
             <RowSlider
               title={"Top Rated Movies"}
-              data={topRatedMovie?.results}
+              data={topRated?.data?.results}
             />
             <RowSlider
               title={"Upcoming Movies"}
-              data={upcomingMovie?.results}
+              data={upcoming?.data?.results}
             />
           </Sliders>
         </>

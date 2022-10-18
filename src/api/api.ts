@@ -163,13 +163,13 @@ export function getPopularMovies() {
   );
 }
 
-export function getTopRatedMovie() {
+export function getTopRatedMovies() {
   return fetch(`${BASE_PATH}/movie/top_rated?api_key=${API_KEY}`).then(
     (response) => response.json()
   );
 }
 
-export function getUpcomingMovie() {
+export function getUpcomingMovies() {
   return fetch(`${BASE_PATH}/movie/upcoming?api_key=${API_KEY}`).then(
     (response) => response.json()
   );
