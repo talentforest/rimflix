@@ -50,9 +50,7 @@ function Header() {
             <Item>Tv Shows {tvMatch && <Circle layoutId="circle" />}</Item>
           </Link>
           <Link to="/myFavorite">
-            <Item>
-              Favorite {favoriteMatch && <Circle layoutId="circle" />}
-            </Item>
+            <Item>My List {favoriteMatch && <Circle layoutId="circle" />}</Item>
           </Link>
         </Items>
       </Col>

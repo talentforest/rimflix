@@ -10,17 +10,19 @@ const useSlide = (data: IDetail[]) => {
   const { windowSize } = useWindowSize();
 
   let offset = 6;
-  if (windowSize.width <= 500) {
+  if (windowSize.width < 768) {
     offset = 3;
   } else if (windowSize.width <= 1023) {
     offset = 5;
   }
 
+  const totalSlideNum = Math.floor((data?.length - 1) / offset);
+
   const toggleLeaving = () => setLeaving((prev) => !prev);
 
   const increaseIndex = () => {
+    if (leaving) return;
     if (data) {
-      if (leaving) return;
       setBack(false);
       toggleLeaving();
       const totalMovies = data.length - 1;
@@ -30,8 +32,8 @@ const useSlide = (data: IDetail[]) => {
   };
 
   const decreaseIndex = () => {
+    if (leaving) return;
     if (data) {
-      if (leaving) return;
       setBack(true);
       toggleLeaving();
       const totalMovies = data.length - 1;
@@ -49,6 +51,7 @@ const useSlide = (data: IDetail[]) => {
     toggleLeaving,
     increaseIndex,
     decreaseIndex,
+    totalSlideNum,
   };
 };
 

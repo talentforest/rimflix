@@ -2,7 +2,7 @@ import Banner from "../components/Banner";
 import Loading from "../components/common/Loading";
 import RowSlider from "../components/RowSlider";
 import useTvListsQuery from "../hook/useTvListsQuery";
-import styled from "styled-components";
+import { Sliders } from "./Home";
 
 const Tv = () => {
   const { top, popular, onAir, airingToday } = useTvListsQuery();
@@ -37,10 +37,5 @@ const Tv = () => {
     </>
   );
 };
-
-const Sliders = styled.section`
-  position: relative;
-  margin-top: -100px;
-`;
 
 export default Tv;

@@ -104,6 +104,7 @@ const PosterInfo = styled.div`
     display: none;
   }
   @media ${device.tablet} {
+    margin-top: 0px;
     h1 {
       font-size: 40px;
       margin-bottom: 15px;
@@ -118,7 +119,7 @@ const PosterInfo = styled.div`
   }
   @media ${device.desktop} {
     align-items: flex-start;
-    padding-left: 50px;
+    padding-left: 3vw;
     margin-top: 10px;
     p {
       text-align: left;

@@ -17,7 +17,7 @@ const boxVariants = {
   hover: {
     scale: 1.15,
     y: -20,
-    zIndex: 1,
+    zIndex: 2,
     transition: {
       delay: 0.2,
       duration: 0.3,
@@ -90,7 +90,7 @@ const HoverBox = ({
       variants={boxVariants}
       whileHover="hover"
       initial="normal"
-      $height={pathname.includes("search") ? true : false}
+      $height={pathname.includes("search")}
     >
       <Image
         src={sizeImagePath(posterSizes.w342, poster_path)}
@@ -114,9 +114,9 @@ const HoverBox = ({
 
 const Box = styled(motion.div)<{ $height: boolean }>`
   position: relative;
-  width: 100%;
-  height: ${(props) => (props.$height ? "260px" : "100%")};
   border-radius: 5px;
+  height: 100%;
+  z-index: 1;
   cursor: pointer;
   &:first-child {
     -webkit-transform-origin: center left;
@@ -129,8 +129,8 @@ const Box = styled(motion.div)<{ $height: boolean }>`
   @media ${device.tablet} {
     height: ${(props) => (props.$height ? "220px" : "100%")};
   }
-  @media ${device.mobile} {
-    height: ${(props) => (props.$height ? "160px" : "100%")};
+  @media ${device.desktop} {
+    height: ${(props) => (props.$height ? "260px" : "100%")};
   }
 `;
 

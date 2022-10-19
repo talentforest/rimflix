@@ -38,7 +38,7 @@ const Home = () => {
   );
 };
 
-const Sliders = styled.section`
+export const Sliders = styled.section`
   position: relative;
   margin-top: -15vh;
 `;

@@ -1,6 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { IDetail } from "../api/api";
-import { ArrowBackIos, ArrowForwardIos } from "@mui/icons-material";
+import { ArrowBackIosNew, ArrowForwardIos, Circle } from "@mui/icons-material";
 import Modal from "./Modal/Modal";
 import useSlide from "../hook/useSlide";
 import Contents from "./Contents";
@@ -25,16 +25,33 @@ interface PropsType {
 }
 
 const RowSlider = ({ title, data }: PropsType) => {
-  const { offset, back, index, toggleLeaving, increaseIndex, decreaseIndex } =
-    useSlide(data);
+  const {
+    offset,
+    back,
+    index,
+    totalSlideNum,
+    toggleLeaving,
+    increaseIndex,
+    decreaseIndex,
+  } = useSlide(data);
 
   const sliceSlideNum = data?.slice(offset * index, offset * index + offset);
+
+  const slideNumArr = Array.from(
+    { length: totalSlideNum },
+    (_, index) => index + 1
+  );
 
   return (
     <>
       <RowTitle>{title}</RowTitle>
       <SliderContainer>
-        <ArrowBackIos onClick={decreaseIndex} />
+        <div>
+          {slideNumArr.map((item: number) => (
+            <Circle className={item === index + 1 ? "mark" : ""} />
+          ))}
+        </div>
+        <ArrowBackIosNew onClick={decreaseIndex} />
         <Slider>
           <AnimatePresence
             custom={back}
@@ -66,68 +83,97 @@ const RowSlider = ({ title, data }: PropsType) => {
 };
 
 const RowTitle = styled.h2`
-  padding: 20px 60px;
-  font-size: 30px;
   font-weight: 700;
+  margin: 0 calc(5vw + 10px) 10px;
   @media ${device.tablet} {
-    padding: 20px 50px;
-    font-size: 26px;
+    font-size: 24px;
+    margin: 0 calc(5vw + 5px) 10px;
   }
-  @media ${device.mobile} {
-    padding: 20px 30px;
-    font-size: 18px;
+  @media ${device.desktop} {
+    margin: 0 3vw 10px;
   }
 `;
 
 const SliderContainer = styled.div`
   display: flex;
   width: 100%;
-  height: 260px;
-  margin-bottom: 20px;
-  > svg {
-    z-index: 1;
-    padding: 0 10px;
-    height: 100%;
-    width: 50px;
-    cursor: pointer;
-  }
-  @media ${device.tablet} {
-    height: 240px;
-    > svg {
-      width: 30px;
-      padding: 0 5px;
+  height: 40vw;
+  margin-bottom: 30px;
+  > div:first-child {
+    visibility: hidden;
+    position: absolute;
+    right: 0;
+    top: -25px;
+    display: flex;
+    gap: 3px;
+    svg {
+      width: 10px;
+      height: 10px;
+      fill: ${(props) => props.theme.black.lighter};
+      &.mark {
+        fill: ${(props) => props.theme.white.darker};
+      }
     }
   }
-  @media ${device.mobile} {
-    height: 180px;
+  > svg {
+    visibility: hidden;
+    z-index: 2;
+    width: 5vw;
+    height: 100%;
+    cursor: pointer;
+    &:last-child {
+      right: 0;
+    }
+  }
+  &:hover {
+    > div:first-child,
     > svg {
-      width: 28px;
+      visibility: visible;
+    }
+  }
+  @media ${device.tablet} {
+    height: 26vw;
+    width: 100%;
+    > div:first-child {
+      right: 50px;
+      top: -30px;
+      gap: 10px;
+    }
+  }
+  @media ${device.desktop} {
+    height: 20vw;
+    svg {
+      width: 3vw;
     }
   }
 `;
 
 const Slider = styled.div`
   position: relative;
-  width: 100%;
-  height: 100%;
   display: flex;
   align-items: center;
-  margin: 0 auto;
+  width: 100%;
+  height: 100%;
+  @media ${device.tablet} {
+    box-sizing: border-box;
+  }
 `;
 
 const Row = styled(motion.div)`
   position: absolute;
+  display: grid;
+  gap: 0 5px;
+  padding: 0 10px;
   width: 100%;
   height: 100%;
-  display: grid;
-  gap: 0 15px;
-  grid-template-columns: repeat(6, 1fr);
+  grid-template-columns: repeat(3, 1fr);
   @media ${device.tablet} {
-    grid-template-columns: repeat(5, 1fr);
     gap: 0 10px;
+    padding: 0;
+    grid-template-columns: repeat(5, 1fr);
   }
-  @media ${device.mobile} {
-    grid-template-columns: repeat(3, 1fr);
+  @media ${device.desktop} {
+    grid-template-columns: repeat(6, 1fr);
   }
 `;
 
