@@ -50,6 +50,7 @@ const FavContents = ({ favMovieId, favTvId }: PropsType) => {
 };
 
 const Box = styled.div`
+  border: 1px solid red;
   position: relative;
   width: 140px;
   height: 200px;

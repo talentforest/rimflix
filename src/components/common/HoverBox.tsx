@@ -9,13 +9,14 @@ import InfoBox from "./InfoBox";
 import RateBox from "./RateBox";
 import styled from "styled-components";
 import device from "../../theme/mediaQueries";
+import { cutLetter } from "../../utils/cutLetter";
 
 const boxVariants = {
   normal: {
     scale: 1,
   },
   hover: {
-    scale: 1.15,
+    scale: 1.2,
     y: -20,
     zIndex: 2,
     transition: {
@@ -30,8 +31,8 @@ const infoVariants = {
     opacity: 0,
   },
   hover: {
-    opacity: 1.15,
-    y: 0,
+    opacity: 1.2,
+    y: 10,
     zIndex: 1,
     transition: {
       delay: 0.2,
@@ -75,10 +76,8 @@ const HoverBox = ({
   const onBoxClicked = (id: number) => {
     if (pathname === "/") return navigate(`/movie/${id}`);
     if (pathname === "/tv") return navigate(`/tv/${id}`);
-
     if (searchMovieId) return navigate(`/search/movie/${id}/${searchQuery}`);
     if (searchTvId) return navigate(`/search/tv/${id}/${searchQuery}`);
-
     if (favMovieId) return navigate(`/myFavorite/movie/${id}`);
     if (favTvId) return navigate(`/myFavorite/tv/${id}`);
   };
@@ -97,7 +96,7 @@ const HoverBox = ({
         alt={`${title || name} poster`}
       />
       <Info variants={infoVariants}>
-        <h1>{title || name}</h1>
+        <h1>{cutLetter(title || name, 30)}</h1>
         <Genres>
           {genres?.map((item) => (
             <InfoBox key={item.id} info={item.name} />
@@ -148,32 +147,31 @@ const Image = styled.img`
 
 const Info = styled(motion.div)`
   position: absolute;
+  bottom: -50px;
   display: flex;
   flex-direction: column;
-  justify-content: space-between;
-  align-items: start;
+  justify-content: space-evenly;
   width: 100%;
-  min-height: 110px;
-  padding: 10px 20px;
-  opacity: 0;
+  min-height: 120px;
+  padding: 5px 10px;
   background-color: ${(props) => props.theme.black.darker};
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   font-size: 16px;
   > h1 {
     width: 100%;
-    text-align: center;
-    font-weight: 600;
+    font-weight: 700;
   }
   @media ${device.tablet} {
     bottom: -38px;
     padding: 5px 10px;
+    font-size: 16px;
+    height: 130px;
   }
-  @media ${device.mobile} {
-    height: 60px;
-    bottom: -48px;
-    font-size: 14px;
-    padding: 5px;
+  @media ${device.desktop} {
+    > h1 {
+      font-size: 18px;
+    }
   }
 `;
 
@@ -181,11 +179,22 @@ const Genres = styled.ul`
   width: 100%;
   display: flex;
   flex-wrap: wrap;
-  justify-content: center;
+  justify-content: flex-start;
   gap: 4px;
+  margin: 5px 0;
   > li {
     font-size: 10px;
-    padding: 2px;
+    padding: 3px;
+  }
+  @media ${device.tablet} {
+    > li {
+      font-size: 11px;
+    }
+  }
+  @media ${device.desktop} {
+    > li {
+      font-size: 13px;
+    }
   }
 `;
 
@@ -194,9 +203,8 @@ const ExtraInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 14px;
+  font-size: 13px;
   @media ${device.tablet} {
-    font-size: 12px;
   }
 `;
 

@@ -48,7 +48,7 @@ const RowSlider = ({ title, data }: PropsType) => {
       <SliderContainer>
         <div>
           {slideNumArr.map((item: number) => (
-            <Circle className={item === index + 1 ? "mark" : ""} />
+            <Circle key={item} className={item === index + 1 ? "mark" : ""} />
           ))}
         </div>
         <ArrowBackIosNew onClick={decreaseIndex} />
@@ -99,10 +99,11 @@ const SliderContainer = styled.div`
   width: 100%;
   height: 40vw;
   margin-bottom: 30px;
+  position: relative;
   > div:first-child {
     visibility: hidden;
     position: absolute;
-    right: 0;
+    right: 7vw;
     top: -25px;
     display: flex;
     gap: 3px;

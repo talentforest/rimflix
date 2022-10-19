@@ -20,7 +20,8 @@ const FavoriteButton = ({ contentsId }: PropsType) => {
   const [favTvs, setFavTvs] = useRecoilState(myFavoriteTvState);
 
   useEffect(() => {
-    if ((favTvs || favMovies).includes(contentsId)) return setLike(true);
+    if (favTvs.includes(contentsId)) return setLike(true);
+    if (favMovies.includes(contentsId)) return setLike(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
