@@ -2,7 +2,7 @@ import { BrowserRouter, Routes, Route } from "react-router-dom";
 import Footer from "./layout/Footer";
 import Header from "./layout/Header";
 import Home from "./routes/Home";
-import MyFavorite from "./routes/MyFavorite";
+import MyList from "./routes/MyList";
 import Search from "./routes/Search";
 import Tv from "./routes/Tv";
 
@@ -18,9 +18,9 @@ function Router() {
         <Route path="/search/" element={<Search />} />
         <Route path="/search/movie/:id" element={<Search />} />
         <Route path="/search/tv/:id" element={<Search />} />
-        <Route path="/myFavorite" element={<MyFavorite />} />
-        <Route path="/myFavorite/movie/:id" element={<MyFavorite />} />
-        <Route path="/myFavorite/tv/:id" element={<MyFavorite />} />
+        <Route path="/myList" element={<MyList />} />
+        <Route path="/myList/movie/:id" element={<MyList />} />
+        <Route path="/myList/tv/:id" element={<MyList />} />
       </Routes>
       <Footer />
     </BrowserRouter>

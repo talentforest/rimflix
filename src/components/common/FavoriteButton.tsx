@@ -2,10 +2,7 @@ import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { useEffect, useState } from "react";
 import { useLocation } from "react-router-dom";
 import { useRecoilState } from "recoil";
-import {
-  myFavoriteMovieState,
-  myFavoriteTvState,
-} from "../../data/favoriteAtoms";
+import { myListMovieState, myListTvState } from "../../data/myListAtoms";
 import styled from "styled-components";
 import { Button } from "../../theme/buttonStyle";
 
@@ -16,30 +13,30 @@ interface PropsType {
 const FavoriteButton = ({ contentsId }: PropsType) => {
   const { pathname } = useLocation();
   const [like, setLike] = useState(false);
-  const [favMovies, setFavMovies] = useRecoilState(myFavoriteMovieState);
-  const [favTvs, setFavTvs] = useRecoilState(myFavoriteTvState);
+  const [myListMovies, setMyListMovies] = useRecoilState(myListMovieState);
+  const [myListTvs, setMyListTvs] = useRecoilState(myListTvState);
 
   useEffect(() => {
-    if (favTvs.includes(contentsId)) return setLike(true);
-    if (favMovies.includes(contentsId)) return setLike(true);
+    if (myListTvs.includes(contentsId)) return setLike(true);
+    if (myListMovies.includes(contentsId)) return setLike(true);
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, []);
 
   const onAddClick = () => {
     setLike((prev) => !prev);
     if (pathname.includes("/tv")) {
-      return setFavTvs((prev) => [...prev, contentsId]);
+      return setMyListTvs((prev) => [...prev, contentsId]);
     } else {
-      return setFavMovies((prev) => [...prev, contentsId]);
+      return setMyListMovies((prev) => [...prev, contentsId]);
     }
   };
 
   const onDeleteClick = () => {
     setLike((prev) => !prev);
     if (pathname.includes("/tv")) {
-      return setFavTvs((prev) => prev.filter((item) => item !== contentsId));
+      return setMyListTvs((prev) => prev.filter((item) => item !== contentsId));
     } else {
-      setFavMovies((prev) => prev.filter((item) => item !== contentsId));
+      setMyListMovies((prev) => prev.filter((item) => item !== contentsId));
     }
   };
 

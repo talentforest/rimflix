@@ -4,6 +4,7 @@ import device from "../theme/mediaQueries";
 import HoverBox from "./common/HoverBox";
 import styled from "styled-components";
 import Loading from "./common/Loading";
+import useMovieDetailQuery from "../hook/useMovieDetailQuery";
 
 interface PropsType {
   favMovieId?: number;
@@ -11,6 +12,7 @@ interface PropsType {
 }
 
 const FavContents = ({ favMovieId, favTvId }: PropsType) => {
+  const { movieDetail } = useMovieDetailQuery();
   const { data: detail, isLoading: detailIsLoading } = useQuery<IDetail>(
     ["detail", "movie", favMovieId],
     () => getDetail("movie", favMovieId),
@@ -33,14 +35,14 @@ const FavContents = ({ favMovieId, favTvId }: PropsType) => {
     <Box>
       {tvDetail && (
         <HoverBox
-          favTvId={true}
+          myListTvId={true}
           contents={tvDetail}
           genres={tvDetail.genres.slice(0, 3)}
         />
       )}
       {detail && (
         <HoverBox
-          favMovieId={true}
+          myListMovieId={true}
           contents={detail}
           genres={detail.genres.slice(0, 3)}
         />

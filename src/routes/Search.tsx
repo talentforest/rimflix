@@ -3,7 +3,7 @@ import { useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
 import { getSearch, IGetMovieTvResult } from "../api/api";
 import { useRecoilState } from "recoil";
-import { searchState } from "../data/favoriteAtoms";
+import { searchState } from "../data/searchAtom";
 import Contents from "../components/Contents";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";

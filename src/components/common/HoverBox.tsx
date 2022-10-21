@@ -4,12 +4,12 @@ import { posterSizes, sizeImagePath } from "../../utils/sizeImagePath";
 import { IDetail, IGenres } from "../../api/api";
 import { changeDateSeperator } from "../../utils/changeDateSeperator";
 import { useRecoilValue } from "recoil";
-import { searchState } from "../../data/favoriteAtoms";
+import { searchState } from "../../data/searchAtom";
+import { cutLetter } from "../../utils/cutLetter";
 import InfoBox from "./InfoBox";
 import Rate from "./Rate";
 import styled from "styled-components";
 import device from "../../theme/mediaQueries";
-import { cutLetter } from "../../utils/cutLetter";
 
 const boxVariants = {
   normal: {
@@ -43,8 +43,8 @@ const infoVariants = {
 };
 
 interface PropsType {
-  favMovieId?: boolean;
-  favTvId?: boolean;
+  myListMovieId?: boolean;
+  myListTvId?: boolean;
   searchMovieId?: number;
   searchTvId?: number;
   contents: IDetail;
@@ -52,8 +52,8 @@ interface PropsType {
 }
 
 const HoverBox = ({
-  favMovieId,
-  favTvId,
+  myListMovieId,
+  myListTvId,
   searchMovieId,
   searchTvId,
   contents,
@@ -78,8 +78,8 @@ const HoverBox = ({
     if (pathname === "/tv") return navigate(`/tv/${id}`);
     if (searchMovieId) return navigate(`/search/movie/${id}/${searchQuery}`);
     if (searchTvId) return navigate(`/search/tv/${id}/${searchQuery}`);
-    if (favMovieId) return navigate(`/myFavorite/movie/${id}`);
-    if (favTvId) return navigate(`/myFavorite/tv/${id}`);
+    if (myListMovieId) return navigate(`/myList/movie/${id}`);
+    if (myListTvId) return navigate(`/myList/tv/${id}`);
   };
 
   return (

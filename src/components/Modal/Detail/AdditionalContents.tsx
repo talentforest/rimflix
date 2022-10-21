@@ -44,10 +44,10 @@ const AdditionalContents = ({ data }: PropsType) => {
   const navigate = useNavigate();
   const { pathname } = useLocation();
   const moviePath = pathname.includes("/movie");
-  const myListPath = pathname.includes("myFavorite");
+  const myListPath = pathname.includes("myList");
 
   const onNavigateClick = (contentsId: number) => {
-    if (myListPath) return navigate(`/myFavorite/movie/${contentsId}`);
+    if (myListPath) return navigate(`/myList/movie/${contentsId}`);
     if (moviePath) return navigate(`/movie/${contentsId}`);
     navigate(`/tv/${contentsId}`);
   };

@@ -22,7 +22,7 @@ function Header() {
   const homeMatch = useMatch("/");
   const movieMatch = useMatch("/movie/*");
   const tvMatch = useMatch("/tv/*");
-  const favoriteMatch = useMatch("/myFavorite/*");
+  const myListMatch = useMatch("/myList/*");
 
   useEffect(() => {
     scrollY.onChange(() => {
@@ -49,8 +49,8 @@ function Header() {
           <Link to="/tv ">
             <Item>Tv Shows {tvMatch && <Circle layoutId="circle" />}</Item>
           </Link>
-          <Link to="/myFavorite">
-            <Item>My List {favoriteMatch && <Circle layoutId="circle" />}</Item>
+          <Link to="/myList">
+            <Item>My List {myListMatch && <Circle layoutId="circle" />}</Item>
           </Link>
         </Items>
       </Col>

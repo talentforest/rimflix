@@ -1,6 +1,6 @@
 import { useRecoilValue } from "recoil";
 import { useNavigate } from "react-router-dom";
-import { myFavoriteMovieState, myFavoriteTvState } from "../data/favoriteAtoms";
+import { myListMovieState, myListTvState } from "../data/myListAtoms";
 import FavContents from "../components/FavContents";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
@@ -9,9 +9,9 @@ import Modal from "../components/Modal/Modal";
 import useMovieDetailQuery from "../hook/useMovieDetailQuery";
 import useTvDetailQuery from "../hook/useTvDetailQuery";
 
-const MyFavorite = () => {
-  const myFavoriteMovies = useRecoilValue(myFavoriteMovieState);
-  const myFavoriteTvs = useRecoilValue(myFavoriteTvState);
+const MyList = () => {
+  const myListMovies = useRecoilValue(myListMovieState);
+  const myListTvs = useRecoilValue(myListTvState);
   const { movieDetail } = useMovieDetailQuery();
   const { tvDetail } = useTvDetailQuery();
   const navigate = useNavigate();
@@ -19,21 +19,21 @@ const MyFavorite = () => {
   return (
     <Container>
       <h1>My Favorite Movies</h1>
-      {myFavoriteMovies.length === 0 ? (
+      {myListMovies.length === 0 ? (
         <Empty>It's still empty.</Empty>
       ) : (
         <section>
-          {myFavoriteMovies.map((favMovieId) => (
+          {myListMovies.map((favMovieId) => (
             <FavContents key={favMovieId} favMovieId={favMovieId} />
           ))}
         </section>
       )}
       <h1>My Favorite Tv Shows</h1>
-      {myFavoriteTvs.length === 0 ? (
+      {myListTvs.length === 0 ? (
         <Empty>It's still empty.</Empty>
       ) : (
         <section>
-          {myFavoriteTvs.map((favTvId) => (
+          {myListTvs.map((favTvId) => (
             <FavContents key={favTvId} favTvId={favTvId} />
           ))}
         </section>
@@ -42,7 +42,7 @@ const MyFavorite = () => {
         <>
           <Overlay
             onOverlayClicked={() => {
-              return navigate("/myFavorite");
+              return navigate("/myList");
             }}
           />
           <Modal detail={movieDetail ? movieDetail : tvDetail} />
@@ -98,4 +98,4 @@ const Container = styled.main`
   }
 `;
 
-export default MyFavorite;
+export default MyList;
