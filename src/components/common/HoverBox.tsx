@@ -6,7 +6,7 @@ import { changeDateSeperator } from "../../utils/changeDateSeperator";
 import { useRecoilValue } from "recoil";
 import { searchState } from "../../data/favoriteAtoms";
 import InfoBox from "./InfoBox";
-import RateBox from "./RateBox";
+import Rate from "./Rate";
 import styled from "styled-components";
 import device from "../../theme/mediaQueries";
 import { cutLetter } from "../../utils/cutLetter";
@@ -104,7 +104,7 @@ const HoverBox = ({
         </Genres>
         <ExtraInfo>
           <span>{changeDateSeperator(release_date || first_air_date)}</span>
-          <RateBox rate={vote_average} />
+          <Rate rate={vote_average} />
         </ExtraInfo>
       </Info>
     </Box>
@@ -146,6 +146,7 @@ const Image = styled.img`
 `;
 
 const Info = styled(motion.div)`
+  opacity: 0;
   position: absolute;
   bottom: -50px;
   display: flex;

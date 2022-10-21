@@ -1,7 +1,6 @@
 import { AnimatePresence, motion } from "framer-motion";
 import { IDetail } from "../api/api";
 import { ArrowBackIosNew, ArrowForwardIos, Circle } from "@mui/icons-material";
-import Modal from "./Modal/Modal";
 import useSlide from "../hook/useSlide";
 import Contents from "./Contents";
 import device from "../theme/mediaQueries";
@@ -73,9 +72,6 @@ const RowSlider = ({ title, data }: PropsType) => {
             </Row>
           </AnimatePresence>
         </Slider>
-        <AnimatePresence>
-          <Modal />
-        </AnimatePresence>
         <ArrowForwardIos onClick={increaseIndex} />
       </SliderContainer>
     </>

@@ -1,11 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import Banner from "../components/Banner";
 import RowSlider from "../components/RowSlider";
 import Loading from "../components/common/Loading";
-import styled from "styled-components";
 import useMovieListsQuery from "../hook/useMovieListsQuery";
+import Overlay from "../components/Modal/Overlay";
+import Modal from "../components/Modal/Modal";
+import styled from "styled-components";
+import useMovieDetailQuery from "../hook/useMovieDetailQuery";
 
 const Home = () => {
   const { nowPlaying, topRated, upcoming, popular } = useMovieListsQuery();
+  const { movieDetail } = useMovieDetailQuery();
+  const navigate = useNavigate();
+
   const bannerData = nowPlaying?.data?.results[0];
   const exceptBannerData = nowPlaying?.data?.results?.slice(1);
 
@@ -32,6 +39,16 @@ const Home = () => {
               data={upcoming?.data?.results}
             />
           </Sliders>
+          {movieDetail && (
+            <>
+              <Overlay
+                onOverlayClicked={() => {
+                  return navigate("/");
+                }}
+              />
+              <Modal detail={movieDetail} />
+            </>
+          )}
         </>
       )}
     </>

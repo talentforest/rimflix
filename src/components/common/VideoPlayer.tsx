@@ -6,6 +6,7 @@ import { getTrailer, IGetVideo } from "../../api/api";
 import { backdropSizes, sizeImagePath } from "../../utils/sizeImagePath";
 import ReactPlayer from "react-player/lazy";
 import styled from "styled-components";
+import device from "../../theme/mediaQueries";
 
 interface PropsType {
   videoId: number;
@@ -41,7 +42,7 @@ const VideoPlayer = ({ videoId, backdropPath }: PropsType) => {
   const movieResults = movieTrailer?.results;
 
   return (
-    <>
+    <VideoContainer>
       {!movieTrailerLoading &&
       !tvTrailerLoading &&
       (tvResults?.length || movieResults?.length) ? (
@@ -90,9 +91,29 @@ const VideoPlayer = ({ videoId, backdropPath }: PropsType) => {
           )}
         </>
       )}
-    </>
+    </VideoContainer>
   );
 };
+
+const VideoContainer = styled.section`
+  position: relative;
+  width: 100%;
+  height: 30vh;
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+  @media ${device.tablet} {
+    height: 40vh;
+  }
+  @media ${device.desktop} {
+    height: 45vh;
+    svg {
+      width: 40px;
+      height: 40px;
+    }
+  }
+`;
 
 const Trailer = styled(ReactPlayer)`
   position: absolute;

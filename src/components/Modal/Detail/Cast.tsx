@@ -2,6 +2,7 @@ import { IGuestStar } from "../../../api/api";
 import { profileSizes, sizeImagePath } from "../../../utils/sizeImagePath";
 import styled from "styled-components";
 import { Person } from "@mui/icons-material";
+import { Info } from "../Modal";
 
 interface PropsType {
   cast: IGuestStar[];
@@ -9,22 +10,27 @@ interface PropsType {
 
 const Cast = ({ cast }: PropsType) => {
   return (
-    <CastList>
-      {cast?.slice(0, 10)?.map((item) => (
-        <Actor key={item.id}>
-          {item.profile_path ? (
-            <img
-              src={sizeImagePath(profileSizes.w185, item.profile_path)}
-              alt={`${item.name} profile`}
-            />
-          ) : (
-            <Person />
-          )}
-          <h6>{item.name}</h6>
-          <span>{item.character}</span>
-        </Actor>
-      ))}
-    </CastList>
+    cast?.length !== 0 && (
+      <Info $column="column">
+        <h5>Cast</h5>
+        <CastList>
+          {cast?.slice(0, 10)?.map((item) => (
+            <Actor key={item.id}>
+              {item.profile_path ? (
+                <img
+                  src={sizeImagePath(profileSizes.w185, item.profile_path)}
+                  alt={`${item.name} profile`}
+                />
+              ) : (
+                <Person />
+              )}
+              <h6>{item.name}</h6>
+              <span>{item.character}</span>
+            </Actor>
+          ))}
+        </CastList>
+      </Info>
+    )
   );
 };
 

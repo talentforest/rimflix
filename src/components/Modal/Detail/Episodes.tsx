@@ -1,41 +1,29 @@
 import { useState } from "react";
-import { getSeasonDetail, ISeason, ISeasonDetail } from "../../../api/api";
+import { ISeason } from "../../../api/api";
 import {
   posterSizes,
   sizeImagePath,
   stillSizes,
 } from "../../../utils/sizeImagePath";
-import { useParams } from "react-router-dom";
-import { useQuery } from "react-query";
 import { convertRunningTime } from "../../../utils/convertRunningTime";
-import { AccessTime } from "@mui/icons-material";
+import { AccessTime, Image } from "@mui/icons-material";
 import { changeDateSeperator } from "../../../utils/changeDateSeperator";
 import { checkScheduledAir } from "../../../utils/checkScheduledAir";
-import RateBox from "../../common/RateBox";
+import Rate from "../../common/Rate";
 import styled from "styled-components";
 import Loading from "../../common/Loading";
 import device from "../../../theme/mediaQueries";
+import useTvDetailQuery from "../../../hook/useTvDetailQuery";
 
 interface PropsType {
   seasons: ISeason[];
-  officialPoster: string;
   seasonNumber: number;
   setSeasonNumber: (seasonNumber: number) => void;
 }
 
-const Episodes = ({
-  seasons,
-  officialPoster,
-  seasonNumber,
-  setSeasonNumber,
-}: PropsType) => {
+const Episodes = ({ seasons, seasonNumber, setSeasonNumber }: PropsType) => {
   const [episodesCount, setEpisodesCount] = useState(10);
-  const { id } = useParams();
-
-  const { data: seasonDetail, isLoading: seasonDetailLoading } =
-    useQuery<ISeasonDetail>(["season", "episodes", id, seasonNumber], () =>
-      getSeasonDetail(+id, seasonNumber)
-    );
+  const { seasonDetail, seasonDetailLoading } = useTvDetailQuery(seasonNumber);
 
   const onSeasonNumberChange = (
     event: React.ChangeEvent<HTMLSelectElement>
@@ -69,11 +57,15 @@ const Episodes = ({
         ))}
       </Select>
       <BasicInfo>
-        <img
-          src={sizeImagePath(posterSizes.w342, seasonDetail?.poster_path)}
-          alt={`${seasonDetail?.name} poster`}
-          loading="lazy"
-        />
+        {seasonDetail?.poster_path ? (
+          <img
+            src={sizeImagePath(posterSizes.w342, seasonDetail?.poster_path)}
+            alt={`${seasonDetail?.name} poster`}
+            loading="lazy"
+          />
+        ) : (
+          <Image />
+        )}
         <h5>{seasonDetail?.name}</h5>
         {checkScheduledAir(seasonDetail?.air_date) ? (
           <span>{changeDateSeperator(seasonDetail?.air_date)}</span>
@@ -102,17 +94,12 @@ const Episodes = ({
                     loading="lazy"
                   />
                 ) : (
-                  <AlternateImg
-                    src={sizeImagePath(
-                      posterSizes.w342,
-                      seasonDetail?.poster_path || officialPoster
-                    )}
-                    alt={`${episode.name} ${episode.episode_number} still`}
-                    loading="lazy"
-                  />
+                  <AlternateImg>
+                    <Image />
+                  </AlternateImg>
                 )}
                 <div>
-                  <RateBox detail={true} rate={episode?.vote_average} />
+                  <Rate detail={true} rate={episode?.vote_average} />
                   {episode.runtime && (
                     <span>
                       <AccessTime />
@@ -149,11 +136,15 @@ const BasicInfo = styled.div`
   padding: 10px;
   border-radius: 5px;
   margin-top: 10px;
-  img {
+  img,
+  svg {
     width: 80px;
     height: auto;
     float: left;
     margin-right: 10px;
+  }
+  svg {
+    padding: 10px;
   }
   span {
     display: block;
@@ -197,7 +188,7 @@ const Episode = styled.li`
   h6 {
     font-weight: 700;
     margin-bottom: 10px;
-    color: #ffcccc;
+    color: ${(props) => props.theme.pink};
   }
   > div {
     display: flex;
@@ -233,9 +224,21 @@ const StillImg = styled.img`
   margin-left: 10px;
 `;
 
-const AlternateImg = styled(StillImg)`
-  width: 85px;
-  height: 110px;
+const AlternateImg = styled.div`
+  width: 80px;
+  height: 70px;
+  float: right;
+  margin-left: 10px;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  background-color: ${(props) => props.theme.black.veryDark};
+  border-radius: 5px;
+  svg {
+    margin: 0 auto;
+    width: 40px;
+    height: 40px;
+  }
 `;
 
 export default Episodes;

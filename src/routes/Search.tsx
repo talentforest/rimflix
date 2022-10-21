@@ -1,19 +1,24 @@
 import { useEffect } from "react";
 import { useQuery } from "react-query";
-import { useLocation } from "react-router-dom";
+import { useLocation, useNavigate } from "react-router-dom";
 import { getSearch, IGetMovieTvResult } from "../api/api";
-import { AnimatePresence } from "framer-motion";
-import { useSetRecoilState } from "recoil";
+import { useRecoilState } from "recoil";
 import { searchState } from "../data/favoriteAtoms";
 import Contents from "../components/Contents";
-import Modal from "../components/Modal/Modal";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
 import Loading from "../components/common/Loading";
+import Overlay from "../components/Modal/Overlay";
+import Modal from "../components/Modal/Modal";
+import useMovieDetailQuery from "../hook/useMovieDetailQuery";
+import useTvDetailQuery from "../hook/useTvDetailQuery";
 
 const Search = () => {
-  const setSearchQuery = useSetRecoilState(searchState);
+  const [searchQuery, setSearchQuery] = useRecoilState(searchState);
+  const { movieDetail } = useMovieDetailQuery();
+  const { tvDetail } = useTvDetailQuery();
   const { search } = useLocation();
+  const navigate = useNavigate();
 
   useEffect(() => {
     handleSearchQuery();
@@ -66,9 +71,16 @@ const Search = () => {
               ))}
             </ul>
           </section>
-          <AnimatePresence>
-            <Modal />
-          </AnimatePresence>
+          {(movieDetail || tvDetail) && (
+            <>
+              <Overlay
+                onOverlayClicked={() => {
+                  return navigate(`/search/${searchQuery}`);
+                }}
+              />
+              <Modal detail={movieDetail ? movieDetail : tvDetail} />
+            </>
+          )}
         </Container>
       )}
     </>

@@ -1,14 +1,20 @@
 import { useRecoilValue } from "recoil";
+import { useNavigate } from "react-router-dom";
 import { myFavoriteMovieState, myFavoriteTvState } from "../data/favoriteAtoms";
-import { AnimatePresence } from "framer-motion";
-import Modal from "../components/Modal/Modal";
 import FavContents from "../components/FavContents";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
+import Overlay from "../components/Modal/Overlay";
+import Modal from "../components/Modal/Modal";
+import useMovieDetailQuery from "../hook/useMovieDetailQuery";
+import useTvDetailQuery from "../hook/useTvDetailQuery";
 
 const MyFavorite = () => {
   const myFavoriteMovies = useRecoilValue(myFavoriteMovieState);
   const myFavoriteTvs = useRecoilValue(myFavoriteTvState);
+  const { movieDetail } = useMovieDetailQuery();
+  const { tvDetail } = useTvDetailQuery();
+  const navigate = useNavigate();
 
   return (
     <Container>
@@ -32,9 +38,16 @@ const MyFavorite = () => {
           ))}
         </section>
       )}
-      <AnimatePresence>
-        <Modal />
-      </AnimatePresence>
+      {(movieDetail || tvDetail) && (
+        <>
+          <Overlay
+            onOverlayClicked={() => {
+              return navigate("/myFavorite");
+            }}
+          />
+          <Modal detail={movieDetail ? movieDetail : tvDetail} />
+        </>
+      )}
     </Container>
   );
 };

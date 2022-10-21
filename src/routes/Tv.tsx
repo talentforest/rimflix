@@ -1,11 +1,18 @@
+import { useNavigate } from "react-router-dom";
 import Banner from "../components/Banner";
 import Loading from "../components/common/Loading";
+import Overlay from "../components/Modal/Overlay";
+import Modal from "../components/Modal/Modal";
 import RowSlider from "../components/RowSlider";
 import useTvListsQuery from "../hook/useTvListsQuery";
 import { Sliders } from "./Home";
+import useTvDetailQuery from "../hook/useTvDetailQuery";
 
 const Tv = () => {
   const { top, popular, onAir, airingToday } = useTvListsQuery();
+  const { tvDetail } = useTvDetailQuery();
+  const navigate = useNavigate();
+
   const bannerData = top?.data?.results[0];
   const exceptBannerData = top?.data?.results.slice(1);
 
@@ -32,6 +39,16 @@ const Tv = () => {
               data={popular?.data?.results}
             />
           </Sliders>
+          {tvDetail && (
+            <>
+              <Overlay
+                onOverlayClicked={() => {
+                  return navigate("/tv");
+                }}
+              />
+              <Modal detail={tvDetail} />
+            </>
+          )}
         </>
       )}
     </>

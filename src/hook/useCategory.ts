@@ -1,7 +1,7 @@
 import { useState } from "react";
 
-const useCategory = (categoryName: string) => {
-  const [category, setCategory] = useState(categoryName);
+const useCategory = (name: string) => {
+  const [category, setCategory] = useState(name);
 
   const onCategoryClick = (name: string) => {
     setCategory(name);
