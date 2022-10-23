@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { posterSizes, sizeImagePath } from "../../utils/sizeImagePath";
 import { IDetail, IGenres } from "../../api/api";
 import { changeDateSeperator } from "../../utils/changeDateSeperator";
@@ -10,6 +10,7 @@ import InfoBox from "./InfoBox";
 import Rate from "./Rate";
 import styled from "styled-components";
 import device from "../../theme/mediaQueries";
+import useCategory from "../../hook/useCategory";
 
 const boxVariants = {
   normal: {
@@ -17,7 +18,7 @@ const boxVariants = {
   },
   hover: {
     scale: 1.2,
-    y: -20,
+
     zIndex: 2,
     transition: {
       delay: 0.2,
@@ -43,8 +44,6 @@ const infoVariants = {
 };
 
 interface PropsType {
-  myListMovieId?: boolean;
-  myListTvId?: boolean;
   searchMovieId?: number;
   searchTvId?: number;
   contents: IDetail;
@@ -52,15 +51,13 @@ interface PropsType {
 }
 
 const HoverBox = ({
-  myListMovieId,
-  myListTvId,
   searchMovieId,
   searchTvId,
   contents,
   genres,
 }: PropsType) => {
   const searchQuery = useRecoilValue(searchState);
-  const { pathname } = useLocation();
+  const { homePath, tvPath, searchPath } = useCategory();
   const navigate = useNavigate();
 
   const {
@@ -74,12 +71,10 @@ const HoverBox = ({
   } = contents;
 
   const onBoxClicked = (id: number) => {
-    if (pathname === "/") return navigate(`/movie/${id}`);
-    if (pathname === "/tv") return navigate(`/tv/${id}`);
+    if (homePath) return navigate(`/movie/${id}`);
+    if (tvPath) return navigate(`/tv/${id}`);
     if (searchMovieId) return navigate(`/search/movie/${id}/${searchQuery}`);
     if (searchTvId) return navigate(`/search/tv/${id}/${searchQuery}`);
-    if (myListMovieId) return navigate(`/myList/movie/${id}`);
-    if (myListTvId) return navigate(`/myList/tv/${id}`);
   };
 
   return (
@@ -89,7 +84,7 @@ const HoverBox = ({
       variants={boxVariants}
       whileHover="hover"
       initial="normal"
-      $height={pathname.includes("search")}
+      $height={searchPath}
     >
       <Image
         src={sizeImagePath(posterSizes.w342, poster_path)}
@@ -115,6 +110,7 @@ const Box = styled(motion.div)<{ $height: boolean }>`
   position: relative;
   border-radius: 5px;
   height: 100%;
+  width: 100%;
   z-index: 1;
   cursor: pointer;
   &:first-child {

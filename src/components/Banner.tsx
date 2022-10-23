@@ -1,4 +1,4 @@
-import { Link, useLocation } from "react-router-dom";
+import { Link } from "react-router-dom";
 import { IDetail } from "../api/api";
 import {
   backdropSizes,
@@ -9,21 +9,21 @@ import { Info } from "@mui/icons-material";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
 import useGenresQuery from "../hook/useGenresQuery";
-import FavoriteButton from "./common/FavoriteButton";
+import MyListButton from "./common/MyListButton";
 import { Button } from "../theme/buttonStyle";
+import useCategory from "../hook/useCategory";
 
 interface PropsType {
   data: IDetail;
 }
 
 const Banner = ({ data }: PropsType) => {
-  const { pathname } = useLocation();
-  const correctPathModal =
-    pathname === "/tv" ? `/tv/${data?.id}` : `/movie/${data?.id}`;
+  const { tvPath } = useCategory();
+  const correctPathModal = tvPath ? `/tv/${data?.id}` : `/movie/${data?.id}`;
 
   const genreList = useGenresQuery().data?.genres;
   const contentsGenres = genreList
-    ?.filter((item) => data.genre_ids.includes(item.id))
+    ?.filter((item) => data?.genre_ids?.includes(item.id))
     .slice(0, 3);
 
   return (
@@ -32,7 +32,7 @@ const Banner = ({ data }: PropsType) => {
         <Poster>
           <source
             srcSet={sizeImagePath(backdropSizes.original, data.backdrop_path)}
-            media="(min-width: 1024px)"
+            media="(min-width: 768px)"
           />
           <img
             src={sizeImagePath(posterSizes.original, data.poster_path)}
@@ -48,7 +48,11 @@ const Banner = ({ data }: PropsType) => {
           </Genres>
           <p>{data.overview}</p>
           <Btns>
-            <FavoriteButton contentsId={data.id} />
+            <MyListButton
+              category={data.name ? "tv" : "movie"}
+              bannerId={data.id}
+              imgPath={data.poster_path}
+            />
             <Button as={Link} to={correctPathModal}>
               More Info <Info />
             </Button>
@@ -60,7 +64,7 @@ const Banner = ({ data }: PropsType) => {
 };
 
 const Container = styled.section`
-  height: 80vh;
+  height: 85vh;
   position: relative;
   display: flex;
   flex-direction: column;

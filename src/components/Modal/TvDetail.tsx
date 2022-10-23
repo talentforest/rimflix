@@ -35,7 +35,7 @@ const TvDetail = ({ detail }: PropsType) => {
       {!recommendationLoading && !similarLoading && (
         <Info $column="column">
           <Category
-            firstDataLength={Object.keys(seasons).length}
+            firstDataLength={Object.keys(seasons || {}).length}
             secondDataLength={similar?.results?.length}
             thirdDataLength={recommendation?.results?.length}
             category={category}

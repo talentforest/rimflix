@@ -1,5 +1,4 @@
 import { motion, useViewportScroll } from "framer-motion";
-import { useLocation } from "react-router-dom";
 import { v4 as uuidv4 } from "uuid";
 import { IDetail } from "../../api/api";
 import styled from "styled-components";
@@ -7,23 +6,23 @@ import device from "../../theme/mediaQueries";
 import VideoPlayer from "../common/VideoPlayer";
 import MovieDetail from "./MovieDetail";
 import TvDetail from "./TvDetail";
-import FavoriteButton from "../common/FavoriteButton";
+import MyListButton from "../common/MyListButton";
 import RunTime from "./Detail/RunTime";
 import Genres from "./Detail/Genres";
 import Rate from "../common/Rate";
+import useCategory from "../../hook/useCategory";
 
 interface PropsType {
   detail: IDetail;
 }
 
 const Modal = ({ detail }: PropsType) => {
-  const { pathname } = useLocation();
   const { scrollY } = useViewportScroll();
-  const moviePath = pathname.includes("movie") || pathname === "/";
-  const tvPath = pathname.includes("tv");
+  const { moviePath, tvPath } = useCategory();
 
   const {
     id,
+    poster_path,
     backdrop_path,
     tagline,
     overview,
@@ -43,7 +42,11 @@ const Modal = ({ detail }: PropsType) => {
         <p>{tagline}</p>
         <h3>{title || name}</h3>
         <Genres genres={genres} />
-        <FavoriteButton contentsId={id} />
+        <MyListButton
+          category={name ? "tv" : "movie"}
+          contentsId={id}
+          imgPath={poster_path}
+        />
         <RateTime>
           <Rate rate={vote_average} />
           <RunTime runtime={runtime || episode_run_time[0]} />

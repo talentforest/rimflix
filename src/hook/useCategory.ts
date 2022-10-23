@@ -1,21 +1,20 @@
-import { useState } from "react";
+import { useLocation } from "react-router-dom";
 
-const useCategory = (name: string) => {
-  const [category, setCategory] = useState(name);
+const useCategory = () => {
+  const { pathname } = useLocation();
 
-  const onCategoryClick = (name: string) => {
-    setCategory(name);
-  };
-
-  const animate = (name: string) => {
-    return category === name ? { scale: 1.15, color: "#ffcccc" } : { scale: 1 };
-  };
+  const homePath = pathname === "/";
+  const moviePath = pathname.includes("/movie");
+  const tvPath = pathname.includes("/tv");
+  const myListPath = pathname === "/myList";
+  const searchPath = pathname.includes("search");
 
   return {
-    category,
-    setCategory,
-    onCategoryClick,
-    animate,
+    homePath,
+    moviePath,
+    tvPath,
+    myListPath,
+    searchPath,
   };
 };
 

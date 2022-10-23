@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
-import { useLocation } from "react-router-dom";
 import styled from "styled-components";
+import useCategory from "../../../hook/useCategory";
 import device from "../../../theme/mediaQueries";
 
 interface ICategoryProps {
@@ -18,8 +18,8 @@ const Category = ({
   category,
   setCategory,
 }: ICategoryProps) => {
-  const { pathname } = useLocation();
-  const moviePath = pathname.includes("/movie");
+  const { moviePath } = useCategory();
+
   const firstCategoryName = moviePath ? "Collection" : "Seasons";
 
   const onCategoryClick = (name: string) => {

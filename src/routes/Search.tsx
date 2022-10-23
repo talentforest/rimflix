@@ -10,14 +10,14 @@ import styled from "styled-components";
 import Loading from "../components/common/Loading";
 import Overlay from "../components/Modal/Overlay";
 import Modal from "../components/Modal/Modal";
-import useMovieDetailQuery from "../hook/useMovieDetailQuery";
-import useTvDetailQuery from "../hook/useTvDetailQuery";
+import useDetailQuery from "../hook/useDetailQuery";
+import useCategory from "../hook/useCategory";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useRecoilState(searchState);
-  const { movieDetail } = useMovieDetailQuery();
-  const { tvDetail } = useTvDetailQuery();
+  const { movieDetail, tvDetail } = useDetailQuery();
   const { search } = useLocation();
+  const { moviePath } = useCategory();
   const navigate = useNavigate();
 
   useEffect(() => {
@@ -78,7 +78,7 @@ const Search = () => {
                   return navigate(`/search/${searchQuery}`);
                 }}
               />
-              <Modal detail={movieDetail ? movieDetail : tvDetail} />
+              <Modal detail={moviePath ? movieDetail : tvDetail} />
             </>
           )}
         </Container>

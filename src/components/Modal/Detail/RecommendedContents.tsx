@@ -1,4 +1,4 @@
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IDetail } from "../../../api/api";
 import { motion } from "framer-motion";
 import { changeDateSeperator } from "../../../utils/changeDateSeperator";
@@ -6,6 +6,7 @@ import { posterSizes, sizeImagePath } from "../../../utils/sizeImagePath";
 // import { Contents } from "../TvDetail";
 import Rate from "../../common/Rate";
 import styled from "styled-components";
+import useCategory from "../../../hook/useCategory";
 
 const boxVariants = {
   normal: {
@@ -43,8 +44,7 @@ interface PropsType {
 
 const RecommendedContents = ({ recommendation }: PropsType) => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const moviePath = pathname.includes("/movie");
+  const { moviePath } = useCategory();
 
   return (
     <>

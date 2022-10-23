@@ -1,9 +1,7 @@
 import { useQuery } from "react-query";
-import { useLocation, useParams } from "react-router-dom";
 import {
   getCollection,
   getCrews,
-  getDetail,
   getKeyword,
   getRecommendation,
   getSimilar,
@@ -13,26 +11,17 @@ import {
   IGetMovieTvResult,
   IKeywords,
 } from "../api/api";
+import useCategory from "./useCategory";
 
 const useMovieDetailQuery = (detail?: IDetail) => {
-  const { pathname } = useLocation();
-  const { id } = useParams();
-
-  const { data: movieDetail } = useQuery<IDetail>(
-    ["detail", "movie", +id],
-    () => getDetail("movie", +id),
-    {
-      enabled: pathname.includes("/movie"),
-    }
-  );
+  const { moviePath } = useCategory();
 
   const { data: collection, isLoading: collectionIsLoading } =
     useQuery<ICollection>(
       ["details", "collection", detail?.belongs_to_collection?.id],
       () => getCollection(detail?.belongs_to_collection?.id),
       {
-        enabled:
-          !!detail?.belongs_to_collection?.id && pathname.includes("/movie"),
+        enabled: !!detail?.belongs_to_collection?.id && moviePath,
       }
     );
 
@@ -41,7 +30,7 @@ const useMovieDetailQuery = (detail?: IDetail) => {
       ["recommendation", "movie", +detail?.id],
       () => getRecommendation("movie", +detail?.id),
       {
-        enabled: !!detail?.id && pathname.includes("/movie"),
+        enabled: !!detail?.id && moviePath,
       }
     );
 
@@ -50,7 +39,7 @@ const useMovieDetailQuery = (detail?: IDetail) => {
       ["similar", "movie", detail?.id],
       () => getSimilar("movie", +detail?.id),
       {
-        enabled: !!detail?.id && pathname.includes("/movie"),
+        enabled: !!detail?.id && moviePath,
       }
     );
 
@@ -58,7 +47,7 @@ const useMovieDetailQuery = (detail?: IDetail) => {
     ["crew", detail?.id],
     () => getCrews("movie", +detail?.id),
     {
-      enabled: !!detail?.id && pathname.includes("/movie"),
+      enabled: !!detail?.id && moviePath,
     }
   );
 
@@ -66,12 +55,11 @@ const useMovieDetailQuery = (detail?: IDetail) => {
     ["keyword", "movie", detail?.id],
     () => getKeyword("movie", +detail?.id),
     {
-      enabled: !!detail?.id && pathname.includes("/movie"),
+      enabled: !!detail?.id && moviePath,
     }
   );
 
   return {
-    movieDetail,
     collection,
     collectionIsLoading,
     recommendation,

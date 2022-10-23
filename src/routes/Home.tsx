@@ -6,11 +6,11 @@ import useMovieListsQuery from "../hook/useMovieListsQuery";
 import Overlay from "../components/Modal/Overlay";
 import Modal from "../components/Modal/Modal";
 import styled from "styled-components";
-import useMovieDetailQuery from "../hook/useMovieDetailQuery";
+import useDetailQuery from "../hook/useDetailQuery";
 
 const Home = () => {
   const { nowPlaying, topRated, upcoming, popular } = useMovieListsQuery();
-  const { movieDetail } = useMovieDetailQuery();
+  const { movieDetail } = useDetailQuery();
   const navigate = useNavigate();
 
   const bannerData = nowPlaying?.data?.results[0];

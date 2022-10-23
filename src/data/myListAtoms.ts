@@ -1,7 +1,14 @@
 import { atom } from "recoil";
 import { v4 as uuidv4 } from "uuid";
 
-export const myListMovieState = atom<number[]>({
+export interface IMyList {
+  category: string;
+  contentsId: number;
+  imgPath: string;
+  date: string;
+}
+
+export const myListMovieState = atom<IMyList[]>({
   key: `myListMovie/${uuidv4()}`,
   default: [],
   effects: [
@@ -20,7 +27,7 @@ export const myListMovieState = atom<number[]>({
   ],
 });
 
-export const myListTvState = atom<number[]>({
+export const myListTvState = atom<IMyList[]>({
   key: `myListTv/${uuidv4()}`,
   default: [],
   effects: [

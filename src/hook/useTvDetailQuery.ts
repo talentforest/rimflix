@@ -1,37 +1,28 @@
 import { useQuery } from "react-query";
-import { useLocation, useParams } from "react-router-dom";
+import { useParams } from "react-router-dom";
 import {
-  getDetail,
   getKeyword,
   getRecommendation,
   getSeasonDetail,
   getSimilar,
   getTvSeasonCrews,
   ICastCrew,
-  IDetail,
   IGetMovieTvResult,
   IKeywords,
   ISeasonDetail,
 } from "../api/api";
+import useCategory from "./useCategory";
 
 const useTvDetailQuery = (seasonNumber?: number) => {
-  const { pathname } = useLocation();
+  const { tvPath } = useCategory();
   const { id } = useParams();
-
-  const { data: tvDetail } = useQuery<IDetail>(
-    ["detail", "tv", +id],
-    () => getDetail("tv", +id),
-    {
-      enabled: pathname.includes("/tv"),
-    }
-  );
 
   const { data: recommendation, isLoading: recommendationLoading } =
     useQuery<IGetMovieTvResult>(
       ["recommendation", "tv", id],
       () => getRecommendation("tv", +id),
       {
-        enabled: !!id && pathname.includes("/tv"),
+        enabled: !!id && tvPath,
       }
     );
 
@@ -40,7 +31,7 @@ const useTvDetailQuery = (seasonNumber?: number) => {
       ["similar", "tv", id],
       () => getSimilar("tv", +id),
       {
-        enabled: !!id && pathname.includes("/tv"),
+        enabled: !!id && tvPath,
       }
     );
 
@@ -49,7 +40,7 @@ const useTvDetailQuery = (seasonNumber?: number) => {
       ["episodes", id, seasonNumber],
       () => getTvSeasonCrews(+id, seasonNumber),
       {
-        enabled: !!id && !!seasonNumber && pathname.includes("/tv"),
+        enabled: !!id && !!seasonNumber && tvPath,
       }
     );
 
@@ -57,7 +48,7 @@ const useTvDetailQuery = (seasonNumber?: number) => {
     ["keyword", "tv", id],
     () => getKeyword("tv", +id),
     {
-      enabled: !!id && pathname.includes("/tv"),
+      enabled: !!id && tvPath,
     }
   );
 
@@ -66,12 +57,11 @@ const useTvDetailQuery = (seasonNumber?: number) => {
       ["season", "episodes", id, seasonNumber],
       () => getSeasonDetail(+id, seasonNumber),
       {
-        enabled: !!id && !!seasonNumber && pathname.includes("/tv"),
+        enabled: !!id && !!seasonNumber && tvPath,
       }
     );
 
   return {
-    tvDetail,
     recommendation,
     recommendationLoading,
     similar,

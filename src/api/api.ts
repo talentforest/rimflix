@@ -230,11 +230,9 @@ export function getSearch(category: string, query: string | null) {
 
 // Detail
 export function getDetail(category: string, contents_id: number) {
-  if (contents_id === undefined) return;
-  if (contents_id)
-    return fetch(
-      `${BASE_PATH}/${category}/${contents_id}?api_key=${API_KEY}`
-    ).then((response) => response.json());
+  return fetch(
+    `${BASE_PATH}/${category}/${contents_id}?api_key=${API_KEY}`
+  ).then((response) => response.json());
 }
 
 // Movie Detail

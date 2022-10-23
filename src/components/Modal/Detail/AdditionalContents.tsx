@@ -1,11 +1,12 @@
 import { motion } from "framer-motion";
-import { useLocation, useNavigate } from "react-router-dom";
+import { useNavigate } from "react-router-dom";
 import { IDetail } from "../../../api/api";
 import { changeDateSeperator } from "../../../utils/changeDateSeperator";
 import { posterSizes, sizeImagePath } from "../../../utils/sizeImagePath";
 import Rate from "../../common/Rate";
 import styled from "styled-components";
 import device from "../../../theme/mediaQueries";
+import useCategory from "../../../hook/useCategory";
 
 const boxVariants = {
   normal: {
@@ -42,9 +43,7 @@ interface PropsType {
 
 const AdditionalContents = ({ data }: PropsType) => {
   const navigate = useNavigate();
-  const { pathname } = useLocation();
-  const moviePath = pathname.includes("/movie");
-  const myListPath = pathname.includes("myList");
+  const { moviePath, myListPath } = useCategory();
 
   const onNavigateClick = (contentsId: number) => {
     if (myListPath) return navigate(`/myList/movie/${contentsId}`);
@@ -133,7 +132,6 @@ const ContentsInfo = styled(motion.div)`
   align-items: center;
   height: 100%;
   width: 100%;
-
   background-color: rgba(0, 0, 0, 0.8);
   border-radius: 5px;
   > div {

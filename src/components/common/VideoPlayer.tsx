@@ -1,12 +1,12 @@
 import { MovieCreation, VolumeOff, VolumeUp } from "@mui/icons-material";
 import { useState } from "react";
 import { useQuery } from "react-query";
-import { useLocation } from "react-router-dom";
 import { getTrailer, IGetVideo } from "../../api/api";
 import { backdropSizes, sizeImagePath } from "../../utils/sizeImagePath";
 import ReactPlayer from "react-player/lazy";
 import styled from "styled-components";
 import device from "../../theme/mediaQueries";
+import useCategory from "../../hook/useCategory";
 
 interface PropsType {
   videoId: number;
@@ -15,14 +15,14 @@ interface PropsType {
 
 const VideoPlayer = ({ videoId, backdropPath }: PropsType) => {
   const [volume, setVolume] = useState(true);
-  const { pathname } = useLocation();
+  const { homePath, moviePath, tvPath } = useCategory();
 
   const { data: movieTrailer, isLoading: movieTrailerLoading } =
     useQuery<IGetVideo>(
       ["movieTrailer", videoId],
       () => getTrailer("movie", videoId),
       {
-        enabled: (pathname === "/" || pathname.includes("/movie")) && !!videoId,
+        enabled: (homePath || moviePath) && !!videoId,
       }
     );
 
@@ -30,7 +30,7 @@ const VideoPlayer = ({ videoId, backdropPath }: PropsType) => {
     ["tvTrailer", videoId],
     () => getTrailer("tv", videoId),
     {
-      enabled: pathname.includes("/tv") && !!videoId,
+      enabled: tvPath && !!videoId,
     }
   );
 
@@ -49,7 +49,7 @@ const VideoPlayer = ({ videoId, backdropPath }: PropsType) => {
         <>
           <Trailer
             url={
-              pathname.includes("/tv")
+              tvPath
                 ? `https://www.youtube.com/watch?v=${
                     tvResults[tvResults.length - 1]?.key
                   }`

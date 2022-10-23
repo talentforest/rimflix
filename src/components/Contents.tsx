@@ -1,7 +1,7 @@
-import { useLocation } from "react-router-dom";
 import { getGenres, IDetail, IGetGenres } from "../api/api";
 import { useQuery } from "react-query";
 import HoverBox from "./common/HoverBox";
+import useCategory from "../hook/useCategory";
 
 interface PropsType {
   contents: IDetail;
@@ -10,8 +10,8 @@ interface PropsType {
 }
 
 const Contents = ({ contents, searchMovieId, searchTvId }: PropsType) => {
-  const { pathname } = useLocation();
   const { genre_ids, backdrop_path, poster_path } = contents;
+  const { tvPath } = useCategory();
 
   const { data: movieGenres, isLoading: genreIsLoading } = useQuery<IGetGenres>(
     ["genres", "MovieGenres"],
@@ -32,7 +32,7 @@ const Contents = ({ contents, searchMovieId, searchTvId }: PropsType) => {
 
   return (
     <>
-      {pathname === "/tv" || searchTvId
+      {tvPath || searchTvId
         ? !tvGenreIsLoading &&
           (backdrop_path || poster_path) && (
             <HoverBox
