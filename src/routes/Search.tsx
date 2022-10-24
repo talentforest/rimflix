@@ -20,7 +20,7 @@ const Search = () => {
   const { moviePath, tvPath } = useCategory();
   const { search } = useLocation();
   const navigate = useNavigate();
-  const searchKeyword = search?.split("/")[0]?.split("=")[1];
+  const searchKeyword = search?.split("=")[1];
 
   const {
     searchMovies,
@@ -59,7 +59,7 @@ const Search = () => {
                 <Contents
                   key={contents.id}
                   contents={contents}
-                  searchMovieId={contents.id}
+                  searchId={contents.id}
                 />
               ))}
             </ResultBox>
@@ -75,7 +75,7 @@ const Search = () => {
                 <Contents
                   key={contents.id}
                   contents={contents}
-                  searchTvId={contents.id}
+                  searchId={contents.id}
                 />
               ))}
             </ResultBox>

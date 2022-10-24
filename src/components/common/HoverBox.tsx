@@ -14,25 +14,19 @@ import device from "../../theme/mediaQueries";
 import useCategory from "../../hook/useCategory";
 
 interface PropsType {
-  searchMovieId?: number;
-  searchTvId?: number;
+  searchId?: number;
   contents: IDetail;
   genres?: IGenres[];
 }
 
-const HoverBox = ({
-  searchMovieId,
-  searchTvId,
-  contents,
-  genres,
-}: PropsType) => {
+const HoverBox = ({ searchId, contents, genres }: PropsType) => {
   const searchQuery = useRecoilValue(searchState);
   const { homePath, tvPath, searchPath } = useCategory();
   const navigate = useNavigate();
 
   const {
-    title,
     id,
+    title,
     name,
     poster_path,
     first_air_date,
@@ -43,8 +37,9 @@ const HoverBox = ({
   const onBoxClicked = (id: number) => {
     if (homePath) return navigate(`/movie/${id}`);
     if (tvPath) return navigate(`/tv/${id}`);
-    if (searchMovieId) return navigate(`/search/movie/${id}/${searchQuery}`);
-    if (searchTvId) return navigate(`/search/tv/${id}/${searchQuery}`);
+    if (searchId && title)
+      return navigate(`/search/movie/${id}/${searchQuery}`);
+    if (searchId && name) return navigate(`/search/tv/${id}/${searchQuery}`);
   };
 
   return (

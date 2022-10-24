@@ -1,53 +1,28 @@
-import { getGenres, IDetail, IGetGenres } from "../api/api";
-import { useQuery } from "react-query";
+import { IDetail } from "../api/api";
 import HoverBox from "./common/HoverBox";
-import useCategory from "../hook/useCategory";
+import useGenresQuery from "../hook/Query/useGenresQuery";
 
 interface PropsType {
   contents: IDetail;
-  searchMovieId?: number;
-  searchTvId?: number;
+  searchId?: number;
 }
 
-const Contents = ({ contents, searchMovieId, searchTvId }: PropsType) => {
-  const { genre_ids } = contents;
-  const { tvPath } = useCategory();
+const Contents = ({ contents, searchId }: PropsType) => {
+  const { genre_ids, name } = contents;
+  const { allGenres, allGenresLoading } = useGenresQuery(name ? "tv" : "movie");
 
-  const { data: movieGenres, isLoading: genreIsLoading } = useQuery<IGetGenres>(
-    ["genres", "MovieGenres"],
-    () => getGenres("movie")
-  );
-  const { data: tvGenres, isLoading: tvGenreIsLoading } = useQuery<IGetGenres>(
-    ["genres", "TvGenres"],
-    () => getGenres("tv")
-  );
-
-  const contentsGenres = movieGenres?.genres
-    .filter((item) => genre_ids.includes(item.id))
-    .slice(0, 3);
-
-  const contentsTvGenres = tvGenres?.genres
+  const contentsGenres = allGenres?.genres
     .filter((item) => genre_ids.includes(item.id))
     .slice(0, 3);
 
   return (
-    <>
-      {tvPath || searchTvId
-        ? !tvGenreIsLoading && (
-            <HoverBox
-              contents={contents}
-              genres={contentsTvGenres}
-              searchTvId={searchTvId}
-            />
-          )
-        : !genreIsLoading && (
-            <HoverBox
-              contents={contents}
-              genres={contentsGenres}
-              searchMovieId={searchMovieId}
-            />
-          )}
-    </>
+    !allGenresLoading && (
+      <HoverBox
+        contents={contents}
+        genres={contentsGenres}
+        searchId={searchId}
+      />
+    )
   );
 };
 

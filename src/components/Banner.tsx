@@ -6,11 +6,11 @@ import {
   sizeImagePath,
 } from "../utils/sizeImagePath";
 import { Info } from "@mui/icons-material";
+import { Button } from "../theme/buttonStyle";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
 import useGenresQuery from "../hook/Query/useGenresQuery";
 import MyListButton from "./common/MyListButton";
-import { Button } from "../theme/buttonStyle";
 import useCategory from "../hook/useCategory";
 
 interface PropsType {
@@ -19,18 +19,18 @@ interface PropsType {
 
 const Banner = ({ data }: PropsType) => {
   const { tvPath } = useCategory();
-  const correctPathModal = tvPath ? `/tv/${data?.id}` : `/movie/${data?.id}`;
-
-  const genreList = useGenresQuery().data?.genres;
-  const contentsGenres = genreList
+  const { allGenres } = useGenresQuery(tvPath ? "tv" : "movie");
+  const contentsGenres = allGenres?.genres
     ?.filter((item) => data?.genre_ids?.includes(item.id))
     .slice(0, 3);
 
   const contentInfo = {
-    category: data.name ? "tv" : "movie",
+    category: tvPath ? "tv" : "movie",
     id: data.id,
     imgPath: data.poster_path,
   };
+
+  const correctPathModal = tvPath ? `/tv/${data?.id}` : `/movie/${data?.id}`;
 
   return (
     data && (
