@@ -4,10 +4,9 @@ import useGenresQuery from "../hook/Query/useGenresQuery";
 
 interface PropsType {
   contents: IDetail;
-  searchId?: number;
 }
 
-const Contents = ({ contents, searchId }: PropsType) => {
+const Contents = ({ contents }: PropsType) => {
   const { genre_ids, name } = contents;
   const { allGenres, allGenresLoading } = useGenresQuery(name ? "tv" : "movie");
 
@@ -17,11 +16,7 @@ const Contents = ({ contents, searchId }: PropsType) => {
 
   return (
     !allGenresLoading && (
-      <HoverBox
-        contents={contents}
-        genres={contentsGenres}
-        searchId={searchId}
-      />
+      <HoverBox contents={contents} genres={contentsGenres} />
     )
   );
 };

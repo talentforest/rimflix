@@ -56,11 +56,7 @@ const Search = () => {
             />
             <ResultBox>
               {cutWithoutPoster(searchMovies?.results)?.map((contents) => (
-                <Contents
-                  key={contents.id}
-                  contents={contents}
-                  searchId={contents.id}
-                />
+                <Contents key={contents.id} contents={contents} />
               ))}
             </ResultBox>
           </section>
@@ -72,11 +68,7 @@ const Search = () => {
             />
             <ResultBox>
               {cutWithoutPoster(searchTvShows?.results)?.map((contents) => (
-                <Contents
-                  key={contents.id}
-                  contents={contents}
-                  searchId={contents.id}
-                />
+                <Contents key={contents.id} contents={contents} />
               ))}
             </ResultBox>
           </section>

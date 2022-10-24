@@ -14,12 +14,11 @@ import device from "../../theme/mediaQueries";
 import useCategory from "../../hook/useCategory";
 
 interface PropsType {
-  searchId?: number;
   contents: IDetail;
   genres?: IGenres[];
 }
 
-const HoverBox = ({ searchId, contents, genres }: PropsType) => {
+const HoverBox = ({ contents, genres }: PropsType) => {
   const searchQuery = useRecoilValue(searchState);
   const { homePath, tvPath, searchPath } = useCategory();
   const navigate = useNavigate();
@@ -34,18 +33,21 @@ const HoverBox = ({ searchId, contents, genres }: PropsType) => {
     vote_average,
   } = contents;
 
-  const onBoxClicked = (id: number) => {
-    if (homePath) return navigate(`/movie/${id}`);
-    if (tvPath) return navigate(`/tv/${id}`);
-    if (searchId && title)
-      return navigate(`/search/movie/${id}/${searchQuery}`);
-    if (searchId && name) return navigate(`/search/tv/${id}/${searchQuery}`);
+  const movieId = `/movie/${id}`;
+  const tvId = `/tv/${id}`;
+
+  const onBoxClicked = () => {
+    if (homePath) return navigate(movieId);
+    if (tvPath) return navigate(tvId);
+    if (searchPath && title)
+      return navigate(`/search${movieId}/${searchQuery}`);
+    if (searchPath && name) return navigate(`/search${tvId}/${searchQuery}`);
   };
 
   return (
     <Box
       key={id}
-      onClick={() => onBoxClicked(id)}
+      onClick={() => onBoxClicked()}
       variants={bigVariants}
       whileHover="hover"
       initial="normal"
