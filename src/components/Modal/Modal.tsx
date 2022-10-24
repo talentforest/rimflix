@@ -35,6 +35,12 @@ const Modal = ({ detail }: PropsType) => {
     episode_run_time,
   } = detail;
 
+  const contentInfo = {
+    category: name ? "tv" : "movie",
+    id,
+    imgPath: poster_path,
+  };
+
   return (
     <ModalBox style={{ top: scrollY.get() + 100 }} layoutId={`${id}${uuidv4}`}>
       <VideoPlayer videoId={id} backdropPath={backdrop_path} />
@@ -42,11 +48,7 @@ const Modal = ({ detail }: PropsType) => {
         <p>{tagline}</p>
         <h3>{title || name}</h3>
         <Genres genres={genres} />
-        <MyListButton
-          category={name ? "tv" : "movie"}
-          contentsId={id}
-          imgPath={poster_path}
-        />
+        <MyListButton contentInfo={contentInfo} />
         <RateTime>
           <Rate rate={vote_average} />
           <RunTime runtime={runtime || episode_run_time[0]} />

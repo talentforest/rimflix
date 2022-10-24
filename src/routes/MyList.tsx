@@ -5,7 +5,7 @@ import device from "../theme/mediaQueries";
 import styled from "styled-components";
 import Overlay from "../components/Modal/Overlay";
 import Modal from "../components/Modal/Modal";
-import useDetailQuery from "../hook/useDetailQuery";
+import useDetailQuery from "../hook/Query/useDetailQuery";
 import MyListContents from "../components/MyListContents";
 import Title from "../components/common/Title";
 
@@ -24,7 +24,7 @@ const MyList = () => {
         <List>
           {myListMovies.map((myListMovie) => (
             <MyListContents
-              key={myListMovie.contentsId}
+              key={myListMovie.id}
               category="movie"
               myList={myListMovie}
             />
@@ -37,11 +37,7 @@ const MyList = () => {
       ) : (
         <List>
           {myListTvs.map((myListTv) => (
-            <MyListContents
-              key={myListTv.contentsId}
-              category="tv"
-              myList={myListTv}
-            />
+            <MyListContents key={myListTv.id} category="tv" myList={myListTv} />
           ))}
         </List>
       )}

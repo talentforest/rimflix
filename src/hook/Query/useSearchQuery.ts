@@ -1,5 +1,5 @@
 import { useQuery } from "react-query";
-import { getSearch, IGetMovieTvResult } from "../api/api";
+import { getSearch, IGetMovieTvResult } from "../../api/api";
 
 const useSearchQuery = (searchKeyword: string) => {
   const { data: searchMovies, isLoading: searchMoviesLoading } =

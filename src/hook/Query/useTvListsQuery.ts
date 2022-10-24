@@ -5,7 +5,7 @@ import {
   getPopularTvShows,
   getTopRatedTvShows,
   IGetMovieTvResult,
-} from "../api/api";
+} from "../../api/api";
 
 const useTvListsQuery = () => {
   const top = useQuery<IGetMovieTvResult>(["tvs", "top"], getTopRatedTvShows);

@@ -1,10 +1,10 @@
 import { Info } from "@mui/icons-material";
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
 import { IMyList } from "../data/myListAtoms";
 import { posterSizes, sizeImagePath } from "../utils/sizeImagePath";
 import MyListButton from "./common/MyListButton";
+import styled from "styled-components";
 
 const boxVariants = {
   normal: {
@@ -43,26 +43,28 @@ interface IMyListContents {
 const MyListContents = ({ category, myList }: IMyListContents) => {
   const navigate = useNavigate();
 
-  const onNavigateClick = (category: string, contentsId: number) => {
-    navigate(`/${category}/${contentsId}`);
+  const onNavigateClick = (category: string, id: number) => {
+    navigate(`/${category}/${id}`);
+  };
+
+  const contentInfo = {
+    category: category,
+    id: myList.id,
+    imgPath: myList.imgPath,
   };
 
   return (
     <Contents
-      key={myList.contentsId}
+      key={myList.id}
       variants={boxVariants}
       whileHover="hover"
       initial="normal"
     >
       <img src={sizeImagePath(posterSizes.w342, myList.imgPath)} alt="poster" />
       <InfoBox variants={infoVariants}>
-        <MyListButton
-          category={category}
-          contentsId={myList.contentsId}
-          imgPath={myList.imgPath}
-        />
+        <MyListButton contentInfo={contentInfo} />
         <button>
-          <Info onClick={() => onNavigateClick(category, myList.contentsId)} />
+          <Info onClick={() => onNavigateClick(category, myList.id)} />
         </button>
         <div>
           <span>Date Added</span>

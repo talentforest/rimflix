@@ -5,8 +5,8 @@ import Loading from "../components/common/Loading";
 import Overlay from "../components/Modal/Overlay";
 import Modal from "../components/Modal/Modal";
 import RowSlider from "../components/RowSlider";
-import useTvListsQuery from "../hook/useTvListsQuery";
-import useDetailQuery from "../hook/useDetailQuery";
+import useTvListsQuery from "../hook/Query/useTvListsQuery";
+import useDetailQuery from "../hook/Query/useDetailQuery";
 
 const Tv = () => {
   const { top, popular, onAir, airingToday } = useTvListsQuery();

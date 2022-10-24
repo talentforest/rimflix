@@ -1,8 +1,8 @@
 import { useQuery } from "react-query";
 import { useSetRecoilState } from "recoil";
-import { getGenres, IGetGenres } from "../api/api";
-import { movieGenresState, tvGenresState } from "../data/genresAtom";
-import useCategory from "./useCategory";
+import { getGenres, IGetGenres } from "../../api/api";
+import { movieGenresState, tvGenresState } from "../../data/genresAtom";
+import useCategory from "../useCategory";
 
 const useGenresQuery = () => {
   const setMovieGenres = useSetRecoilState(movieGenresState);

@@ -10,8 +10,8 @@ import {
   IGetMovieTvResult,
   IKeywords,
   ISeasonDetail,
-} from "../api/api";
-import useCategory from "./useCategory";
+} from "../../api/api";
+import useCategory from "../useCategory";
 
 const useTvDetailQuery = (seasonNumber?: number) => {
   const { tvPath } = useCategory();

@@ -45,10 +45,10 @@ const AdditionalContents = ({ data }: PropsType) => {
   const navigate = useNavigate();
   const { moviePath, myListPath } = useCategory();
 
-  const onNavigateClick = (contentsId: number) => {
-    if (myListPath) return navigate(`/myList/movie/${contentsId}`);
-    if (moviePath) return navigate(`/movie/${contentsId}`);
-    navigate(`/tv/${contentsId}`);
+  const onNavigateClick = (id: number) => {
+    if (myListPath) return navigate(`/myList/movie/${id}`);
+    if (moviePath) return navigate(`/movie/${id}`);
+    navigate(`/tv/${id}`);
   };
 
   return (

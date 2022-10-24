@@ -5,7 +5,7 @@ import {
   getTopRatedMovies,
   getUpcomingMovies,
   IGetMovieTvResult,
-} from "../api/api";
+} from "../../api/api";
 
 const useMovieListsQuery = () => {
   const nowPlaying = useQuery<IGetMovieTvResult>(

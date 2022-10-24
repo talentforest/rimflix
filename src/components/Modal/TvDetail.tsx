@@ -3,7 +3,7 @@ import { Info } from "./Modal";
 import { useState } from "react";
 import Episodes from "./Detail/Episodes";
 import Cast from "./Detail/Cast";
-import useTvDetailQuery from "../../hook/useTvDetailQuery";
+import useTvDetailQuery from "../../hook/Query/useTvDetailQuery";
 import AdditionalContents from "./Detail/AdditionalContents";
 import Category from "./Detail/Category";
 import Keywords from "./Detail/Keywords";

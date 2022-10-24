@@ -2,7 +2,7 @@ import { IDetail } from "../../api/api";
 import { Info } from "./Modal";
 import { useState } from "react";
 import Cast from "./Detail/Cast";
-import useMovieDetailQuery from "../../hook/useMovieDetailQuery";
+import useMovieDetailQuery from "../../hook/Query/useMovieDetailQuery";
 import AdditionalContents from "./Detail/AdditionalContents";
 import Category from "./Detail/Category";
 import Keywords from "./Detail/Keywords";

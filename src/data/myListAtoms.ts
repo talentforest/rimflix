@@ -3,9 +3,9 @@ import { v4 as uuidv4 } from "uuid";
 
 export interface IMyList {
   category: string;
-  contentsId: number;
+  id: number;
   imgPath: string;
-  date: string;
+  date?: string;
 }
 
 export const myListMovieState = atom<IMyList[]>({

@@ -10,8 +10,8 @@ import {
   IDetail,
   IGetMovieTvResult,
   IKeywords,
-} from "../api/api";
-import useCategory from "./useCategory";
+} from "../../api/api";
+import useCategory from "../useCategory";
 
 const useMovieDetailQuery = (detail?: IDetail) => {
   const { moviePath } = useCategory();

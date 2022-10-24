@@ -8,7 +8,7 @@ import {
 import { Info } from "@mui/icons-material";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
-import useGenresQuery from "../hook/useGenresQuery";
+import useGenresQuery from "../hook/Query/useGenresQuery";
 import MyListButton from "./common/MyListButton";
 import { Button } from "../theme/buttonStyle";
 import useCategory from "../hook/useCategory";
@@ -25,6 +25,12 @@ const Banner = ({ data }: PropsType) => {
   const contentsGenres = genreList
     ?.filter((item) => data?.genre_ids?.includes(item.id))
     .slice(0, 3);
+
+  const contentInfo = {
+    category: data.name ? "tv" : "movie",
+    id: data.id,
+    imgPath: data.poster_path,
+  };
 
   return (
     data && (
@@ -48,11 +54,7 @@ const Banner = ({ data }: PropsType) => {
           </Genres>
           <p>{data.overview}</p>
           <Btns>
-            <MyListButton
-              category={data.name ? "tv" : "movie"}
-              bannerId={data.id}
-              imgPath={data.poster_path}
-            />
+            <MyListButton contentInfo={contentInfo} />
             <Button as={Link} to={correctPathModal}>
               More Info <Info />
             </Button>

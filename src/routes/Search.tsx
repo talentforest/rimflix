@@ -9,9 +9,9 @@ import styled from "styled-components";
 import Loading from "../components/common/Loading";
 import Overlay from "../components/Modal/Overlay";
 import Modal from "../components/Modal/Modal";
-import useDetailQuery from "../hook/useDetailQuery";
+import useDetailQuery from "../hook/Query/useDetailQuery";
 import useCategory from "../hook/useCategory";
-import useSearchQuery from "../hook/useSearchQuery";
+import useSearchQuery from "../hook/Query/useSearchQuery";
 import Title from "../components/common/Title";
 
 const Search = () => {

@@ -13,7 +13,7 @@ import Rate from "../../common/Rate";
 import styled from "styled-components";
 import Loading from "../../common/Loading";
 import device from "../../../theme/mediaQueries";
-import useTvDetailQuery from "../../../hook/useTvDetailQuery";
+import useTvDetailQuery from "../../../hook/Query/useTvDetailQuery";
 
 interface PropsType {
   seasons: ISeason[];
