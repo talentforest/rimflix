@@ -27,7 +27,7 @@ const MyListButton = ({
   const [like, setLike] = useState(false);
   const [myListMovies, setMyListMovies] = useRecoilState(myListMovieState);
   const [myListTvs, setMyListTvs] = useRecoilState(myListTvState);
-  const { myListPath } = useCategory();
+  const { homePath, myListPath, tvPath, moviePath } = useCategory();
   const { id } = useParams();
 
   const checkMyList = (contents: IMyList[]) => {
@@ -83,9 +83,11 @@ const MyListButton = ({
     }
   };
 
+  console.log(myListPath);
+
   return (
     <>
-      {!myListPath &&
+      {(homePath || moviePath || tvPath) &&
         (like ? (
           <MyFavarite onClick={onDeleteClick}>
             My List <Favorite />

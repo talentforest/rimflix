@@ -10,7 +10,7 @@ interface PropsType {
 }
 
 const Contents = ({ contents, searchMovieId, searchTvId }: PropsType) => {
-  const { genre_ids, backdrop_path, poster_path } = contents;
+  const { genre_ids } = contents;
   const { tvPath } = useCategory();
 
   const { data: movieGenres, isLoading: genreIsLoading } = useQuery<IGetGenres>(
@@ -33,16 +33,14 @@ const Contents = ({ contents, searchMovieId, searchTvId }: PropsType) => {
   return (
     <>
       {tvPath || searchTvId
-        ? !tvGenreIsLoading &&
-          (backdrop_path || poster_path) && (
+        ? !tvGenreIsLoading && (
             <HoverBox
               contents={contents}
               genres={contentsTvGenres}
               searchTvId={searchTvId}
             />
           )
-        : !genreIsLoading &&
-          (backdrop_path || poster_path) && (
+        : !genreIsLoading && (
             <HoverBox
               contents={contents}
               genres={contentsGenres}

@@ -113,31 +113,63 @@ const Box = styled(motion.div)<{ $height: boolean }>`
   width: 100%;
   z-index: 1;
   cursor: pointer;
-  &:first-child {
+  &:nth-child(3n + 1) {
     -webkit-transform-origin: center left;
     transform-origin: center left;
   }
-  &:last-child {
+  &:nth-child(3n) {
     -webkit-transform-origin: center right;
     transform-origin: center right;
   }
   @media ${device.tablet} {
-    height: ${(props) => (props.$height ? "220px" : "100%")};
+    &:nth-child(3n + 1) {
+      -webkit-transform-origin: center center;
+      transform-origin: center center;
+    }
+    &:nth-child(3n) {
+      -webkit-transform-origin: center center;
+      transform-origin: center center;
+    }
+    &:nth-child(5n + 1) {
+      -webkit-transform-origin: center left;
+      transform-origin: center left;
+    }
+    &:nth-child(5n) {
+      -webkit-transform-origin: center right;
+      transform-origin: center right;
+    }
   }
   @media ${device.desktop} {
-    height: ${(props) => (props.$height ? "260px" : "100%")};
+    &:nth-child(3n + 1) {
+      -webkit-transform-origin: center center;
+      transform-origin: center center;
+    }
+    &:nth-child(3n) {
+      -webkit-transform-origin: center center;
+      transform-origin: center center;
+    }
+    &:nth-child(5n + 1) {
+      -webkit-transform-origin: center center;
+      transform-origin: center center;
+    }
+    &:nth-child(5n) {
+      -webkit-transform-origin: center center;
+      transform-origin: center center;
+    }
+    &:nth-child(6n + 1) {
+      -webkit-transform-origin: center left;
+      transform-origin: center left;
+    }
+    &:nth-child(6n) {
+      -webkit-transform-origin: center right;
+      transform-origin: center right;
+    }
   }
 `;
 
 const Image = styled.img`
-  position: absolute;
-  top: 0;
-  bottom: 0;
-  left: 0;
-  right: 0;
   width: 100%;
   height: 100%;
-  object-fit: cover;
   border-radius: 5px;
 `;
 

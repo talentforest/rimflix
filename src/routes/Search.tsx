@@ -1,9 +1,8 @@
 import { useEffect } from "react";
-import { useQuery } from "react-query";
 import { useLocation, useNavigate } from "react-router-dom";
-import { getSearch, IGetMovieTvResult } from "../api/api";
 import { useRecoilState } from "recoil";
 import { searchState } from "../data/searchAtom";
+import { IDetail } from "../api/api";
 import Contents from "../components/Contents";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
@@ -12,34 +11,36 @@ import Overlay from "../components/Modal/Overlay";
 import Modal from "../components/Modal/Modal";
 import useDetailQuery from "../hook/useDetailQuery";
 import useCategory from "../hook/useCategory";
+import useSearchQuery from "../hook/useSearchQuery";
+import Title from "../components/common/Title";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useRecoilState(searchState);
   const { movieDetail, tvDetail } = useDetailQuery();
+  const { moviePath, tvPath } = useCategory();
   const { search } = useLocation();
-  const { moviePath } = useCategory();
   const navigate = useNavigate();
+  const searchKeyword = search?.split("/")[0]?.split("=")[1];
+
+  const {
+    searchMovies,
+    searchMoviesLoading,
+    searchTvShows,
+    searchTvShowsLoading,
+  } = useSearchQuery(searchKeyword);
 
   useEffect(() => {
     handleSearchQuery();
     // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [search]);
 
-  const searchKeyword = search?.split("/")[0]?.split("=")[1];
-
   const handleSearchQuery = () => {
     setSearchQuery(search);
   };
 
-  const { data: searchMovies, isLoading: searchMoviesLoading } =
-    useQuery<IGetMovieTvResult>(["search", "movies", searchKeyword], () =>
-      getSearch("movie", searchKeyword)
-    );
-
-  const { data: searchTvShows, isLoading: searchTvShowsLoading } =
-    useQuery<IGetMovieTvResult>(["search", "tv", searchKeyword], () =>
-      getSearch("tv", searchKeyword)
-    );
+  const cutWithoutPoster = (contents: IDetail[]) => {
+    return contents?.filter((item) => item.poster_path);
+  };
 
   return (
     <>
@@ -48,39 +49,48 @@ const Search = () => {
       ) : (
         <Container>
           <section>
-            <h1>Movies Result ({searchMovies?.results?.length})</h1>
-            <ul>
-              {searchMovies?.results?.map((contents) => (
+            <Title
+              title={`Movies Result (${
+                cutWithoutPoster(searchMovies?.results)?.length
+              })`}
+            />
+            <ResultBox>
+              {cutWithoutPoster(searchMovies?.results)?.map((contents) => (
                 <Contents
                   key={contents.id}
                   contents={contents}
                   searchMovieId={contents.id}
                 />
               ))}
-            </ul>
+            </ResultBox>
           </section>
           <section>
-            <h1>Tv Shows Result ({searchTvShows?.results?.length})</h1>
-            <ul>
-              {searchTvShows?.results?.map((contents) => (
+            <Title
+              title={`Tv Result (${
+                cutWithoutPoster(searchTvShows?.results)?.length
+              })`}
+            />
+            <ResultBox>
+              {cutWithoutPoster(searchTvShows?.results)?.map((contents) => (
                 <Contents
                   key={contents.id}
                   contents={contents}
                   searchTvId={contents.id}
                 />
               ))}
-            </ul>
+            </ResultBox>
           </section>
-          {(movieDetail || tvDetail) && (
-            <>
+          <>
+            {(movieDetail || tvDetail) && (
               <Overlay
                 onOverlayClicked={() => {
                   return navigate(`/search/${searchQuery}`);
                 }}
               />
-              <Modal detail={moviePath ? movieDetail : tvDetail} />
-            </>
-          )}
+            )}
+            {moviePath && movieDetail && <Modal detail={movieDetail} />}
+            {tvPath && tvDetail && <Modal detail={tvDetail} />}
+          </>
         </Container>
       )}
     </>
@@ -88,40 +98,35 @@ const Search = () => {
 };
 
 const Container = styled.main`
-  margin-top: 100px;
-  padding: 0 30px;
+  margin-top: 60px;
+  padding: 0 20px;
   width: 100%;
   min-height: 100vh;
   > section {
     margin-bottom: 50px;
-    h1 {
-      margin-left: 10px;
-      font-size: 20px;
-      font-weight: 700;
-    }
-    > ul {
-      display: grid;
-      grid-template-columns: repeat(6, 1fr);
-      justify-items: center;
-      gap: 15px;
-      margin-top: 20px;
-    }
   }
   @media ${device.tablet} {
-    > section {
-      > ul {
-        grid-template-columns: repeat(5, 1fr);
-      }
-    }
-  }
-  @media ${device.mobile} {
+    padding: 0 50px;
     overflow: hidden;
     margin-top: 70px;
-    > section {
-      > ul {
-        grid-template-columns: repeat(3, 1fr);
-      }
-    }
+  }
+`;
+
+const ResultBox = styled.ul`
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 15px;
+  margin-top: 15px;
+  padding: 10px;
+  border-radius: 5px;
+  background-color: ${(props) => props.theme.black.lighter};
+  @media ${device.tablet} {
+    grid-template-columns: repeat(5, 1fr);
+    padding: 15px;
+    border-radius: 10px;
+  }
+  @media ${device.desktop} {
+    grid-template-columns: repeat(7, 1fr);
   }
 `;
 

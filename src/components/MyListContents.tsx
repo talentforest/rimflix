@@ -23,11 +23,9 @@ const boxVariants = {
 const infoVariants = {
   normal: {
     opacity: 0,
-    scale: 1,
   },
   hover: {
     opacity: 1,
-    scale: 1.02,
     zIndex: 1,
     transition: {
       delay: 0.2,
@@ -46,7 +44,7 @@ const MyListContents = ({ category, myList }: IMyListContents) => {
   const navigate = useNavigate();
 
   const onNavigateClick = (category: string, contentsId: number) => {
-    navigate(`/myList/${category}/${contentsId}`);
+    navigate(`/${category}/${contentsId}`);
   };
 
   return (
@@ -80,7 +78,7 @@ const Contents = styled(motion.div)`
   border-radius: 5px;
   img {
     width: 100%;
-    height: auto;
+    height: 100%;
     border-radius: 5px;
   }
   > div {
@@ -92,6 +90,7 @@ const Contents = styled(motion.div)`
     display: flex;
     align-items: center;
     justify-content: center;
+    border-radius: 5px;
     &:hover {
       background-color: rgba(0, 0, 0, 0.8);
     }

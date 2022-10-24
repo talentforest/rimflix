@@ -4,9 +4,9 @@ const useCategory = () => {
   const { pathname } = useLocation();
 
   const homePath = pathname === "/";
-  const moviePath = pathname.includes("/movie");
-  const tvPath = pathname.includes("/tv");
-  const myListPath = pathname === "/myList";
+  const moviePath = pathname.includes("/movie"); // 영화 콘텐츠 모달
+  const tvPath = pathname.includes("/tv"); // tv 콘텐츠 모달
+  const myListPath = pathname.includes("/myList");
   const searchPath = pathname.includes("search");
 
   return {

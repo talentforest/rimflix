@@ -7,6 +7,7 @@ import Overlay from "../components/Modal/Overlay";
 import Modal from "../components/Modal/Modal";
 import useDetailQuery from "../hook/useDetailQuery";
 import MyListContents from "../components/MyListContents";
+import Title from "../components/common/Title";
 
 const MyList = () => {
   const myListMovies = useRecoilValue(myListMovieState);
@@ -16,7 +17,7 @@ const MyList = () => {
 
   return (
     <Container>
-      <h1>My Movies</h1>
+      <Title title="My Movies" />
       {myListMovies.length === 0 ? (
         <Empty>It's still empty.</Empty>
       ) : (
@@ -30,7 +31,7 @@ const MyList = () => {
           ))}
         </List>
       )}
-      <h1>My Tv Shows</h1>
+      <Title title="My Tv Show" />
       {myListTvs.length === 0 ? (
         <Empty>It's still empty.</Empty>
       ) : (
@@ -58,28 +59,19 @@ const MyList = () => {
 };
 
 const Empty = styled.div`
-  height: 140px;
+  height: 160px;
   margin-bottom: 30px;
   padding: 10px;
   font-size: 14px;
   border-radius: 5px;
-  background-color: #202020;
+  background-color: ${(props) => props.theme.black.lighter};
 `;
 
 const Container = styled.main`
   padding: 60px 20px 0;
   min-height: 80vh;
-  h1 {
-    font-size: 16px;
-    font-weight: 700;
-    margin-bottom: 10px;
-  }
   @media ${device.tablet} {
     padding: 60px 40px 0;
-    h1 {
-      font-size: 18px;
-      margin-bottom: 15px;
-    }
   }
   @media ${device.desktop} {
     padding: 60px 40px;
@@ -91,9 +83,9 @@ const List = styled.ul`
   grid-template-columns: repeat(auto-fill, minmax(100px, 3fr));
   grid-gap: 10px;
   margin-bottom: 40px;
-  @media ${device.tablet} {
-    grid-template-columns: repeat(auto-fill, minmax(100px, 6fr));
-  }
+  padding: 10px;
+  border-radius: 5px;
+  background-color: ${(props) => props.theme.black.lighter};
 `;
 
 export default MyList;

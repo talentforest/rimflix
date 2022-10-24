@@ -5,14 +5,14 @@ import useCategory from "./useCategory";
 
 const useDetailQuery = (contentsId?: number) => {
   const { id } = useParams();
-  const { tvPath } = useCategory();
+  const { tvPath, moviePath } = useCategory();
 
   const { data: movieDetail, isLoading: movieDetailIsLoading } =
     useQuery<IDetail>(
       ["detail", "movie", +id || contentsId],
       () => getDetail("movie", +id || contentsId),
       {
-        enabled: !!id,
+        enabled: !!id && moviePath,
       }
     );
 
