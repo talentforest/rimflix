@@ -16,8 +16,9 @@ const TvDetail = ({ detail }: PropsType) => {
   const [category, setCategory] = useState(
     detail.seasons ? "Seasons" : "Similar"
   );
-  const [seasonNumber, setSeasonNumber] = useState(detail.number_of_seasons);
   const { seasons, number_of_seasons } = detail;
+  const latestSeason = seasons[seasons.length - 1]?.season_number;
+  const [seasonNumber, setSeasonNumber] = useState(latestSeason);
 
   const {
     recommendation,
@@ -30,8 +31,10 @@ const TvDetail = ({ detail }: PropsType) => {
 
   return (
     <>
-      <Keywords keywords={keyword?.results} />
-      <Cast cast={seasonCrew?.cast} />
+      {keyword?.results?.length !== 0 && (
+        <Keywords keywords={keyword?.results} />
+      )}
+      {seasonCrew?.cast?.length !== 0 && <Cast cast={seasonCrew?.cast} />}
       {!recommendationLoading && !similarLoading && (
         <Info $column="column">
           <Category

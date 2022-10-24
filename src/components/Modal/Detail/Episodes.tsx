@@ -124,6 +124,7 @@ const Select = styled.select`
   margin-top: 5px;
   height: 30px;
   font-size: 16px;
+  cursor: pointer;
   &:focus {
     outline: none;
   }

@@ -10,27 +10,25 @@ interface PropsType {
 
 const Cast = ({ cast }: PropsType) => {
   return (
-    cast?.length !== 0 && (
-      <Info $column="column">
-        <h5>Cast</h5>
-        <CastList>
-          {cast?.slice(0, 10)?.map((item) => (
-            <Actor key={item.id}>
-              {item.profile_path ? (
-                <img
-                  src={sizeImagePath(profileSizes.w185, item.profile_path)}
-                  alt={`${item.name} profile`}
-                />
-              ) : (
-                <Person />
-              )}
-              <h6>{item.name}</h6>
-              <span>{item.character}</span>
-            </Actor>
-          ))}
-        </CastList>
-      </Info>
-    )
+    <Info $column="column">
+      <h5>Cast</h5>
+      <CastList>
+        {cast?.slice(0, 10)?.map((item) => (
+          <Actor key={item.id}>
+            {item.profile_path ? (
+              <img
+                src={sizeImagePath(profileSizes.w185, item.profile_path)}
+                alt={`${item.name} profile`}
+              />
+            ) : (
+              <Person />
+            )}
+            <h6>{item.name}</h6>
+            <span>{item.character}</span>
+          </Actor>
+        ))}
+      </CastList>
+    </Info>
   );
 };
 

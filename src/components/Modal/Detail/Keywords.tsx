@@ -12,29 +12,27 @@ interface IKeywordProps {
 const Keywords = ({ keywords }: IKeywordProps) => {
   const [showAllKeywords, setShowAllKeywords] = useState(false);
 
-  const keywordLength: number = keywords?.length;
   const controlKeywords = keywords //
-    ?.slice(0, showAllKeywords ? keywordLength : 5);
+    ?.slice(0, showAllKeywords ? keywords?.length : 5);
+
   const onButtonClick = () => {
     setShowAllKeywords((prev) => !prev);
   };
 
   return (
-    keywordLength !== 0 && (
-      <Info $column="column">
-        <h5>Keywords</h5>
-        <Keyword>
-          {controlKeywords?.map((item) => (
-            <InfoBox key={item.id} info={item.name} />
-          ))}
-          {keywordLength > 5 && (
-            <div role="button" onClick={onButtonClick}>
-              {showAllKeywords ? <ArrowBackIosNew /> : <ArrowForwardIos />}
-            </div>
-          )}
-        </Keyword>
-      </Info>
-    )
+    <Info $column="column">
+      <h5>Keywords</h5>
+      <Keyword>
+        {controlKeywords?.map((item) => (
+          <InfoBox key={item.id} info={item.name} />
+        ))}
+        {keywords?.length > 5 && (
+          <div role="button" onClick={onButtonClick}>
+            {showAllKeywords ? <ArrowBackIosNew /> : <ArrowForwardIos />}
+          </div>
+        )}
+      </Keyword>
+    </Info>
   );
 };
 
