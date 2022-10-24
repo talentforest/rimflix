@@ -6,42 +6,12 @@ import { changeDateSeperator } from "../../utils/changeDateSeperator";
 import { useRecoilValue } from "recoil";
 import { searchState } from "../../data/searchAtom";
 import { cutLetter } from "../../utils/cutLetter";
+import { bigVariants, infoVariants } from "../../utils/variants";
 import InfoBox from "./InfoBox";
 import Rate from "./Rate";
 import styled from "styled-components";
 import device from "../../theme/mediaQueries";
 import useCategory from "../../hook/useCategory";
-
-const boxVariants = {
-  normal: {
-    scale: 1,
-  },
-  hover: {
-    scale: 1.2,
-
-    zIndex: 2,
-    transition: {
-      delay: 0.2,
-      duration: 0.3,
-      type: "tween",
-    },
-  },
-};
-const infoVariants = {
-  normal: {
-    opacity: 0,
-  },
-  hover: {
-    opacity: 1.2,
-    y: 10,
-    zIndex: 1,
-    transition: {
-      delay: 0.2,
-      duration: 0.3,
-      type: "tween",
-    },
-  },
-};
 
 interface PropsType {
   searchMovieId?: number;
@@ -81,7 +51,7 @@ const HoverBox = ({
     <Box
       key={id}
       onClick={() => onBoxClicked(id)}
-      variants={boxVariants}
+      variants={bigVariants}
       whileHover="hover"
       initial="normal"
       $height={searchPath}

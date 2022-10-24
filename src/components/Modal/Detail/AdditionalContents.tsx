@@ -7,35 +7,7 @@ import Rate from "../../common/Rate";
 import styled from "styled-components";
 import device from "../../../theme/mediaQueries";
 import useCategory from "../../../hook/useCategory";
-
-const boxVariants = {
-  normal: {
-    scale: 1,
-  },
-  hover: {
-    scale: 1.05,
-    zIndex: 1,
-    transition: {
-      delay: 0.2,
-      duration: 0.3,
-      type: "tween",
-    },
-  },
-};
-const infoVariants = {
-  normal: {
-    opacity: 0,
-  },
-  hover: {
-    opacity: 1,
-    zIndex: 1,
-    transition: {
-      delay: 0.2,
-      duration: 0.3,
-      type: "tween",
-    },
-  },
-};
+import { infoVariants, smallVariants } from "../../../utils/variants";
 
 interface PropsType {
   data: IDetail[];
@@ -59,7 +31,7 @@ const AdditionalContents = ({ data }: PropsType) => {
             <Contents
               onClick={() => onNavigateClick(item.id)}
               key={item.id}
-              variants={boxVariants}
+              variants={smallVariants}
               whileHover="hover"
               initial="normal"
               transition={{ type: "tween" }}

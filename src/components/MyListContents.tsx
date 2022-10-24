@@ -5,35 +5,7 @@ import { IMyList } from "../data/myListAtoms";
 import { posterSizes, sizeImagePath } from "../utils/sizeImagePath";
 import MyListButton from "./common/MyListButton";
 import styled from "styled-components";
-
-const boxVariants = {
-  normal: {
-    scale: 1,
-  },
-  hover: {
-    scale: 1.02,
-    zIndex: 2,
-    transition: {
-      delay: 0.2,
-      duration: 0.3,
-      type: "tween",
-    },
-  },
-};
-const infoVariants = {
-  normal: {
-    opacity: 0,
-  },
-  hover: {
-    opacity: 1,
-    zIndex: 1,
-    transition: {
-      delay: 0.2,
-      duration: 0.3,
-      type: "tween",
-    },
-  },
-};
+import { infoVariants, smallVariants } from "../utils/variants";
 
 interface IMyListContents {
   category: string;
@@ -56,7 +28,7 @@ const MyListContents = ({ category, myList }: IMyListContents) => {
   return (
     <Contents
       key={myList.id}
-      variants={boxVariants}
+      variants={smallVariants}
       whileHover="hover"
       initial="normal"
     >
