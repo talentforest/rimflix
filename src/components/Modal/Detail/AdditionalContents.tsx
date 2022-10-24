@@ -6,7 +6,7 @@ import { posterSizes, sizeImagePath } from "../../../utils/sizeImagePath";
 import Rate from "../../common/Rate";
 import styled from "styled-components";
 import device from "../../../theme/mediaQueries";
-import useCategory from "../../../hook/useCategory";
+import useFindPath from "../../../hook/useFindPath";
 import { infoVariants, smallVariants } from "../../../utils/variants";
 
 interface PropsType {
@@ -15,10 +15,11 @@ interface PropsType {
 
 const AdditionalContents = ({ data }: PropsType) => {
   const navigate = useNavigate();
-  const { moviePath, myListPath } = useCategory();
+  const { moviePath, myListPath, tvPath } = useFindPath();
 
   const onNavigateClick = (id: number) => {
-    if (myListPath) return navigate(`/myList/movie/${id}`);
+    if (myListPath && moviePath) return navigate(`/myList/movie/${id}`);
+    if (myListPath && tvPath) return navigate(`/myList/tv/${id}`);
     if (moviePath) return navigate(`/movie/${id}`);
     navigate(`/tv/${id}`);
   };

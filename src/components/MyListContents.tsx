@@ -16,7 +16,7 @@ const MyListContents = ({ category, myList }: IMyListContents) => {
   const navigate = useNavigate();
 
   const onNavigateClick = (category: string, id: number) => {
-    navigate(`/${category}/${id}`);
+    navigate(`${category}/${id}`);
   };
 
   const contentInfo = {
@@ -34,7 +34,7 @@ const MyListContents = ({ category, myList }: IMyListContents) => {
     >
       <img src={sizeImagePath(posterSizes.w342, myList.imgPath)} alt="poster" />
       <InfoBox variants={infoVariants}>
-        <MyListButton contentInfo={contentInfo} />
+        <MyListButton contentInfo={contentInfo} simpleBtn={true} />
         <button>
           <Info onClick={() => onNavigateClick(category, myList.id)} />
         </button>

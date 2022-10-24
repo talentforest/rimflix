@@ -11,7 +11,7 @@ import InfoBox from "./InfoBox";
 import Rate from "./Rate";
 import styled from "styled-components";
 import device from "../../theme/mediaQueries";
-import useCategory from "../../hook/useCategory";
+import useFindPath from "../../hook/useFindPath";
 
 interface PropsType {
   contents: IDetail;
@@ -20,7 +20,7 @@ interface PropsType {
 
 const HoverBox = ({ contents, genres }: PropsType) => {
   const searchQuery = useRecoilValue(searchState);
-  const { homePath, tvPath, searchPath } = useCategory();
+  const { homePath, tvPath, searchPath } = useFindPath();
   const navigate = useNavigate();
 
   const {
@@ -33,15 +33,12 @@ const HoverBox = ({ contents, genres }: PropsType) => {
     vote_average,
   } = contents;
 
-  const movieId = `/movie/${id}`;
-  const tvId = `/tv/${id}`;
-
   const onBoxClicked = () => {
-    if (homePath) return navigate(movieId);
-    if (tvPath) return navigate(tvId);
+    if (homePath) return navigate(`/movie/${id}`);
+    if (tvPath) return navigate(`/tv/${id}`);
     if (searchPath && title)
-      return navigate(`/search${movieId}/${searchQuery}`);
-    if (searchPath && name) return navigate(`/search${tvId}/${searchQuery}`);
+      return navigate(`/search/movie/${id}/${searchQuery}`);
+    if (searchPath && name) return navigate(`/search/tv/${id}/${searchQuery}`);
   };
 
   return (

@@ -1,11 +1,11 @@
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import { getDetail, IDetail } from "../../api/api";
-import useCategory from "../useCategory";
+import useFindPath from "../useFindPath";
 
 const useDetailQuery = () => {
   const { id } = useParams();
-  const { tvPath, moviePath } = useCategory();
+  const { tvPath, moviePath } = useFindPath();
 
   const { data: movieDetail, isLoading: movieDetailIsLoading } =
     useQuery<IDetail>(["detail", "movie", +id], () => getDetail("movie", +id), {

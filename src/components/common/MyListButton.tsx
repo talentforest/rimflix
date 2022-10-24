@@ -3,39 +3,25 @@ import { Button } from "../../theme/buttonStyle";
 import styled from "styled-components";
 import useAddMyList from "../../hook/useAddMyList";
 import { IMyList } from "../../data/myListAtoms";
-import useCategory from "../../hook/useCategory";
 
 interface PropsType {
   contentInfo: IMyList;
+  simpleBtn?: boolean;
 }
 
-const MyListButton = ({ contentInfo }: PropsType) => {
-  const { like, onAddClick, onDeleteClick } = useAddMyList(contentInfo);
-  const { homePath, moviePath, tvPath, myListPath } = useCategory();
+const MyListButton = ({ contentInfo, simpleBtn }: PropsType) => {
+  const { like, onAddClick, onDeleteClick } = useAddMyList({ contentInfo });
 
-  return (
-    <>
-      {(homePath || moviePath || tvPath) &&
-        (like ? (
-          <MyFavarite onClick={onDeleteClick}>
-            My List <Favorite />
-          </MyFavarite>
-        ) : (
-          <MyFavarite onClick={onAddClick}>
-            Add My List <FavoriteBorder />
-          </MyFavarite>
-        ))}
-      {myListPath &&
-        (like ? (
-          <button onClick={onDeleteClick}>
-            <Favorite />
-          </button>
-        ) : (
-          <button onClick={onAddClick}>
-            <FavoriteBorder />
-          </button>
-        ))}
-    </>
+  return like ? (
+    <MyFavarite onClick={onDeleteClick}>
+      {!simpleBtn && "My List"}
+      <Favorite />
+    </MyFavarite>
+  ) : (
+    <MyFavarite onClick={onAddClick}>
+      {!simpleBtn && "Add My List"}
+      <FavoriteBorder />
+    </MyFavarite>
   );
 };
 

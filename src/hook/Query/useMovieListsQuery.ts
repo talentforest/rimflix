@@ -6,26 +6,40 @@ import {
   getUpcomingMovies,
   IGetMovieTvResult,
 } from "../../api/api";
+import useFindPath from "../useFindPath";
 
 const useMovieListsQuery = () => {
+  const { homePath } = useFindPath();
   const nowPlaying = useQuery<IGetMovieTvResult>(
     ["movies", "nowPlaying"],
-    getNowPlayingMovies
+    getNowPlayingMovies,
+    {
+      enabled: homePath,
+    }
   );
 
   const topRated = useQuery<IGetMovieTvResult>(
     ["movies", "topRated"],
-    getTopRatedMovies
+    getTopRatedMovies,
+    {
+      enabled: homePath,
+    }
   );
 
   const upcoming = useQuery<IGetMovieTvResult>(
     ["movies", "upcoming"],
-    getUpcomingMovies
+    getUpcomingMovies,
+    {
+      enabled: homePath,
+    }
   );
 
   const popular = useQuery<IGetMovieTvResult>(
     ["movies", "popular"],
-    getPopularMovies
+    getPopularMovies,
+    {
+      enabled: homePath,
+    }
   );
 
   return {

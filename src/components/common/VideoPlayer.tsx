@@ -6,16 +6,17 @@ import { backdropSizes, sizeImagePath } from "../../utils/sizeImagePath";
 import ReactPlayer from "react-player/lazy";
 import styled from "styled-components";
 import device from "../../theme/mediaQueries";
-import useCategory from "../../hook/useCategory";
+import useFindPath from "../../hook/useFindPath";
 
 interface PropsType {
   videoId: number;
   backdropPath?: string;
+  title: string;
 }
 
-const VideoPlayer = ({ videoId, backdropPath }: PropsType) => {
+const VideoPlayer = ({ videoId, backdropPath, title }: PropsType) => {
   const [volume, setVolume] = useState(true);
-  const { homePath, moviePath, tvPath } = useCategory();
+  const { homePath, moviePath, tvPath } = useFindPath();
 
   const { data: movieTrailer, isLoading: movieTrailerLoading } =
     useQuery<IGetVideo>(
@@ -48,15 +49,11 @@ const VideoPlayer = ({ videoId, backdropPath }: PropsType) => {
       (tvResults?.length || movieResults?.length) ? (
         <>
           <Trailer
-            url={
+            url={`https://www.youtube.com/watch?v=${
               tvPath
-                ? `https://www.youtube.com/watch?v=${
-                    tvResults[tvResults.length - 1]?.key
-                  }`
-                : `https://www.youtube.com/watch?v=${
-                    movieResults[movieResults.length - 1]?.key
-                  }`
-            }
+                ? tvResults[tvResults.length - 1]?.key
+                : movieResults[movieResults.length - 1]?.key
+            }`}
             playing={true}
             muted={volume ? true : false}
             controls={false}
@@ -71,11 +68,7 @@ const VideoPlayer = ({ videoId, backdropPath }: PropsType) => {
               },
             }}
           />
-          {volume ? (
-            <Volume as={VolumeOff} onClick={handleVolume} />
-          ) : (
-            <Volume as={VolumeUp} onClick={handleVolume} />
-          )}
+          <Volume as={volume ? VolumeOff : VolumeUp} onClick={handleVolume} />
         </>
       ) : (
         <>
@@ -83,7 +76,7 @@ const VideoPlayer = ({ videoId, backdropPath }: PropsType) => {
           {backdropPath ? (
             <BackdropImg
               src={sizeImagePath(backdropSizes.original, backdropPath)}
-              alt="backdrop"
+              alt={`${title} backdrop`}
               loading="lazy"
             />
           ) : (

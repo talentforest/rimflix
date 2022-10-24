@@ -11,10 +11,10 @@ import {
   IKeywords,
   ISeasonDetail,
 } from "../../api/api";
-import useCategory from "../useCategory";
+import useFindPath from "../useFindPath";
 
 const useTvDetailQuery = (seasonNumber?: number) => {
-  const { tvPath } = useCategory();
+  const { tvPath } = useFindPath();
   const { id } = useParams();
 
   const { data: recommendation, isLoading: recommendationLoading } =

@@ -37,7 +37,7 @@ function Header() {
   return (
     <Nav variants={navBoxVariants} animate={navBoxAnimation} initial={"top"}>
       <Col>
-        <Link to="/" aria-label="Rimflix">
+        <Link to="/">
           <LogoBox />
         </Link>
         <Items>
@@ -69,11 +69,11 @@ const Nav = styled(motion.nav)`
   top: 0;
   width: 100%;
   background-color: black;
-  padding: 20px 60px;
+  padding: 15px 20px 12px;
   color: white;
   z-index: 99;
-  @media ${device.mobile} {
-    padding: 15px 20px 12px;
+  @media ${device.tablet} {
+    padding: 20px 30px;
   }
 `;
 
@@ -88,20 +88,20 @@ const Items = styled.div`
 `;
 
 const Item = styled.div`
-  margin-right: 20px;
   color: ${(props) => props.theme.white.darker};
   transition: color 0.3s ease-in-out;
   position: relative;
   display: flex;
   justify-content: center;
-  font-size: 18px;
+  margin-right: 15px;
+  font-size: 14px;
   flex-direction: column;
   &:hover {
     color: ${(props) => props.theme.white.lighter};
   }
-  @media ${device.mobile} {
-    margin-right: 15px;
-    font-size: 14px;
+  @media ${device.tablet} {
+    margin-right: 20px;
+    font-size: 18px;
   }
 `;
 

@@ -1,7 +1,6 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import useCategory from "../../../hook/useCategory";
-import device from "../../../theme/mediaQueries";
+import useFindPath from "../../../hook/useFindPath";
 
 interface ICategoryProps {
   firstDataLength?: number;
@@ -18,7 +17,7 @@ const Category = ({
   category,
   setCategory,
 }: ICategoryProps) => {
-  const { moviePath } = useCategory();
+  const { moviePath } = useFindPath();
 
   const firstCategoryName = moviePath ? "Collection" : "Seasons";
 
@@ -67,16 +66,11 @@ const Categories = styled(motion.ul)`
   li {
     display: flex;
     align-items: center;
-    font-size: 16px;
+    font-size: 14px;
     font-weight: 700;
     height: 30px;
     color: #888;
     cursor: pointer;
-  }
-  @media ${device.mobile} {
-    li {
-      font-size: 14px;
-    }
   }
 `;
 

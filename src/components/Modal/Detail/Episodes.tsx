@@ -192,8 +192,9 @@ const Episode = styled.li`
   }
   > div {
     display: flex;
-    gap: 10px;
-    align-items: center;
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
     margin-bottom: 10px;
     span {
       display: flex;
@@ -208,11 +209,11 @@ const Episode = styled.li`
   p {
     word-break: break-all;
   }
-  @media ${device.mobile} {
+  @media ${device.tablet} {
     > div {
-      flex-direction: column;
-      align-items: flex-start;
-      gap: 5px;
+      flex-direction: row;
+      align-items: center;
+      gap: 10px;
     }
   }
 `;

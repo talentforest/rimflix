@@ -46,8 +46,11 @@ const RowSlider = ({ title, data }: PropsType) => {
       <RowTitle>{title}</RowTitle>
       <SliderContainer>
         <div>
-          {slideNumArr.map((item: number) => (
-            <Circle key={item} className={item === index + 1 ? "mark" : ""} />
+          {slideNumArr.map((slideNum: number) => (
+            <Circle
+              key={slideNum}
+              className={slideNum === index + 1 ? "mark" : ""}
+            />
           ))}
         </div>
         <ArrowBackIosNew onClick={decreaseIndex} />

@@ -1,6 +1,6 @@
 import { useLocation } from "react-router-dom";
 
-const useCategory = () => {
+const useFindPath = () => {
   const { pathname } = useLocation();
 
   const homePath = pathname === "/";
@@ -18,4 +18,4 @@ const useCategory = () => {
   };
 };
 
-export default useCategory;
+export default useFindPath;

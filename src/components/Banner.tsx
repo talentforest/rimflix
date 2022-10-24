@@ -11,26 +11,22 @@ import device from "../theme/mediaQueries";
 import styled from "styled-components";
 import useGenresQuery from "../hook/Query/useGenresQuery";
 import MyListButton from "./common/MyListButton";
-import useCategory from "../hook/useCategory";
 
 interface PropsType {
   data: IDetail;
 }
 
 const Banner = ({ data }: PropsType) => {
-  const { tvPath } = useCategory();
-  const { allGenres } = useGenresQuery(tvPath ? "tv" : "movie");
+  const { allGenres } = useGenresQuery(data?.name ? "tv" : "movie");
   const contentsGenres = allGenres?.genres
     ?.filter((item) => data?.genre_ids?.includes(item.id))
     .slice(0, 3);
 
   const contentInfo = {
-    category: tvPath ? "tv" : "movie",
-    id: data.id,
-    imgPath: data.poster_path,
+    category: data?.name ? "tv" : "movie",
+    id: data?.id,
+    imgPath: data?.poster_path,
   };
-
-  const correctPathModal = tvPath ? `/tv/${data?.id}` : `/movie/${data?.id}`;
 
   return (
     data && (
@@ -55,7 +51,10 @@ const Banner = ({ data }: PropsType) => {
           <p>{data.overview}</p>
           <Btns>
             <MyListButton contentInfo={contentInfo} />
-            <Button as={Link} to={correctPathModal}>
+            <Button
+              as={Link}
+              to={data?.name ? `/tv/${data?.id}` : `/movie/${data?.id}`}
+            >
               More Info <Info />
             </Button>
           </Btns>

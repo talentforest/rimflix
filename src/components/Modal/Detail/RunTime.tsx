@@ -7,14 +7,12 @@ interface IRuntimeProps {
 
 const RunTime = ({ runtime }: IRuntimeProps) => {
   return (
-    <>
-      {!!runtime && (
-        <div>
-          <AccessTime />
-          <span>{`${convertRunningTime(runtime)}`}</span>
-        </div>
-      )}
-    </>
+    !!runtime && (
+      <div>
+        <AccessTime />
+        <span>{`${convertRunningTime(runtime)}`}</span>
+      </div>
+    )
   );
 };
 

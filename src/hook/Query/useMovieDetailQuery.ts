@@ -11,10 +11,10 @@ import {
   IGetMovieTvResult,
   IKeywords,
 } from "../../api/api";
-import useCategory from "../useCategory";
+import useFindPath from "../useFindPath";
 
 const useMovieDetailQuery = (detail?: IDetail) => {
-  const { moviePath } = useCategory();
+  const { moviePath } = useFindPath();
 
   const { data: collection, isLoading: collectionIsLoading } =
     useQuery<ICollection>(

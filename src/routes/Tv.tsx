@@ -12,9 +12,8 @@ const Tv = () => {
   const { top, popular, onAir, airingToday } = useTvListsQuery();
   const { tvDetail } = useDetailQuery();
   const navigate = useNavigate();
-
-  const bannerData = top?.data?.results[0];
-  const exceptBannerData = top?.data?.results.slice(1);
+  const bannerData = top.data?.results[0];
+  const exceptBannerData = top.data?.results.slice(1);
 
   return (
     <>
@@ -28,15 +27,21 @@ const Tv = () => {
         <>
           <Banner data={bannerData} />
           <Sliders>
-            <RowSlider title={"Top Ranked Tv Shows"} data={exceptBannerData} />
+            <RowSlider
+              title={"Top Ranked Tv Shows"}
+              data={exceptBannerData} //
+            />
             <RowSlider
               title={"Airing Today Tv Shows"}
-              data={airingToday?.data?.results}
+              data={airingToday.data?.results}
             />
-            <RowSlider title={"On Air Tv Shows"} data={onAir?.data?.results} />
+            <RowSlider
+              title={"On Air Tv Shows"}
+              data={onAir.data?.results} //
+            />
             <RowSlider
               title={"Popular Tv Shows"}
-              data={popular?.data?.results}
+              data={popular.data?.results}
             />
           </Sliders>
           {tvDetail && (

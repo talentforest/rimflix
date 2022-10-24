@@ -16,8 +16,9 @@ const Box = styled.li`
   background-color: ${(props) => props.theme.black.lighter};
   padding: 5px;
   color: #fff;
-  @media ${device.mobile} {
-    font-size: 14px;
+  font-size: 14px;
+  @media ${device.tablet} {
+    font-size: 16px;
   }
 `;
 

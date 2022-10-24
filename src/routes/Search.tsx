@@ -10,14 +10,14 @@ import Loading from "../components/common/Loading";
 import Overlay from "../components/Modal/Overlay";
 import Modal from "../components/Modal/Modal";
 import useDetailQuery from "../hook/Query/useDetailQuery";
-import useCategory from "../hook/useCategory";
+import useFindPath from "../hook/useFindPath";
 import useSearchQuery from "../hook/Query/useSearchQuery";
 import Title from "../components/common/Title";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useRecoilState(searchState);
   const { movieDetail, tvDetail } = useDetailQuery();
-  const { moviePath, tvPath } = useCategory();
+  const { moviePath, tvPath } = useFindPath();
   const { search } = useLocation();
   const navigate = useNavigate();
   const searchKeyword = search?.split("=")[1];
@@ -42,50 +42,46 @@ const Search = () => {
     return contents?.filter((item) => item.poster_path);
   };
 
-  return (
-    <>
-      {searchMoviesLoading && searchTvShowsLoading ? (
-        <Loading screenSize="part" />
-      ) : (
-        <Container>
-          <section>
-            <Title
-              title={`Movies Result (${
-                cutWithoutPoster(searchMovies?.results)?.length
-              })`}
-            />
-            <ResultBox>
-              {cutWithoutPoster(searchMovies?.results)?.map((contents) => (
-                <Contents key={contents.id} contents={contents} />
-              ))}
-            </ResultBox>
-          </section>
-          <section>
-            <Title
-              title={`Tv Result (${
-                cutWithoutPoster(searchTvShows?.results)?.length
-              })`}
-            />
-            <ResultBox>
-              {cutWithoutPoster(searchTvShows?.results)?.map((contents) => (
-                <Contents key={contents.id} contents={contents} />
-              ))}
-            </ResultBox>
-          </section>
-          <>
-            {(movieDetail || tvDetail) && (
-              <Overlay
-                onOverlayClicked={() => {
-                  return navigate(`/search/${searchQuery}`);
-                }}
-              />
-            )}
-            {moviePath && movieDetail && <Modal detail={movieDetail} />}
-            {tvPath && tvDetail && <Modal detail={tvDetail} />}
-          </>
-        </Container>
-      )}
-    </>
+  return searchMoviesLoading && searchTvShowsLoading ? (
+    <Loading screenSize="part" />
+  ) : (
+    <Container>
+      <section>
+        <Title
+          title={`Movies Result (${
+            cutWithoutPoster(searchMovies?.results)?.length
+          })`}
+        />
+        <ResultBox>
+          {cutWithoutPoster(searchMovies?.results)?.map((contents) => (
+            <Contents key={contents.id} contents={contents} />
+          ))}
+        </ResultBox>
+      </section>
+      <section>
+        <Title
+          title={`Tv Result (${
+            cutWithoutPoster(searchTvShows?.results)?.length
+          })`}
+        />
+        <ResultBox>
+          {cutWithoutPoster(searchTvShows?.results)?.map((contents) => (
+            <Contents key={contents.id} contents={contents} />
+          ))}
+        </ResultBox>
+      </section>
+      <>
+        {(movieDetail || tvDetail) && (
+          <Overlay
+            onOverlayClicked={() => {
+              return navigate(`/search/${searchQuery}`);
+            }}
+          />
+        )}
+        {moviePath && movieDetail && <Modal detail={movieDetail} />}
+        {tvPath && tvDetail && <Modal detail={tvDetail} />}
+      </>
+    </Container>
   );
 };
 

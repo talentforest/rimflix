@@ -13,11 +13,7 @@ export const smallVariants = {
   hover: {
     scale: 1.02,
     zIndex: 2,
-    transition: {
-      delay: 0.2,
-      duration: 0.3,
-      type: "tween",
-    },
+    transition,
   },
 };
 

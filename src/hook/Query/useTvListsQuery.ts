@@ -6,21 +6,35 @@ import {
   getTopRatedTvShows,
   IGetMovieTvResult,
 } from "../../api/api";
+import useFindPath from "../useFindPath";
 
 const useTvListsQuery = () => {
+  const { tvPath } = useFindPath();
   const top = useQuery<IGetMovieTvResult>(["tvs", "top"], getTopRatedTvShows);
 
   const popular = useQuery<IGetMovieTvResult>(
     ["tvs", "popular"],
-    getPopularTvShows
+    getPopularTvShows,
+    {
+      enabled: tvPath,
+    }
   );
 
   const airingToday = useQuery<IGetMovieTvResult>(
     ["tvs", "airingToday"],
-    getAiringTodayTvShows
+    getAiringTodayTvShows,
+    {
+      enabled: tvPath,
+    }
   );
 
-  const onAir = useQuery<IGetMovieTvResult>(["tvs", "onAir"], getOnAirTvShows);
+  const onAir = useQuery<IGetMovieTvResult>(
+    ["tvs", "onAir"],
+    getOnAirTvShows, //
+    {
+      enabled: tvPath,
+    }
+  );
 
   return {
     top,

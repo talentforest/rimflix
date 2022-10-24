@@ -10,7 +10,7 @@ import MyListButton from "../common/MyListButton";
 import RunTime from "./Detail/RunTime";
 import Genres from "./Detail/Genres";
 import Rate from "../common/Rate";
-import useCategory from "../../hook/useCategory";
+import useFindPath from "../../hook/useFindPath";
 
 interface PropsType {
   detail: IDetail;
@@ -18,7 +18,7 @@ interface PropsType {
 
 const Modal = ({ detail }: PropsType) => {
   const { scrollY } = useViewportScroll();
-  const { moviePath, tvPath } = useCategory();
+  const { moviePath, tvPath } = useFindPath();
 
   const {
     id,
@@ -42,8 +42,12 @@ const Modal = ({ detail }: PropsType) => {
   };
 
   return (
-    <ModalBox style={{ top: scrollY.get() + 100 }} layoutId={`${id}${uuidv4}`}>
-      <VideoPlayer videoId={id} backdropPath={backdrop_path} />
+    <ModalBox style={{ top: scrollY.get() + 80 }} layoutId={`${id}${uuidv4}`}>
+      <VideoPlayer
+        videoId={id}
+        backdropPath={backdrop_path}
+        title={title || name}
+      />
       <DetailContainer>
         <p>{tagline}</p>
         <h3>{title || name}</h3>

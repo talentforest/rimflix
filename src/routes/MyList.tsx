@@ -37,7 +37,11 @@ const MyList = () => {
       ) : (
         <List>
           {myListTvs.map((myListTv) => (
-            <MyListContents key={myListTv.id} category="tv" myList={myListTv} />
+            <MyListContents
+              key={myListTv.id}
+              category="tv"
+              myList={myListTv} //
+            />
           ))}
         </List>
       )}

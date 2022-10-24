@@ -28,15 +28,21 @@ const Home = () => {
         <>
           <Banner data={bannerData} />
           <Sliders>
-            <RowSlider title={"Now Playing"} data={exceptBannerData} />
-            <RowSlider title={"Popular Now"} data={popular?.data?.results} />
+            <RowSlider
+              title={"Now Playing"}
+              data={exceptBannerData} //
+            />
+            <RowSlider
+              title={"Popular Now"}
+              data={popular.data?.results} //
+            />
             <RowSlider
               title={"Top Rated Movies"}
-              data={topRated?.data?.results}
+              data={topRated.data?.results}
             />
             <RowSlider
               title={"Upcoming Movies"}
-              data={upcoming?.data?.results}
+              data={upcoming.data?.results}
             />
           </Sliders>
           {movieDetail && (

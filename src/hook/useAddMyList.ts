@@ -4,16 +4,16 @@ import { useRecoilState } from "recoil";
 import { IMyList, myListMovieState, myListTvState } from "../data/myListAtoms";
 
 interface IAddMyListProps {
-  category: string;
-  id: number;
-  imgPath: string;
+  contentInfo: IMyList;
 }
 
-const useAddMyList = ({ category, id, imgPath }: IAddMyListProps) => {
+const useAddMyList = ({ contentInfo }: IAddMyListProps) => {
   const [like, setLike] = useState(false);
   const [myListMovies, setMyListMovies] = useRecoilState(myListMovieState);
   const [myListTvs, setMyListTvs] = useRecoilState(myListTvState);
   const { id: paramsId } = useParams();
+  const { category, id } = contentInfo;
+
   const date = new Date();
   const krTime = new Intl.DateTimeFormat("kr").format(date).slice(0, -1);
 
@@ -32,22 +32,12 @@ const useAddMyList = ({ category, id, imgPath }: IAddMyListProps) => {
     if (category === "tv") {
       return setMyListTvs((prev) => [
         ...prev,
-        {
-          category,
-          id,
-          imgPath,
-          date: krTime,
-        },
+        { ...contentInfo, date: krTime },
       ]);
     } else {
       return setMyListMovies((prev) => [
         ...prev,
-        {
-          category,
-          id,
-          imgPath,
-          date: krTime,
-        },
+        { ...contentInfo, date: krTime },
       ]);
     }
   };

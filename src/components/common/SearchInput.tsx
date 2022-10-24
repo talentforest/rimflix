@@ -72,15 +72,13 @@ const Box = styled.form`
   align-items: center;
   position: relative;
   cursor: pointer;
+  width: 20px;
+  height: 20px;
   svg {
     height: 26px;
     z-index: 3;
     cursor: pointer;
     margin-bottom: 2px;
-  }
-  @media ${device.mobile} {
-    width: 20px;
-    height: 20px;
   }
 `;
 
@@ -98,15 +96,15 @@ const Input = styled(motion.input)`
   border: 1px solid ${(props) => props.theme.white.lighter};
   border-radius: 3px;
   width: 260px;
-  height: 40px;
+  height: 30px;
   &::placeholder {
     font-size: 14px;
   }
   &:focus {
     outline: none;
   }
-  @media ${device.mobile} {
-    height: 30px;
+  @media ${device.tablet} {
+    height: 40px;
   }
 `;
 
