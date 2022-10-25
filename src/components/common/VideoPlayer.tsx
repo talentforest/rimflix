@@ -5,7 +5,6 @@ import { getTrailer, IGetVideo } from "../../api/api";
 import { backdropSizes, sizeImagePath } from "../../utils/sizeImagePath";
 import ReactPlayer from "react-player/lazy";
 import styled from "styled-components";
-import device from "../../theme/mediaQueries";
 import useFindPath from "../../hook/useFindPath";
 
 interface PropsType {
@@ -42,83 +41,63 @@ const VideoPlayer = ({ videoId, backdropPath, title }: PropsType) => {
   const tvResults = tvTrailer?.results;
   const movieResults = movieTrailer?.results;
 
-  return (
-    <VideoContainer>
-      {!movieTrailerLoading &&
-      !tvTrailerLoading &&
-      (tvResults?.length || movieResults?.length) ? (
-        <>
-          <Trailer
-            url={`https://www.youtube.com/watch?v=${
-              tvPath
-                ? tvResults[tvResults.length - 1]?.key
-                : movieResults[movieResults.length - 1]?.key
-            }`}
-            playing={true}
-            muted={volume ? true : false}
-            controls={false}
-            loop={false}
-            width="100%"
-            height="100%"
-            config={{
-              youtube: {
-                playerVars: {
-                  origin: "https://localhost:3000",
-                },
-              },
-            }}
-          />
-          <Volume as={volume ? VolumeOff : VolumeUp} onClick={handleVolume} />
-        </>
+  return !movieTrailerLoading &&
+    !tvTrailerLoading &&
+    (tvResults?.length || movieResults?.length) ? (
+    <>
+      <Trailer
+        url={`https://www.youtube.com/watch?v=${
+          tvPath
+            ? tvResults[tvResults.length - 1]?.key
+            : movieResults[movieResults.length - 1]?.key
+        }`}
+        playing={true}
+        muted={volume ? true : false}
+        controls={false}
+        loop={true}
+        width="100%"
+        height="100%"
+        config={{
+          youtube: {
+            playerVars: {
+              origin: "https://localhost:3000",
+            },
+          },
+        }}
+      />
+      <Volume as={volume ? VolumeOff : VolumeUp} onClick={handleVolume} />
+    </>
+  ) : (
+    <>
+      <Overlay />
+      {backdropPath ? (
+        <BackdropImg
+          src={sizeImagePath(backdropSizes.original, backdropPath)}
+          alt={`${title} backdrop`}
+          loading="lazy"
+        />
       ) : (
-        <>
-          <Overlay />
-          {backdropPath ? (
-            <BackdropImg
-              src={sizeImagePath(backdropSizes.original, backdropPath)}
-              alt={`${title} backdrop`}
-              loading="lazy"
-            />
-          ) : (
-            <MovieCreation />
-          )}
-        </>
+        <MovieCreation />
       )}
-    </VideoContainer>
+    </>
   );
 };
-
-const VideoContainer = styled.section`
-  position: relative;
-  width: 100%;
-  height: 30vh;
-  svg {
-    width: 30px;
-    height: 30px;
-  }
-  @media ${device.tablet} {
-    height: 40vh;
-  }
-  @media ${device.desktop} {
-    height: 45vh;
-    svg {
-      width: 40px;
-      height: 40px;
-    }
-  }
-`;
 
 const Trailer = styled(ReactPlayer)`
   position: absolute;
   top: 0;
   left: 0;
+  right: 0;
+  bottom: 0;
 `;
 
 const Volume = styled.svg`
   cursor: pointer;
-  bottom: 20px;
-  left: 20px;
   position: absolute;
+  bottom: 20px;
+  right: 20px;
+  width: 30px;
+  height: 30px;
   border: 1px solid #aaa;
   border-radius: 50%;
   background-color: #333;

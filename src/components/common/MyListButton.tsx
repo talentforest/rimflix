@@ -1,8 +1,8 @@
 import { Favorite, FavoriteBorder } from "@mui/icons-material";
 import { Button } from "../../theme/buttonStyle";
-import styled from "styled-components";
-import useAddMyList from "../../hook/useAddMyList";
 import { IMyList } from "../../data/myListAtoms";
+import useAddMyList from "../../hook/useAddMyList";
+import styled from "styled-components";
 
 interface PropsType {
   contentInfo: IMyList;
@@ -10,7 +10,9 @@ interface PropsType {
 }
 
 const MyListButton = ({ contentInfo, simpleBtn }: PropsType) => {
-  const { like, onAddClick, onDeleteClick } = useAddMyList({ contentInfo });
+  const { like, onAddClick, onDeleteClick } = useAddMyList({
+    contentInfo,
+  });
 
   return like ? (
     <MyFavarite onClick={onDeleteClick}>

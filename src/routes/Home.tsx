@@ -63,7 +63,7 @@ const Home = () => {
 
 export const Sliders = styled.section`
   position: relative;
-  margin-top: -15vh;
+  margin-top: -10vh;
 `;
 
 export default Home;

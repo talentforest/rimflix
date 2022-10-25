@@ -59,7 +59,7 @@ const MyList = () => {
 };
 
 const Empty = styled.div`
-  height: 160px;
+  height: 150px;
   margin-bottom: 30px;
   padding: 10px;
   font-size: 14px;
@@ -80,12 +80,15 @@ const Container = styled.main`
 
 const List = styled.ul`
   display: grid;
-  grid-template-columns: repeat(auto-fill, minmax(100px, 3fr));
+  grid-template-columns: repeat(auto-fill, minmax(90px, 3fr));
   grid-gap: 10px;
   margin-bottom: 40px;
   padding: 10px;
   border-radius: 5px;
   background-color: ${(props) => props.theme.black.lighter};
+  @media ${device.tablet} {
+    grid-template-columns: repeat(auto-fill, minmax(100px, 3fr));
+  }
 `;
 
 export default MyList;

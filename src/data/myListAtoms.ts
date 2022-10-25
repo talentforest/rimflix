@@ -45,3 +45,8 @@ export const myListTvState = atom<IMyList[]>({
     },
   ],
 });
+
+export const myListBannerState = atom<boolean>({
+  key: `myListTv/${uuidv4()}`,
+  default: false,
+});

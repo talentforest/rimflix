@@ -37,7 +37,7 @@ const Box = styled(motion.svg)`
     stroke: #ff8686;
     stroke-width: 1px;
   }
-  @media ${device.mobile} {
+  @media ${device.tablet} {
     width: 80px;
     margin-right: 50px;
   }

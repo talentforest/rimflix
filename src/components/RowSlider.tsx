@@ -97,7 +97,7 @@ const SliderContainer = styled.div`
   display: flex;
   width: 100%;
   height: 40vw;
-  margin-bottom: 30px;
+  margin-bottom: 40px;
   position: relative;
   > div:first-child {
     visibility: hidden;
@@ -142,6 +142,7 @@ const SliderContainer = styled.div`
   }
   @media ${device.desktop} {
     height: 20vw;
+    margin-bottom: 60px;
     svg {
       width: 3vw;
     }

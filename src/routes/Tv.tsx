@@ -22,7 +22,7 @@ const Tv = () => {
       onAir.isLoading &&
       airingToday.isLoading &&
       !bannerData ? (
-        <Loading screenSize="part" />
+        <Loading screenSize="entire" />
       ) : (
         <>
           <Banner data={bannerData} />

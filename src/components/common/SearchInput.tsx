@@ -75,7 +75,6 @@ const Box = styled.form`
   width: 20px;
   height: 20px;
   svg {
-    height: 26px;
     z-index: 3;
     cursor: pointer;
     margin-bottom: 2px;

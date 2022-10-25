@@ -43,11 +43,13 @@ const Modal = ({ detail }: PropsType) => {
 
   return (
     <ModalBox style={{ top: scrollY.get() + 80 }} layoutId={`${id}${uuidv4}`}>
-      <VideoPlayer
-        videoId={id}
-        backdropPath={backdrop_path}
-        title={title || name}
-      />
+      <VideoContainer>
+        <VideoPlayer
+          videoId={id}
+          backdropPath={backdrop_path}
+          title={title || name}
+        />
+      </VideoContainer>
       <DetailContainer>
         <p>{tagline}</p>
         <h3>{title || name}</h3>
@@ -91,6 +93,26 @@ const ModalBox = styled(motion.div)`
   }
   @media ${device.desktop} {
     width: 60vw;
+  }
+`;
+
+const VideoContainer = styled.section`
+  position: relative;
+  width: 100%;
+  height: 30vh;
+  svg {
+    width: 30px;
+    height: 30px;
+  }
+  @media ${device.tablet} {
+    height: 40vh;
+  }
+  @media ${device.desktop} {
+    height: 45vh;
+    svg {
+      width: 40px;
+      height: 40px;
+    }
   }
 `;
 

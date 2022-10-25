@@ -11,9 +11,8 @@ const useAddMyList = ({ contentInfo }: IAddMyListProps) => {
   const [like, setLike] = useState(false);
   const [myListMovies, setMyListMovies] = useRecoilState(myListMovieState);
   const [myListTvs, setMyListTvs] = useRecoilState(myListTvState);
-  const { id: paramsId } = useParams();
   const { category, id } = contentInfo;
-
+  const { id: paramsId } = useParams();
   const date = new Date();
   const krTime = new Intl.DateTimeFormat("kr").format(date).slice(0, -1);
 
@@ -29,21 +28,27 @@ const useAddMyList = ({ contentInfo }: IAddMyListProps) => {
 
   const onAddClick = () => {
     setLike((prev: boolean) => !prev);
-    if (category === "tv") {
+    if (contentInfo.category === "tv") {
       return setMyListTvs((prev) => [
         ...prev,
-        { ...contentInfo, date: krTime },
+        {
+          ...contentInfo,
+          date: krTime,
+        },
       ]);
     } else {
       return setMyListMovies((prev) => [
         ...prev,
-        { ...contentInfo, date: krTime },
+        {
+          ...contentInfo,
+          date: krTime,
+        },
       ]);
     }
   };
 
   const onDeleteClick = () => {
-    setLike((prev) => !prev);
+    setLike((prev: boolean) => !prev);
     if (category === "tv") {
       return setMyListTvs((prev) => prev.filter((item) => item.id !== id));
     } else {

@@ -11,5 +11,5 @@ export const theme: DefaultTheme = {
     lighter: "#fff",
     darker: "#e5e5e5",
   },
-  pink: "#ffcccc",
+  pink: "#ff9a9a",
 };
