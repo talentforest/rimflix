@@ -1,3 +1,4 @@
+import { useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IDetail } from "../api/api";
 import { ArrowBackIosNew, ArrowForwardIos, Circle } from "@mui/icons-material";
@@ -24,6 +25,7 @@ interface PropsType {
 }
 
 const RowSlider = ({ title, data }: PropsType) => {
+  const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
   const {
     offset,
     back,
@@ -41,20 +43,42 @@ const RowSlider = ({ title, data }: PropsType) => {
     (_, index) => index + 1
   );
 
+  const onTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
+    setTouchPosition({
+      x: event.changedTouches[0].pageX,
+      y: event.changedTouches[0].pageY,
+    });
+  };
+
+  const onTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
+    const distanceX = Math.abs(touchPosition.x - event.changedTouches[0].pageX);
+    const distanceY = Math.abs(touchPosition.y - event.changedTouches[0].pageY);
+
+    if (distanceY + distanceX < 350 && distanceX > distanceY) {
+      if (touchPosition.x - event.changedTouches[0].pageX < 0) {
+        decreaseIndex();
+      } else if (touchPosition.x - event.changedTouches[0].pageX > 0) {
+        increaseIndex();
+      }
+    }
+  };
+
   return (
-    <>
-      <RowTitle>{title}</RowTitle>
-      <SliderContainer>
-        <div>
+    <Container>
+      <Header>
+        <h2>{title}</h2>
+        <SlideMark>
           {slideNumArr.map((slideNum: number) => (
             <Circle
               key={slideNum}
               className={slideNum === index + 1 ? "mark" : ""}
             />
           ))}
-        </div>
-        <ArrowBackIosNew onClick={decreaseIndex} />
-        <Slider>
+        </SlideMark>
+      </Header>
+      <Sliders>
+        {<ArrowBackIosNew onClick={decreaseIndex} />}
+        <Slider onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
           <AnimatePresence
             custom={back}
             initial={false}
@@ -75,15 +99,51 @@ const RowSlider = ({ title, data }: PropsType) => {
             </Row>
           </AnimatePresence>
         </Slider>
-        <ArrowForwardIos onClick={increaseIndex} />
-      </SliderContainer>
-    </>
+        {<ArrowForwardIos onClick={increaseIndex} />}
+      </Sliders>
+    </Container>
   );
 };
 
-const RowTitle = styled.h2`
-  font-weight: 700;
+const Container = styled.section`
+  > header {
+    > div {
+      visibility: visible;
+    }
+  }
+  &:hover {
+    > div {
+      > svg {
+        visibility: visible;
+      }
+    }
+  }
+  @media ${device.tablet} {
+    > header {
+      > div {
+        visibility: hidden;
+      }
+    }
+    &:hover {
+      > header {
+        > div {
+          visibility: visible;
+        }
+      }
+      > div {
+        > svg {
+          visibility: visible;
+        }
+      }
+    }
+  }
+`;
+
+const Header = styled.header`
+  display: flex;
+  justify-content: space-between;
   margin: 0 calc(5vw + 10px) 10px;
+  font-weight: 700;
   @media ${device.tablet} {
     font-size: 24px;
     margin: 0 calc(5vw + 5px) 10px;
@@ -93,52 +153,27 @@ const RowTitle = styled.h2`
   }
 `;
 
-const SliderContainer = styled.div`
+const Sliders = styled.div`
+  overflow: hidden;
+  position: relative;
   display: flex;
   width: 100%;
-  height: 40vw;
+  height: 43vw;
   margin-bottom: 40px;
-  position: relative;
-  > div:first-child {
-    visibility: hidden;
-    position: absolute;
-    right: 7vw;
-    top: -25px;
-    display: flex;
-    gap: 3px;
-    svg {
-      width: 10px;
-      height: 10px;
-      fill: ${(props) => props.theme.black.lighter};
-      &.mark {
-        fill: ${(props) => props.theme.white.darker};
-      }
-    }
-  }
   > svg {
     visibility: hidden;
     z-index: 2;
-    width: 5vw;
+    width: 6vw;
     height: 100%;
     cursor: pointer;
     &:last-child {
       right: 0;
     }
   }
-  &:hover {
-    > div:first-child,
-    > svg {
-      visibility: visible;
-    }
-  }
   @media ${device.tablet} {
+    overflow: visible;
     height: 26vw;
     width: 100%;
-    > div:first-child {
-      right: 50px;
-      top: -30px;
-      gap: 10px;
-    }
   }
   @media ${device.desktop} {
     height: 20vw;
@@ -149,22 +184,39 @@ const SliderContainer = styled.div`
   }
 `;
 
+const SlideMark = styled.div`
+  visibility: hidden;
+  display: flex;
+  align-items: center;
+  gap: 3px;
+  svg {
+    width: 10px;
+    height: 10px;
+    fill: ${(props) => props.theme.black.lighter};
+    &.mark {
+      fill: ${(props) => props.theme.white.darker};
+    }
+  }
+  @media ${device.tablet} {
+    right: 50px;
+    top: -30px;
+    gap: 10px;
+  }
+`;
+
 const Slider = styled.div`
   position: relative;
   display: flex;
   align-items: center;
   width: 100%;
   height: 100%;
-  @media ${device.tablet} {
-    box-sizing: border-box;
-  }
 `;
 
 const Row = styled(motion.div)`
   position: absolute;
   display: grid;
   gap: 0 5px;
-  padding: 0 10px;
+  padding: 0 5px;
   width: 100%;
   height: 100%;
   grid-template-columns: repeat(3, 1fr);

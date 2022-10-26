@@ -10,8 +10,9 @@ import { bigVariants, infoVariants } from "../../utils/variants";
 import InfoBox from "./InfoBox";
 import Rate from "./Rate";
 import styled from "styled-components";
-import device from "../../theme/mediaQueries";
+import device, { deviceSizes } from "../../theme/mediaQueries";
 import useFindPath from "../../hook/useFindPath";
+import useWindowSize from "../../hook/useWindowSize";
 
 interface PropsType {
   contents: IDetail;
@@ -33,6 +34,10 @@ const HoverBox = ({ contents, genres }: PropsType) => {
     vote_average,
   } = contents;
 
+  const {
+    windowSize: { width },
+  } = useWindowSize();
+
   const onBoxClicked = () => {
     if (homePath) return navigate(`/movie/${id}`);
     if (tvPath) return navigate(`/tv/${id}`);
@@ -45,7 +50,7 @@ const HoverBox = ({ contents, genres }: PropsType) => {
     <Box
       key={id}
       onClick={() => onBoxClicked()}
-      variants={bigVariants}
+      variants={width >= +deviceSizes.tablet ? bigVariants : {}}
       whileHover="hover"
       initial="normal"
       $height={searchPath}
@@ -151,11 +156,13 @@ const Info = styled(motion.div)`
   border-bottom-left-radius: 5px;
   border-bottom-right-radius: 5px;
   font-size: 16px;
+  display: none;
   > h1 {
     width: 100%;
     font-weight: 700;
   }
   @media ${device.tablet} {
+    display: block;
     bottom: -38px;
     padding: 5px 10px;
     font-size: 16px;

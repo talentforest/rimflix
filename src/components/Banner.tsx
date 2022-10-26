@@ -165,8 +165,11 @@ const PosterInfo = styled.div`
   justify-content: center;
   align-items: center;
   h1 {
+    display: block;
     font-size: 30px;
     font-weight: 700;
+    margin: 0 20px 10px;
+    text-align: center;
   }
   p {
     display: none;
