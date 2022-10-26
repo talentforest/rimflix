@@ -98,6 +98,9 @@ const ModalBox = styled(motion.div)`
 
 const VideoContainer = styled.section`
   position: relative;
+  display: flex;
+  justify-content: center;
+  align-items: center;
   width: 100%;
   height: 30vh;
   svg {

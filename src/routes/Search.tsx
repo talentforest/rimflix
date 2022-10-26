@@ -2,7 +2,7 @@ import { useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { searchState } from "../data/searchAtom";
-import { IDetail } from "../api/api";
+import { Container } from "./MyList";
 import Contents from "../components/Contents";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
@@ -38,38 +38,40 @@ const Search = () => {
     setSearchQuery(search);
   };
 
-  const cutWithoutPoster = (contents: IDetail[]) => {
-    return contents?.filter((item) => item.poster_path);
-  };
+  const moviesWithPoster = searchMovies?.results?.filter(
+    (item) => item.poster_path
+  );
+  const tvsWithPoster = searchTvShows?.results?.filter(
+    (item) => item.poster_path
+  );
 
   return searchMoviesLoading && searchTvShowsLoading ? (
     <Loading screenSize="part" />
   ) : (
     <Container>
-      <section>
-        <Title
-          title={`Movies Result (${
-            cutWithoutPoster(searchMovies?.results)?.length
-          })`}
-        />
-        <ResultBox>
-          {cutWithoutPoster(searchMovies?.results)?.map((contents) => (
+      <Title title={`Movies Result (${moviesWithPoster?.length})`} />
+      <ResultBox>
+        {moviesWithPoster?.length !== 0 ? (
+          <div>
+            {moviesWithPoster?.map((contents) => (
+              <Contents key={contents.id} contents={contents} />
+            ))}
+          </div>
+        ) : (
+          <span>No Search results found</span>
+        )}
+      </ResultBox>
+
+      <Title title={`Tv Result (${tvsWithPoster?.length})`} />
+      <ResultBox>
+        {tvsWithPoster?.length !== 0 ? (
+          tvsWithPoster?.map((contents) => (
             <Contents key={contents.id} contents={contents} />
-          ))}
-        </ResultBox>
-      </section>
-      <section>
-        <Title
-          title={`Tv Result (${
-            cutWithoutPoster(searchTvShows?.results)?.length
-          })`}
-        />
-        <ResultBox>
-          {cutWithoutPoster(searchTvShows?.results)?.map((contents) => (
-            <Contents key={contents.id} contents={contents} />
-          ))}
-        </ResultBox>
-      </section>
+          ))
+        ) : (
+          <span>No Search results found</span>
+        )}
+      </ResultBox>
       <>
         {(movieDetail || tvDetail) && (
           <Overlay
@@ -85,36 +87,29 @@ const Search = () => {
   );
 };
 
-const Container = styled.main`
-  margin-top: 60px;
-  padding: 0 20px;
-  width: 100%;
-  min-height: 100vh;
-  > section {
-    margin-bottom: 50px;
-  }
-  @media ${device.tablet} {
-    padding: 0 50px;
-    overflow: hidden;
-    margin-top: 70px;
-  }
-`;
-
 const ResultBox = styled.ul`
-  display: grid;
-  grid-template-columns: repeat(3, 1fr);
-  gap: 15px;
-  margin-top: 15px;
+  margin: 15px 0 30px;
   padding: 10px;
   border-radius: 5px;
   background-color: ${(props) => props.theme.black.lighter};
+  min-height: 150px;
+  > div {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 15px;
+  }
   @media ${device.tablet} {
-    grid-template-columns: repeat(5, 1fr);
     padding: 15px;
     border-radius: 10px;
+    margin: 15px 0 40px;
+    > div {
+      grid-template-columns: repeat(5, 1fr);
+    }
   }
   @media ${device.desktop} {
-    grid-template-columns: repeat(7, 1fr);
+    > div {
+      grid-template-columns: repeat(7, 1fr);
+    }
   }
 `;
 

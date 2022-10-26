@@ -67,14 +67,11 @@ const Empty = styled.div`
   background-color: ${(props) => props.theme.black.lighter};
 `;
 
-const Container = styled.main`
+export const Container = styled.main`
   padding: 60px 20px 0;
   min-height: 80vh;
   @media ${device.tablet} {
-    padding: 60px 40px 0;
-  }
-  @media ${device.desktop} {
-    padding: 60px 40px;
+    padding: 80px 40px 0;
   }
 `;
 

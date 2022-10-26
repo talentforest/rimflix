@@ -26,52 +26,56 @@ const Category = ({
   };
 
   const animated = (name: string) => {
-    return category === name ? { scale: 1.15, color: "#ffcccc" } : { scale: 1 };
+    return category === name ? { scale: 1.15 } : { scale: 1 };
   };
 
   return (
     <Categories>
       {!!firstDataLength && (
-        <motion.li
+        <CategoryBtn
           onClick={() => onCategoryClick(firstCategoryName)}
           animate={animated(firstCategoryName)}
+          $selected={category === firstCategoryName}
         >
           <span>{firstCategoryName}</span>
-        </motion.li>
+        </CategoryBtn>
       )}
       {!!secondDataLength && (
-        <motion.li
+        <CategoryBtn
           onClick={() => onCategoryClick("Similar")}
           animate={animated("Similar")}
+          $selected={category === "Similar"}
         >
           <span>Similar</span>
-        </motion.li>
+        </CategoryBtn>
       )}
       {!!thirdDataLength && (
-        <motion.li
+        <CategoryBtn
           onClick={() => onCategoryClick("Recommended")}
           animate={animated("Recommended")}
+          $selected={category === "Recommended"}
         >
           <span>How about this?</span>
-        </motion.li>
+        </CategoryBtn>
       )}
     </Categories>
   );
 };
 
+const CategoryBtn = styled(motion.li)<{ $selected: boolean }>`
+  display: flex;
+  align-items: center;
+  font-size: 14px;
+  font-weight: 700;
+  height: 30px;
+  cursor: pointer;
+  color: ${(props) => (props.$selected ? props.theme.pink : "#888")};
+`;
+
 const Categories = styled(motion.ul)`
   display: flex;
   gap: 20px;
   margin-left: 5px;
-  li {
-    display: flex;
-    align-items: center;
-    font-size: 14px;
-    font-weight: 700;
-    height: 30px;
-    color: #888;
-    cursor: pointer;
-  }
 `;
 
 export default Category;

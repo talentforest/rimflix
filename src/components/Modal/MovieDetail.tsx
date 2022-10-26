@@ -30,8 +30,10 @@ const MovieDetail = ({ detail }: PropsType) => {
 
   return (
     <>
-      <Keywords keywords={keyword?.keywords} />
-      <Cast cast={crew?.cast} />
+      {keyword?.keywords?.length !== 0 && (
+        <Keywords keywords={keyword?.keywords} />
+      )}
+      {crew?.cast?.length !== 0 && <Cast cast={crew?.cast} />}
       {!recommendationLoading && !similarLoading && !collectionIsLoading && (
         <Info $column="column">
           <Category

@@ -48,7 +48,6 @@ export const Actor = styled.li`
   font-size: 14px;
   border-radius: 5px;
   background-color: ${(props) => props.theme.black.lighter};
-  box-shadow: 1px 2px 5px rgba(155, 155, 155, 0.3);
   img {
     border-radius: 5px;
     width: auto;
