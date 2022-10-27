@@ -3,9 +3,9 @@ import { useNavigate } from "react-router-dom";
 import { myListMovieState, myListTvState } from "../data/myListAtoms";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
-import Overlay from "../components/Modal/Overlay";
-import Modal from "../components/Modal/Modal";
-import useDetailQuery from "../hook/Query/useDetailQuery";
+import Overlay from "../components/common/Overlay";
+import Modal from "../components/Modal";
+import useDetailQuery from "../hook/query/useDetailQuery";
 import MyListContents from "../components/MyListContents";
 import Title from "../components/common/Title";
 

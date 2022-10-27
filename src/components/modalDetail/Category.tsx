@@ -1,6 +1,6 @@
 import { motion } from "framer-motion";
 import styled from "styled-components";
-import useFindPath from "../../../hook/useFindPath";
+import useFindPath from "../../hook/useFindPath";
 
 interface ICategoryProps {
   firstDataLength?: number;

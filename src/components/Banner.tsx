@@ -9,7 +9,7 @@ import { Clear, Info, PlayCircle } from "@mui/icons-material";
 import { Button } from "../theme/buttonStyle";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
-import useGenresQuery from "../hook/Query/useGenresQuery";
+import useGenresQuery from "../hook/query/useGenresQuery";
 import { useState } from "react";
 import VideoPlayer from "./common/VideoPlayer";
 

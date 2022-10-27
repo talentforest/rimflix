@@ -1,11 +1,11 @@
-import { IDetail } from "../../api/api";
+import { IDetail } from "../api/api";
 import { Info } from "./Modal";
 import { useState } from "react";
-import Cast from "./Detail/Cast";
-import useMovieDetailQuery from "../../hook/Query/useMovieDetailQuery";
-import AdditionalContents from "./Detail/AdditionalContents";
-import Category from "./Detail/Category";
-import Keywords from "./Detail/Keywords";
+import Cast from "./modalDetail/Cast";
+import useMovieDetailQuery from "../hook/query/useMovieDetailQuery";
+import AdditionalContents from "./modalDetail/AdditionalContents";
+import Category from "./modalDetail/Category";
+import Keywords from "./modalDetail/Keywords";
 
 interface PropsType {
   detail: IDetail;

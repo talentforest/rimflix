@@ -2,11 +2,11 @@ import { useNavigate } from "react-router-dom";
 import Banner from "../components/Banner";
 import RowSlider from "../components/RowSlider";
 import Loading from "../components/common/Loading";
-import useMovieListsQuery from "../hook/Query/useMovieListsQuery";
-import Overlay from "../components/Modal/Overlay";
-import Modal from "../components/Modal/Modal";
+import useMovieListsQuery from "../hook/query/useMovieListsQuery";
+import Overlay from "../components/common/Overlay";
+import Modal from "../components/Modal";
 import styled from "styled-components";
-import useDetailQuery from "../hook/Query/useDetailQuery";
+import useDetailQuery from "../hook/query/useDetailQuery";
 
 const Home = () => {
   const { nowPlaying, topRated, upcoming, popular } = useMovieListsQuery();

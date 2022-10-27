@@ -1,5 +1,5 @@
 import styled from "styled-components";
-import { IGenres } from "../../../api/api";
+import { IGenres } from "../../api/api";
 
 interface IGenresProps {
   genres: IGenres[];

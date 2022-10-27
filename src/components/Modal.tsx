@@ -1,16 +1,16 @@
 import { motion, useViewportScroll } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
-import { IDetail } from "../../api/api";
+import { IDetail } from "../api/api";
 import styled from "styled-components";
-import device from "../../theme/mediaQueries";
-import VideoPlayer from "../common/VideoPlayer";
+import device from "../theme/mediaQueries";
+import VideoPlayer from "./common/VideoPlayer";
 import MovieDetail from "./MovieDetail";
 import TvDetail from "./TvDetail";
-import MyListButton from "../common/MyListButton";
-import RunTime from "./Detail/RunTime";
-import Genres from "./Detail/Genres";
-import Rate from "../common/Rate";
-import useFindPath from "../../hook/useFindPath";
+import MyListButton from "./common/MyListButton";
+import RunTime from "./modalDetail/RunTime";
+import Genres from "./modalDetail/Genres";
+import Rate from "./common/Rate";
+import useFindPath from "../hook/useFindPath";
 
 interface PropsType {
   detail: IDetail;

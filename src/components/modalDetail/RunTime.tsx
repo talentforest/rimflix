@@ -1,5 +1,5 @@
 import { AccessTime } from "@mui/icons-material";
-import { convertRunningTime } from "../../../utils/convertRunningTime";
+import { convertRunningTime } from "../../utils/convertRunningTime";
 
 interface IRuntimeProps {
   runtime: number;

@@ -1,12 +1,12 @@
-import { IDetail } from "../../api/api";
+import { IDetail } from "../api/api";
 import { Info } from "./Modal";
 import { useState } from "react";
-import Episodes from "./Detail/Episodes";
-import Cast from "./Detail/Cast";
-import useTvDetailQuery from "../../hook/Query/useTvDetailQuery";
-import AdditionalContents from "./Detail/AdditionalContents";
-import Category from "./Detail/Category";
-import Keywords from "./Detail/Keywords";
+import Episodes from "./modalDetail/Episodes";
+import Cast from "./modalDetail/Cast";
+import useTvDetailQuery from "../hook/query/useTvDetailQuery";
+import AdditionalContents from "./modalDetail/AdditionalContents";
+import Category from "./modalDetail/Category";
+import Keywords from "./modalDetail/Keywords";
 
 interface PropsType {
   detail: IDetail;

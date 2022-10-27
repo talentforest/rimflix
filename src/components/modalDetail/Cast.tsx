@@ -1,5 +1,5 @@
-import { IGuestStar } from "../../../api/api";
-import { profileSizes, sizeImagePath } from "../../../utils/sizeImagePath";
+import { IGuestStar } from "../../api/api";
+import { profileSizes, sizeImagePath } from "../../utils/sizeImagePath";
 import styled from "styled-components";
 import { Person } from "@mui/icons-material";
 import { Info } from "../Modal";

@@ -1,19 +1,19 @@
 import { useState } from "react";
-import { ISeason } from "../../../api/api";
+import { ISeason } from "../../api/api";
 import {
   posterSizes,
   sizeImagePath,
   stillSizes,
-} from "../../../utils/sizeImagePath";
-import { convertRunningTime } from "../../../utils/convertRunningTime";
+} from "../../utils/sizeImagePath";
+import { convertRunningTime } from "../../utils/convertRunningTime";
 import { AccessTime, Image } from "@mui/icons-material";
-import { changeDateSeperator } from "../../../utils/changeDateSeperator";
-import { checkScheduledAir } from "../../../utils/checkScheduledAir";
-import Rate from "../../common/Rate";
+import { changeDateSeperator } from "../../utils/changeDateSeperator";
+import { checkScheduledAir } from "../../utils/checkScheduledAir";
+import Rate from "../common/Rate";
 import styled from "styled-components";
-import Loading from "../../common/Loading";
-import device from "../../../theme/mediaQueries";
-import useTvDetailQuery from "../../../hook/Query/useTvDetailQuery";
+import Loading from "../common/Loading";
+import device from "../../theme/mediaQueries";
+import useTvDetailQuery from "../../hook/query/useTvDetailQuery";
 
 interface PropsType {
   seasons: ISeason[];

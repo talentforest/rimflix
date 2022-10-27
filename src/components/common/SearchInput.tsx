@@ -4,7 +4,7 @@ import { useState } from "react";
 import { useNavigate } from "react-router-dom";
 import styled from "styled-components";
 import device from "../../theme/mediaQueries";
-import Overlay from "../Modal/Overlay";
+import Overlay from "./Overlay";
 
 const SearchInput = () => {
   const [searchOpen, setSearchOpen] = useState(false);

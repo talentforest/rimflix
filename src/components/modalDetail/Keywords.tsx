@@ -1,7 +1,7 @@
 import { useState } from "react";
-import { IKeyword } from "../../../api/api";
+import { IKeyword } from "../../api/api";
 import { Info } from "../Modal";
-import InfoBox from "../../common/InfoBox";
+import InfoBox from "../common/InfoBox";
 import styled from "styled-components";
 import { ArrowBackIosNew, ArrowForwardIos } from "@mui/icons-material";
 

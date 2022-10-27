@@ -1,13 +1,13 @@
 import { motion } from "framer-motion";
 import { useNavigate } from "react-router-dom";
-import { IDetail } from "../../../api/api";
-import { changeDateSeperator } from "../../../utils/changeDateSeperator";
-import { posterSizes, sizeImagePath } from "../../../utils/sizeImagePath";
-import Rate from "../../common/Rate";
+import { IDetail } from "../../api/api";
+import { changeDateSeperator } from "../../utils/changeDateSeperator";
+import { posterSizes, sizeImagePath } from "../../utils/sizeImagePath";
+import Rate from "../common/Rate";
 import styled from "styled-components";
-import device from "../../../theme/mediaQueries";
-import useFindPath from "../../../hook/useFindPath";
-import { infoVariants, smallVariants } from "../../../utils/variants";
+import device from "../../theme/mediaQueries";
+import useFindPath from "../../hook/useFindPath";
+import { infoVariants, smallVariants } from "../../utils/variants";
 
 interface PropsType {
   data: IDetail[];
