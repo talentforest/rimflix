@@ -7,11 +7,12 @@ import {
 } from "../utils/sizeImagePath";
 import { Clear, Info, PlayCircle } from "@mui/icons-material";
 import { Button } from "../theme/buttonStyle";
+import { useEffect, useState } from "react";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
 import useGenresQuery from "../hook/query/useGenresQuery";
-import { useState } from "react";
 import VideoPlayer from "./common/VideoPlayer";
+import useFindPath from "../hook/useFindPath";
 
 interface PropsType {
   data: IDetail;
@@ -19,10 +20,15 @@ interface PropsType {
 
 const Banner = ({ data }: PropsType) => {
   const [play, setPlay] = useState(false);
+  const { homePath, tvHomePath } = useFindPath();
   const { allGenres } = useGenresQuery(data?.name ? "tv" : "movie");
   const contentsGenres = allGenres?.genres
     ?.filter((item) => data?.genre_ids?.includes(item.id))
     .slice(0, 3);
+
+  useEffect(() => {
+    if (!homePath || !tvHomePath) return setPlay(false);
+  }, [homePath, tvHomePath]);
 
   const onPlayClick = () => {
     setPlay((prev) => !prev);

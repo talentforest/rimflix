@@ -4,6 +4,7 @@ const useFindPath = () => {
   const { pathname } = useLocation();
 
   const homePath = pathname === "/";
+  const tvHomePath = pathname === "/tv";
   const moviePath = pathname.includes("/movie"); // 영화 콘텐츠 모달
   const tvPath = pathname.includes("/tv"); // tv 콘텐츠 모달
   const myListPath = pathname.includes("/myList");
@@ -11,6 +12,7 @@ const useFindPath = () => {
 
   return {
     homePath,
+    tvHomePath,
     moviePath,
     tvPath,
     myListPath,
