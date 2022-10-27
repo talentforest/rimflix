@@ -96,6 +96,7 @@ const Container = styled.section`
   flex-direction: column;
   align-items: center;
   height: 80vh;
+  border: 1px solid ${(props) => props.theme.black.darker};
   @media ${device.tablet} {
     height: 85vh;
   }

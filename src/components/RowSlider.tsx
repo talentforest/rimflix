@@ -54,6 +54,7 @@ const RowSlider = ({ title, data }: PropsType) => {
       x: event.changedTouches[0].pageX,
       y: event.changedTouches[0].pageY,
     });
+
     backRef.current.style.visibility = "visible";
     forwardRef.current.style.visibility = "visible";
   };

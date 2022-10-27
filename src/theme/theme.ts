@@ -12,4 +12,5 @@ export const theme: DefaultTheme = {
     darker: "#e5e5e5",
   },
   pink: "#ff9a9a",
+  yellow: "#ffd700",
 };

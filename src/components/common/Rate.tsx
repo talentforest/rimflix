@@ -24,7 +24,7 @@ const Box = styled.div`
   font-weight: 400;
   background-color: transparent;
   svg {
-    color: #ffd700;
+    color: ${(props) => props.theme.yellow};
     width: 16px;
     height: 16px;
     margin-right: 3px;

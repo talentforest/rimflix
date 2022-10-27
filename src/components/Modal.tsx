@@ -1,7 +1,8 @@
 import { motion, useViewportScroll } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
 import { IDetail } from "../api/api";
-import { Clear } from "@mui/icons-material";
+import { Clear, Theaters } from "@mui/icons-material";
+import { changeDateSeperator } from "../utils/changeDateSeperator";
 import styled from "styled-components";
 import device from "../theme/mediaQueries";
 import VideoPlayer from "./common/VideoPlayer";
@@ -25,6 +26,7 @@ const Modal = ({ detail, onCloseClick }: PropsType) => {
   const {
     id,
     poster_path,
+    release_date,
     backdrop_path,
     tagline,
     overview,
@@ -66,6 +68,10 @@ const Modal = ({ detail, onCloseClick }: PropsType) => {
           <h3>{title || name}</h3>
           <Genres genres={genres} />
           <MyListButton contentInfo={contentInfo} />
+          <ReleaseDate>
+            <Theaters />
+            <span>{changeDateSeperator(release_date)}</span>
+          </ReleaseDate>
           <RateTime>
             <Rate rate={vote_average} />
             <RunTime runtime={runtime || episode_run_time[0]} />
@@ -178,6 +184,18 @@ const DetailContainer = styled.section`
     > h3 {
       font-size: 34px;
     }
+  }
+`;
+
+const ReleaseDate = styled.div`
+  margin-bottom: 10px;
+  display: flex;
+  align-items: center;
+  gap: 5px;
+  svg {
+    width: 16px;
+    height: 16px;
+    fill: ${(props) => props.theme.yellow};
   }
 `;
 
