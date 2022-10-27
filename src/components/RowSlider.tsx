@@ -3,9 +3,11 @@ import { AnimatePresence, motion } from "framer-motion";
 import { IDetail } from "../api/api";
 import { ArrowBackIosNew, ArrowForwardIos, Circle } from "@mui/icons-material";
 import useSlide from "../hook/useSlide";
-import Contents from "./Contents";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
+import useGenresQuery from "../hook/query/useGenresQuery";
+import useFindPath from "../hook/useFindPath";
+import ContentsBox from "./common/ContentsBox";
 
 const rowVariants = {
   hidden: (back: boolean) => ({
@@ -26,21 +28,23 @@ interface PropsType {
 
 const RowSlider = ({ title, data }: PropsType) => {
   const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
+  const { tvPath } = useFindPath();
+  const { allGenresLoading, findGenres } = useGenresQuery(
+    tvPath ? "tv" : "movie"
+  );
   const {
     offset,
     back,
     index,
-    totalSlideNum,
     toggleLeaving,
     increaseIndex,
     decreaseIndex,
+    slideNumArr,
   } = useSlide(data);
 
-  const sliceSlideNum = data?.slice(offset * index, offset * index + offset);
-
-  const slideNumArr = Array.from(
-    { length: totalSlideNum },
-    (_, index) => index + 1
+  const slidesCutToOffset = data?.slice(
+    offset * index,
+    offset * index + offset
   );
 
   const onTouchStart = (event: React.TouchEvent<HTMLDivElement>) => {
@@ -93,9 +97,16 @@ const RowSlider = ({ title, data }: PropsType) => {
               key={index}
               custom={back}
             >
-              {sliceSlideNum?.map((contents) => (
-                <Contents contents={contents} key={contents.id} />
-              ))}
+              {slidesCutToOffset?.map(
+                (contents) =>
+                  !allGenresLoading && (
+                    <ContentsBox
+                      key={contents.id}
+                      contents={contents}
+                      genres={findGenres(contents.genre_ids)}
+                    />
+                  )
+              )}
             </Row>
           </AnimatePresence>
         </Slider>

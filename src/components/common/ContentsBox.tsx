@@ -19,7 +19,7 @@ interface PropsType {
   genres?: IGenres[];
 }
 
-const HoverBox = ({ contents, genres }: PropsType) => {
+const ContentsBox = ({ contents, genres }: PropsType) => {
   const searchQuery = useRecoilValue(searchState);
   const { homePath, tvPath, searchPath } = useFindPath();
   const navigate = useNavigate();
@@ -208,4 +208,4 @@ const ExtraInfo = styled.div`
   }
 `;
 
-export default HoverBox;
+export default ContentsBox;

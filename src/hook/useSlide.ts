@@ -16,8 +16,6 @@ const useSlide = (data: IDetail[]) => {
     offset = 5;
   }
 
-  const totalSlideNum = Math.floor((data?.length - 1) / offset);
-
   const toggleLeaving = () => setLeaving((prev) => !prev);
 
   const increaseIndex = () => {
@@ -42,6 +40,12 @@ const useSlide = (data: IDetail[]) => {
     }
   };
 
+  const totalSlideNum = Math.floor((data?.length - 1) / offset);
+  const slideNumArr = Array.from(
+    { length: totalSlideNum },
+    (_, index) => index + 1
+  );
+
   return {
     offset,
     back,
@@ -51,7 +55,7 @@ const useSlide = (data: IDetail[]) => {
     toggleLeaving,
     increaseIndex,
     decreaseIndex,
-    totalSlideNum,
+    slideNumArr,
   };
 };
 

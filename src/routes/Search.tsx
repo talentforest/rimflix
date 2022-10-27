@@ -3,20 +3,22 @@ import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { searchState } from "../data/searchAtom";
 import { Container } from "./MyList";
-import Contents from "../components/Contents";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
 import Loading from "../components/common/Loading";
-import Overlay from "../components/Modal/Overlay";
-import Modal from "../components/Modal/Modal";
-import useDetailQuery from "../hook/Query/useDetailQuery";
+import Overlay from "../components/common/Overlay";
+import Modal from "../components/Modal";
+import useDetailQuery from "../hook/query/useDetailQuery";
 import useFindPath from "../hook/useFindPath";
-import useSearchQuery from "../hook/Query/useSearchQuery";
+import useSearchQuery from "../hook/query/useSearchQuery";
 import Title from "../components/common/Title";
+import ContentsBox from "../components/common/ContentsBox";
+import useGenresQuery from "../hook/query/useGenresQuery";
 
 const Search = () => {
   const [searchQuery, setSearchQuery] = useRecoilState(searchState);
   const { movieDetail, tvDetail } = useDetailQuery();
+  const { findGenres } = useGenresQuery(tvDetail ? "tv" : "movie");
   const { moviePath, tvPath } = useFindPath();
   const { search } = useLocation();
   const navigate = useNavigate();
@@ -54,35 +56,42 @@ const Search = () => {
         {moviesWithPoster?.length !== 0 ? (
           <div>
             {moviesWithPoster?.map((contents) => (
-              <Contents key={contents.id} contents={contents} />
+              <ContentsBox
+                key={contents.id}
+                contents={contents}
+                genres={findGenres(contents.genre_ids)}
+              />
             ))}
           </div>
         ) : (
           <span>No Search results found</span>
         )}
       </ResultBox>
-
       <Title title={`Tv Result (${tvsWithPoster?.length})`} />
       <ResultBox>
         {tvsWithPoster?.length !== 0 ? (
-          tvsWithPoster?.map((contents) => (
-            <Contents key={contents.id} contents={contents} />
-          ))
+          <div>
+            {tvsWithPoster?.map((contents) => (
+              <ContentsBox
+                key={contents.id}
+                contents={contents}
+                genres={findGenres(contents.genre_ids)}
+              />
+            ))}
+          </div>
         ) : (
           <span>No Search results found</span>
         )}
       </ResultBox>
-      <>
-        {(movieDetail || tvDetail) && (
-          <Overlay
-            onOverlayClicked={() => {
-              return navigate(`/search/${searchQuery}`);
-            }}
-          />
-        )}
-        {moviePath && movieDetail && <Modal detail={movieDetail} />}
-        {tvPath && tvDetail && <Modal detail={tvDetail} />}
-      </>
+      {(movieDetail || tvDetail) && (
+        <Overlay
+          onOverlayClicked={() => {
+            return navigate(`/search/${searchQuery}`);
+          }}
+        />
+      )}
+      {moviePath && movieDetail && <Modal detail={movieDetail} />}
+      {tvPath && tvDetail && <Modal detail={tvDetail} />}
     </Container>
   );
 };

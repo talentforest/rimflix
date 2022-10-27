@@ -19,7 +19,13 @@ const useGenresQuery = (category: string) => {
     }
   );
 
-  return { allGenres, allGenresLoading };
+  const findGenres = (genreIds: number[]) => {
+    return allGenres?.genres
+      .filter((item) => genreIds.includes(item.id))
+      .slice(0, 3);
+  };
+
+  return { allGenres, allGenresLoading, findGenres };
 };
 
 export default useGenresQuery;
