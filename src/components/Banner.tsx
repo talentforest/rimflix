@@ -196,6 +196,9 @@ const PosterInfo = styled.div`
   }
   @media ${device.desktop} {
     align-items: flex-start;
+    h1 {
+      margin: 0 0 10px;
+    }
     p {
       width: 60%;
       text-align: left;

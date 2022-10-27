@@ -1,4 +1,4 @@
-import { useState } from "react";
+import { useRef, useState } from "react";
 import { AnimatePresence, motion } from "framer-motion";
 import { IDetail } from "../api/api";
 import { ArrowBackIosNew, ArrowForwardIos, Circle } from "@mui/icons-material";
@@ -27,6 +27,8 @@ interface PropsType {
 }
 
 const RowSlider = ({ title, data }: PropsType) => {
+  const backRef = useRef(null);
+  const forwardRef = useRef(null);
   const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
   const { tvPath } = useFindPath();
   const { allGenresLoading, findGenres } = useGenresQuery(
@@ -52,11 +54,15 @@ const RowSlider = ({ title, data }: PropsType) => {
       x: event.changedTouches[0].pageX,
       y: event.changedTouches[0].pageY,
     });
+    backRef.current.style.visibility = "visible";
+    forwardRef.current.style.visibility = "visible";
   };
 
   const onTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
     const distanceX = Math.abs(touchPosition.x - event.changedTouches[0].pageX);
     const distanceY = Math.abs(touchPosition.y - event.changedTouches[0].pageY);
+
+    console.log(distanceY + distanceX < 350 && distanceX > distanceY);
 
     if (distanceY + distanceX < 350 && distanceX > distanceY) {
       if (touchPosition.x - event.changedTouches[0].pageX < 0) {
@@ -65,6 +71,9 @@ const RowSlider = ({ title, data }: PropsType) => {
         increaseIndex();
       }
     }
+
+    backRef.current.style.visibility = "hidden";
+    forwardRef.current.style.visibility = "hidden";
   };
 
   return (
@@ -81,7 +90,7 @@ const RowSlider = ({ title, data }: PropsType) => {
         </SlideMark>
       </Header>
       <Sliders>
-        {<ArrowBackIosNew onClick={decreaseIndex} />}
+        <ArrowBackIosNew ref={backRef} onClick={decreaseIndex} />
         <Slider onTouchStart={onTouchStart} onTouchEnd={onTouchEnd}>
           <AnimatePresence
             custom={back}
@@ -110,7 +119,7 @@ const RowSlider = ({ title, data }: PropsType) => {
             </Row>
           </AnimatePresence>
         </Slider>
-        {<ArrowForwardIos onClick={increaseIndex} />}
+        <ArrowForwardIos ref={forwardRef} onClick={increaseIndex} />
       </Sliders>
     </Container>
   );
@@ -120,13 +129,6 @@ const Container = styled.section`
   > header {
     > div {
       visibility: visible;
-    }
-  }
-  &:hover {
-    > div {
-      > svg {
-        visibility: visible;
-      }
     }
   }
   @media ${device.tablet} {
