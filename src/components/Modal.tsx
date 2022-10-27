@@ -1,6 +1,7 @@
 import { motion, useViewportScroll } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
 import { IDetail } from "../api/api";
+import { Clear } from "@mui/icons-material";
 import styled from "styled-components";
 import device from "../theme/mediaQueries";
 import VideoPlayer from "./common/VideoPlayer";
@@ -14,9 +15,10 @@ import useFindPath from "../hook/useFindPath";
 
 interface PropsType {
   detail: IDetail;
+  onCloseClick: () => void;
 }
 
-const Modal = ({ detail }: PropsType) => {
+const Modal = ({ detail, onCloseClick }: PropsType) => {
   const { scrollY } = useViewportScroll();
   const { moviePath, tvPath } = useFindPath();
 
@@ -42,40 +44,69 @@ const Modal = ({ detail }: PropsType) => {
   };
 
   return (
-    <ModalBox style={{ top: scrollY.get() + 80 }} layoutId={`${id}${uuidv4}`}>
-      <VideoContainer>
-        <VideoPlayer
-          videoId={id}
-          backdropPath={backdrop_path}
-          title={title || name}
-        />
-      </VideoContainer>
-      <DetailContainer>
-        <p>{tagline}</p>
-        <h3>{title || name}</h3>
-        <Genres genres={genres} />
-        <MyListButton contentInfo={contentInfo} />
-        <RateTime>
-          <Rate rate={vote_average} />
-          <RunTime runtime={runtime || episode_run_time[0]} />
-        </RateTime>
-        <Info $column="column">
-          <h5>Overview</h5>
-          <p>{overview || "There is no information"}</p>
-        </Info>
-        {moviePath && <MovieDetail detail={detail} />}
-        {tvPath && <TvDetail detail={detail} />}
-        {homepage && (
-          <HomePage href={`${homepage}`} target="_blank" rel="noreferrer">
-            Official Pages
-          </HomePage>
-        )}
-      </DetailContainer>
-    </ModalBox>
+    <>
+      <CloseBtn
+        className="big"
+        style={{ top: scrollY.get() + 65 }}
+        onClick={onCloseClick}
+      />
+      <ModalBox
+        style={{ top: scrollY.get() + 100 }}
+        layoutId={`${id}${uuidv4}`}
+      >
+        <VideoContainer>
+          <VideoPlayer
+            videoId={id}
+            backdropPath={backdrop_path}
+            title={title || name}
+          />
+        </VideoContainer>
+        <DetailContainer>
+          <p>{tagline}</p>
+          <h3>{title || name}</h3>
+          <Genres genres={genres} />
+          <MyListButton contentInfo={contentInfo} />
+          <RateTime>
+            <Rate rate={vote_average} />
+            <RunTime runtime={runtime || episode_run_time[0]} />
+          </RateTime>
+          <Info $column="column">
+            <h5>Overview</h5>
+            <p>{overview || "There is no information"}</p>
+          </Info>
+          {moviePath && <MovieDetail detail={detail} />}
+          {tvPath && <TvDetail detail={detail} />}
+          {homepage && (
+            <HomePage href={`${homepage}`} target="_blank" rel="noreferrer">
+              Official Pages
+            </HomePage>
+          )}
+        </DetailContainer>
+      </ModalBox>
+    </>
   );
 };
 
+const CloseBtn = styled(Clear)`
+  position: absolute;
+  z-index: 2;
+  right: 20px;
+  top: 0;
+  cursor: pointer;
+  &.big {
+    width: 30px;
+    height: 30px;
+  }
+  @media ${device.tablet} {
+    right: 15vw;
+  }
+  @media ${device.desktop} {
+    right: 20vw;
+  }
+`;
+
 const ModalBox = styled(motion.div)`
+  box-shadow: 1px 2px 10px rgba(235, 235, 235, 0.3);
   z-index: 5;
   position: absolute;
   top: 0;

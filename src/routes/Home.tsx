@@ -16,6 +16,10 @@ const Home = () => {
   const bannerData = nowPlaying?.data?.results[0];
   const exceptBannerData = nowPlaying?.data?.results?.slice(1);
 
+  const onCloseClick = () => {
+    return navigate("/");
+  };
+
   return (
     <>
       {nowPlaying.isLoading &&
@@ -47,12 +51,8 @@ const Home = () => {
           </Sliders>
           {movieDetail && (
             <>
-              <Overlay
-                onOverlayClicked={() => {
-                  return navigate("/");
-                }}
-              />
-              <Modal detail={movieDetail} />
+              <Overlay onCloseClick={onCloseClick} />
+              <Modal detail={movieDetail} onCloseClick={onCloseClick} />
             </>
           )}
         </>

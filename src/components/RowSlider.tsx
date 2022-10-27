@@ -62,8 +62,6 @@ const RowSlider = ({ title, data }: PropsType) => {
     const distanceX = Math.abs(touchPosition.x - event.changedTouches[0].pageX);
     const distanceY = Math.abs(touchPosition.y - event.changedTouches[0].pageY);
 
-    console.log(distanceY + distanceX < 350 && distanceX > distanceY);
-
     if (distanceY + distanceX < 350 && distanceX > distanceY) {
       if (touchPosition.x - event.changedTouches[0].pageX < 0) {
         decreaseIndex();
@@ -71,7 +69,6 @@ const RowSlider = ({ title, data }: PropsType) => {
         increaseIndex();
       }
     }
-
     backRef.current.style.visibility = "hidden";
     forwardRef.current.style.visibility = "hidden";
   };

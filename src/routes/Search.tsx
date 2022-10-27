@@ -40,6 +40,10 @@ const Search = () => {
     setSearchQuery(search);
   };
 
+  const onCloseClick = () => {
+    return navigate(`/search/${searchQuery}`);
+  };
+
   const moviesWithPoster = searchMovies?.results?.filter(
     (item) => item.poster_path
   );
@@ -83,15 +87,13 @@ const Search = () => {
           <span>No Search results found</span>
         )}
       </ResultBox>
-      {(movieDetail || tvDetail) && (
-        <Overlay
-          onOverlayClicked={() => {
-            return navigate(`/search/${searchQuery}`);
-          }}
-        />
+      {(movieDetail || tvDetail) && <Overlay onCloseClick={onCloseClick} />}
+      {moviePath && movieDetail && (
+        <Modal detail={movieDetail} onCloseClick={onCloseClick} />
       )}
-      {moviePath && movieDetail && <Modal detail={movieDetail} />}
-      {tvPath && tvDetail && <Modal detail={tvDetail} />}
+      {tvPath && tvDetail && (
+        <Modal detail={tvDetail} onCloseClick={onCloseClick} />
+      )}
     </Container>
   );
 };

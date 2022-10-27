@@ -15,6 +15,10 @@ const MyList = () => {
   const { movieDetail, tvDetail } = useDetailQuery();
   const navigate = useNavigate();
 
+  const onCloseClick = () => {
+    return navigate("/myList");
+  };
+
   return (
     <Container>
       <Title title="My Movies" />
@@ -45,15 +49,11 @@ const MyList = () => {
           ))}
         </List>
       )}
-      {(movieDetail || tvDetail) && (
-        <Overlay
-          onOverlayClicked={() => {
-            return navigate("/myList");
-          }}
-        />
+      {(movieDetail || tvDetail) && <Overlay onCloseClick={onCloseClick} />}
+      {movieDetail && (
+        <Modal detail={movieDetail} onCloseClick={onCloseClick} />
       )}
-      {movieDetail && <Modal detail={movieDetail} />}
-      {tvDetail && <Modal detail={tvDetail} />}
+      {tvDetail && <Modal detail={tvDetail} onCloseClick={onCloseClick} />}
     </Container>
   );
 };

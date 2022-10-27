@@ -15,6 +15,10 @@ const Tv = () => {
   const bannerData = top.data?.results[0];
   const exceptBannerData = top.data?.results.slice(1);
 
+  const onCloseClick = () => {
+    return navigate("/tv");
+  };
+
   return (
     <>
       {top.isLoading &&
@@ -46,12 +50,8 @@ const Tv = () => {
           </Sliders>
           {tvDetail && (
             <>
-              <Overlay
-                onOverlayClicked={() => {
-                  return navigate("/tv");
-                }}
-              />
-              <Modal detail={tvDetail} />
+              <Overlay onCloseClick={onCloseClick} />
+              <Modal detail={tvDetail} onCloseClick={onCloseClick} />
             </>
           )}
         </>

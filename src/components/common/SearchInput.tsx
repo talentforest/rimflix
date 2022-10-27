@@ -12,7 +12,7 @@ const SearchInput = () => {
   const navigate = useNavigate();
   const inputAnimation = useAnimation();
 
-  const onOverlayClicked = () => {
+  const onCloseClick = () => {
     setSearchOpen((prev) => !prev);
     inputAnimation.start({ scaleX: 0 });
   };
@@ -42,7 +42,7 @@ const SearchInput = () => {
 
   return (
     <>
-      {searchOpen && <Overlay onOverlayClicked={onOverlayClicked} />}
+      {searchOpen && <Overlay onCloseClick={onCloseClick} />}
       <Box onSubmit={handleSearchWordSubmit}>
         <Search
           component={motion.svg}

@@ -2,13 +2,13 @@ import { motion } from "framer-motion";
 import styled from "styled-components";
 
 interface PropsType {
-  onOverlayClicked: () => void;
+  onCloseClick: () => void;
 }
 
-const Overlay = ({ onOverlayClicked }: PropsType) => {
+const Overlay = ({ onCloseClick }: PropsType) => {
   return (
     <OverlayBox
-      onClick={() => onOverlayClicked()}
+      onClick={onCloseClick}
       exit={{ opacity: 0 }}
       animate={{ opacity: 1 }}
     />
