@@ -6,6 +6,7 @@ import useMovieDetailQuery from "../hook/query/useMovieDetailQuery";
 import AdditionalContents from "./modalDetail/AdditionalContents";
 import Category from "./modalDetail/Category";
 import Keywords from "./modalDetail/Keywords";
+import styled from "styled-components";
 
 interface PropsType {
   detail: IDetail;
@@ -43,19 +44,27 @@ const MovieDetail = ({ detail }: PropsType) => {
             category={category}
             setCategory={setCategory}
           />
-          {category === "Collection" && belongs_to_collection && (
-            <AdditionalContents data={collection.parts} />
-          )}
-          {category === "Similar" && similar && (
-            <AdditionalContents data={similar.results.slice(0, 9)} />
-          )}
-          {category === "Recommended" && recommendation && (
-            <AdditionalContents data={recommendation.results.slice(0, 9)} />
-          )}
+          <List>
+            {category === "Collection" && belongs_to_collection && (
+              <AdditionalContents data={collection.parts} />
+            )}
+
+            {category === "Similar" && similar && (
+              <AdditionalContents data={similar.results.slice(0, 9)} />
+            )}
+            {category === "Recommended" && recommendation && (
+              <AdditionalContents data={recommendation.results.slice(0, 9)} />
+            )}
+          </List>
         </Info>
       )}
     </>
   );
 };
+
+const List = styled.div`
+  min-height: 20vh;
+  width: 100%;
+`;
 
 export default MovieDetail;

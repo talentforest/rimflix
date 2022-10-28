@@ -184,13 +184,13 @@ const PosterInfo = styled.div`
   @media ${device.tablet} {
     padding-left: 3vw;
     h1 {
-      font-size: 40px;
+      font-size: 36px;
       margin-bottom: 15px;
     }
     p {
       display: block;
-      font-size: 18px;
-      line-height: 1.3;
+      font-size: 16px;
+      line-height: 1.4;
       width: 70%;
       text-align: center;
     }
@@ -198,6 +198,7 @@ const PosterInfo = styled.div`
   @media ${device.desktop} {
     align-items: flex-start;
     h1 {
+      font-size: 40px;
       margin: 0 0 10px;
     }
     p {

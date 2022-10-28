@@ -40,14 +40,14 @@ const MyListContents = ({ category, myList }: IMyListContents) => {
       <img src={sizeImagePath(posterSizes.w342, myList.imgPath)} alt="poster" />
       {width >= +deviceSizes.tablet ? (
         <InfoBox variants={infoVariants}>
+          <MyListButton contentInfo={contentInfo} simpleBtn={true} />
           <button>
             <Info onClick={() => onNavigateClick(category, myList.id)} />
           </button>
-          <MyListButton contentInfo={contentInfo} simpleBtn={true} />
-          <div>
+          <Date>
             <span>Date Added</span>
             <span>{myList.date}</span>
-          </div>
+          </Date>
         </InfoBox>
       ) : (
         <NavigateBtn
@@ -77,6 +77,9 @@ const Contents = styled(motion.div)`
     height: 100%;
     border-radius: 5px;
   }
+  @media ${device.tablet} {
+    cursor: default;
+  }
 `;
 
 const InfoBox = styled(motion.div)`
@@ -102,6 +105,7 @@ const InfoBox = styled(motion.div)`
       border-radius: 50%;
       border: 2px solid ${(props) => props.theme.black.lighter};
       background-color: ${(props) => props.theme.black.darker};
+      margin-bottom: 5px;
       svg {
         fill: ${(props) => props.theme.white.lighter};
       }
@@ -111,21 +115,23 @@ const InfoBox = styled(motion.div)`
         }
       }
     }
-    > div {
-      display: flex;
-      flex-direction: column;
-      justify-content: center;
-      align-items: center;
-      span {
-        font-size: 14px;
-        &:first-child {
-          color: ${(props) => props.theme.white.darker};
-          font-size: 12px;
-        }
-      }
-    }
     &:hover {
       background-color: rgba(0, 0, 0, 0.8);
+    }
+  }
+`;
+
+const Date = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+  gap: 3px;
+  span {
+    font-size: 14px;
+    &:first-child {
+      color: ${(props) => props.theme.white.darker};
+      font-size: 12px;
     }
   }
 `;

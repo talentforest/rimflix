@@ -60,7 +60,7 @@ const ContentsBox = ({ contents, genres }: PropsType) => {
         alt={`${title || name} poster`}
       />
       <Info variants={infoVariants}>
-        <h1>{cutLetter(title || name, 30)}</h1>
+        <h1>{cutLetter(title || name, 26)}</h1>
         <Genres>
           {genres?.map((item) => (
             <InfoBox key={item.id} info={item.name} />
@@ -125,11 +125,11 @@ const Box = styled(motion.div)<{ $height: boolean }>`
       -webkit-transform-origin: center center;
       transform-origin: center center;
     }
-    &:nth-child(6n + 1) {
+    &:nth-child(7n + 1) {
       -webkit-transform-origin: center left;
       transform-origin: center left;
     }
-    &:nth-child(6n) {
+    &:nth-child(7n) {
       -webkit-transform-origin: center right;
       transform-origin: center right;
     }
@@ -143,40 +143,37 @@ const Image = styled.img`
 `;
 
 const Info = styled(motion.div)`
-  opacity: 0;
-  position: absolute;
-  bottom: -50px;
-  display: flex;
-  flex-direction: column;
-  justify-content: space-evenly;
-  width: 100%;
-  min-height: 120px;
-  padding: 5px 10px;
-  background-color: ${(props) => props.theme.black.darker};
-  border-bottom-left-radius: 5px;
-  border-bottom-right-radius: 5px;
-  font-size: 16px;
   display: none;
-  > h1 {
-    width: 100%;
-    font-weight: 700;
-  }
   @media ${device.tablet} {
-    display: block;
+    opacity: 0;
+    position: absolute;
     bottom: -38px;
-    padding: 5px 10px;
-    font-size: 16px;
+    display: flex;
+    flex-direction: column;
+    justify-content: space-evenly;
+    width: 100%;
     height: 130px;
+    background-color: ${(props) => props.theme.black.darker};
+    border-bottom-left-radius: 5px;
+    border-bottom-right-radius: 5px;
+    padding: 5px 10px;
+    font-size: 14px;
+    > h1 {
+      width: 100%;
+      font-weight: 700;
+      margin-bottom: 5px;
+    }
   }
   @media ${device.desktop} {
     > h1 {
-      font-size: 18px;
+      font-size: 16px;
     }
   }
 `;
 
 const Genres = styled.ul`
   width: 100%;
+  min-height: 50px;
   display: flex;
   flex-wrap: wrap;
   justify-content: flex-start;
@@ -185,15 +182,11 @@ const Genres = styled.ul`
   > li {
     font-size: 10px;
     padding: 3px;
+    height: fit-content;
   }
   @media ${device.tablet} {
     > li {
       font-size: 11px;
-    }
-  }
-  @media ${device.desktop} {
-    > li {
-      font-size: 13px;
     }
   }
 `;

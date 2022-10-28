@@ -156,10 +156,11 @@ const Header = styled.header`
   margin: 0 calc(5vw + 10px) 10px;
   font-weight: 700;
   @media ${device.tablet} {
-    font-size: 24px;
+    font-size: 18px;
     margin: 0 calc(5vw + 5px) 10px;
   }
   @media ${device.desktop} {
+    font-size: 20px;
     margin: 0 3vw 10px;
   }
 `;
@@ -188,7 +189,7 @@ const Sliders = styled.div`
   }
   @media ${device.desktop} {
     height: 20vw;
-    margin-bottom: 60px;
+    margin-bottom: 80px;
     svg {
       width: 3vw;
     }

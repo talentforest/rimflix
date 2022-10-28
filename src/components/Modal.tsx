@@ -27,6 +27,7 @@ const Modal = ({ detail, onCloseClick }: PropsType) => {
     id,
     poster_path,
     release_date,
+    first_air_date,
     backdrop_path,
     tagline,
     overview,
@@ -70,7 +71,7 @@ const Modal = ({ detail, onCloseClick }: PropsType) => {
           <MyListButton contentInfo={contentInfo} />
           <ReleaseDate>
             <Theaters />
-            <span>{changeDateSeperator(release_date)}</span>
+            <span>{changeDateSeperator(release_date || first_air_date)}</span>
           </ReleaseDate>
           <RateTime>
             <Rate rate={vote_average} />
@@ -168,11 +169,11 @@ const DetailContainer = styled.section`
     color: ${(props) => props.theme.white.lighter};
     font-size: 26px;
     font-weight: 700;
-    padding-bottom: 5px;
+    padding-bottom: 10px;
     display: block;
   }
   > button {
-    margin-bottom: 10px;
+    margin: 10px 0;
     width: fit-content;
     height: 30px;
     padding: 5px;
