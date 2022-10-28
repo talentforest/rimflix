@@ -1,4 +1,4 @@
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import { useLocation, useNavigate } from "react-router-dom";
 import { useRecoilState } from "recoil";
 import { searchState } from "../data/searchAtom";
@@ -14,8 +14,11 @@ import useSearchQuery from "../hook/query/useSearchQuery";
 import Title from "../components/common/Title";
 import ContentsBox from "../components/common/ContentsBox";
 import useGenresQuery from "../hook/query/useGenresQuery";
+import { Language } from "../api/api";
+import { LanguageContext } from "../context/LanguageContext";
 
 const Search = () => {
+  const { language } = useContext(LanguageContext);
   const [searchQuery, setSearchQuery] = useRecoilState(searchState);
   const { movieDetail, tvDetail } = useDetailQuery();
   const { findGenres } = useGenresQuery(tvDetail ? "tv" : "movie");
@@ -52,10 +55,14 @@ const Search = () => {
   );
 
   return searchMoviesLoading && searchTvShowsLoading ? (
-    <Loading screenSize="part" />
+    <Loading screenSize="entire" />
   ) : (
     <Container>
-      <Title title={`Movies Result (${moviesWithPoster?.length})`} />
+      <Title
+        title={`${
+          language === Language.ko ? "영화 검색결과" : "Movies Result"
+        } (${moviesWithPoster?.length})`}
+      />
       <ResultBox>
         {moviesWithPoster?.length !== 0 ? (
           <div>
@@ -68,10 +75,18 @@ const Search = () => {
             ))}
           </div>
         ) : (
-          <span>No Search results found</span>
+          <span>
+            {language === Language.ko
+              ? "검색된 결과가 없습니다."
+              : "No Search results found"}
+          </span>
         )}
       </ResultBox>
-      <Title title={`Tv Result (${tvsWithPoster?.length})`} />
+      <Title
+        title={`${
+          language === Language.ko ? "TV 프로그램 검색결과" : "TV Shows Result"
+        }  (${tvsWithPoster?.length})`}
+      />
       <ResultBox>
         {tvsWithPoster?.length !== 0 ? (
           <div>
@@ -84,7 +99,11 @@ const Search = () => {
             ))}
           </div>
         ) : (
-          <span>No Search results found</span>
+          <span>
+            {language === Language.ko
+              ? "검색된 결과가 없습니다."
+              : "No Search results found"}
+          </span>
         )}
       </ResultBox>
       {(movieDetail || tvDetail) && <Overlay onCloseClick={onCloseClick} />}

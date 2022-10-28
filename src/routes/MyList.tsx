@@ -8,8 +8,12 @@ import Modal from "../components/Modal";
 import useDetailQuery from "../hook/query/useDetailQuery";
 import MyListContents from "../components/MyListContents";
 import Title from "../components/common/Title";
+import { useContext } from "react";
+import { LanguageContext } from "../context/LanguageContext";
+import { Language } from "../api/api";
 
 const MyList = () => {
+  const { language } = useContext(LanguageContext);
   const myListMovies = useRecoilValue(myListMovieState);
   const myListTvs = useRecoilValue(myListTvState);
   const { movieDetail, tvDetail } = useDetailQuery();
@@ -21,9 +25,13 @@ const MyList = () => {
 
   return (
     <Container>
-      <Title title="My Movies" />
+      <Title title={language === Language.ko ? "나의 영화" : "My Movies"} />
       {myListMovies.length === 0 ? (
-        <Empty>It's still empty.</Empty>
+        <Empty>
+          {language === Language.ko
+            ? "저장된 영화가 없습니다."
+            : "It's still empty."}
+        </Empty>
       ) : (
         <List>
           {myListMovies.map((myListMovie) => (
@@ -35,9 +43,15 @@ const MyList = () => {
           ))}
         </List>
       )}
-      <Title title="My Tv Show" />
+      <Title
+        title={language === Language.ko ? "나의 TV 프로그램" : "My Tv Show"}
+      />
       {myListTvs.length === 0 ? (
-        <Empty>It's still empty.</Empty>
+        <Empty>
+          {language === Language.ko
+            ? "저장된 TV 프로그램이 없습니다."
+            : "It's still empty."}
+        </Empty>
       ) : (
         <List>
           {myListTvs.map((myListTv) => (

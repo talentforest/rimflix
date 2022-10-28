@@ -1,6 +1,8 @@
 import { Link, useMatch } from "react-router-dom";
 import { motion, useAnimation, useViewportScroll } from "framer-motion";
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
+import { Language } from "../api/api";
+import { LanguageContext } from "../context/LanguageContext";
 import LogoBox from "./LogoBox";
 import SearchInput from "../components/common/SearchInput";
 import styled from "styled-components";
@@ -16,6 +18,7 @@ const navBoxVariants = {
 };
 
 function Header() {
+  const { language } = useContext(LanguageContext);
   const { scrollY } = useViewportScroll();
   const navBoxAnimation = useAnimation();
 
@@ -43,14 +46,21 @@ function Header() {
         <Items>
           <Link to="/">
             <Item>
-              Movies {(homeMatch || movieMatch) && <Circle layoutId="circle" />}
+              {language === Language.ko ? "영화" : "Movies"}{" "}
+              {(homeMatch || movieMatch) && <Circle layoutId="circle" />}
             </Item>
           </Link>
           <Link to="/tv ">
-            <Item>Tv Shows {tvMatch && <Circle layoutId="circle" />}</Item>
+            <Item>
+              {language === Language.ko ? "TV 프로그램" : "Tv Shows "}
+              {tvMatch && <Circle layoutId="circle" />}
+            </Item>
           </Link>
           <Link to="/myList">
-            <Item>My List {myListMatch && <Circle layoutId="circle" />}</Item>
+            <Item>
+              {language === Language.ko ? "나의 리스트" : "My List"}{" "}
+              {myListMatch && <Circle layoutId="circle" />}
+            </Item>
           </Link>
         </Items>
       </Col>

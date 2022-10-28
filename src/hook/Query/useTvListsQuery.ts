@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { useQuery } from "react-query";
 import {
   getAiringTodayTvShows,
@@ -6,31 +7,36 @@ import {
   getTopRatedTvShows,
   IGetMovieTvResult,
 } from "../../api/api";
+import { LanguageContext } from "../../context/LanguageContext";
 import useFindPath from "../useFindPath";
 
 const useTvListsQuery = () => {
   const { tvPath } = useFindPath();
-  const top = useQuery<IGetMovieTvResult>(["tvs", "top"], getTopRatedTvShows);
+  const { language } = useContext(LanguageContext);
+
+  const top = useQuery<IGetMovieTvResult>(["tvs", "top", language], () =>
+    getTopRatedTvShows(language)
+  );
 
   const popular = useQuery<IGetMovieTvResult>(
-    ["tvs", "popular"],
-    getPopularTvShows,
+    ["tvs", "popular", language],
+    () => getPopularTvShows(language),
     {
       enabled: tvPath,
     }
   );
 
   const airingToday = useQuery<IGetMovieTvResult>(
-    ["tvs", "airingToday"],
-    getAiringTodayTvShows,
+    ["tvs", "airingToday", language],
+    () => getAiringTodayTvShows(language),
     {
       enabled: tvPath,
     }
   );
 
   const onAir = useQuery<IGetMovieTvResult>(
-    ["tvs", "onAir"],
-    getOnAirTvShows, //
+    ["tvs", "onAir", language],
+    () => getOnAirTvShows(language), //
     {
       enabled: tvPath,
     }

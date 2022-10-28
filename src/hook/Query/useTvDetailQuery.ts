@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { useQuery } from "react-query";
 import { useParams } from "react-router-dom";
 import {
@@ -11,16 +12,18 @@ import {
   IKeywords,
   ISeasonDetail,
 } from "../../api/api";
+import { LanguageContext } from "../../context/LanguageContext";
 import useFindPath from "../useFindPath";
 
 const useTvDetailQuery = (seasonNumber?: number) => {
+  const { language } = useContext(LanguageContext);
   const { tvPath } = useFindPath();
   const { id } = useParams();
 
   const { data: recommendation, isLoading: recommendationLoading } =
     useQuery<IGetMovieTvResult>(
-      ["recommendation", "tv", id],
-      () => getRecommendation("tv", +id),
+      ["recommendation", "tv", id, language],
+      () => getRecommendation("tv", +id, language),
       {
         enabled: !!id && tvPath,
       }
@@ -28,8 +31,8 @@ const useTvDetailQuery = (seasonNumber?: number) => {
 
   const { data: similar, isLoading: similarLoading } =
     useQuery<IGetMovieTvResult>(
-      ["similar", "tv", id],
-      () => getSimilar("tv", +id),
+      ["similar", "tv", id, language],
+      () => getSimilar("tv", +id, language),
       {
         enabled: !!id && tvPath,
       }
@@ -37,8 +40,8 @@ const useTvDetailQuery = (seasonNumber?: number) => {
 
   const { data: seasonCrew, isLoading: seasonCrewLoading } =
     useQuery<ICastCrew>(
-      ["episodes", id, seasonNumber],
-      () => getTvSeasonCrews(+id, seasonNumber),
+      ["episodes", id, seasonNumber, language],
+      () => getTvSeasonCrews(+id, seasonNumber, language),
       {
         enabled: !!id && !!seasonNumber && tvPath,
       }
@@ -54,8 +57,8 @@ const useTvDetailQuery = (seasonNumber?: number) => {
 
   const { data: seasonDetail, isLoading: seasonDetailLoading } =
     useQuery<ISeasonDetail>(
-      ["season", "episodes", id, seasonNumber],
-      () => getSeasonDetail(+id, seasonNumber),
+      ["season", "episodes", id, seasonNumber, language],
+      () => getSeasonDetail(+id, seasonNumber, language),
       {
         enabled: !!id && !!seasonNumber && tvPath,
       }

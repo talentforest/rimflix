@@ -7,8 +7,12 @@ import Modal from "../components/Modal";
 import RowSlider from "../components/RowSlider";
 import useTvListsQuery from "../hook/query/useTvListsQuery";
 import useDetailQuery from "../hook/query/useDetailQuery";
+import { useContext } from "react";
+import { LanguageContext } from "../context/LanguageContext";
+import { Language } from "../api/api";
 
 const Tv = () => {
+  const { language } = useContext(LanguageContext);
   const { top, popular, onAir, airingToday } = useTvListsQuery();
   const { tvDetail } = useDetailQuery();
   const navigate = useNavigate();
@@ -32,19 +36,35 @@ const Tv = () => {
           <Banner data={bannerData} />
           <Sliders>
             <RowSlider
-              title={"Top Ranked Tv Shows"}
+              title={
+                language === Language.ko
+                  ? "높은 평점을 받은 TV 프로그램"
+                  : "Top Ranked Tv Shows"
+              }
               data={exceptBannerData} //
             />
             <RowSlider
-              title={"Airing Today Tv Shows"}
+              title={
+                language === Language.ko
+                  ? "최근 방영을 시작한 TV 프로그램"
+                  : "Airing Today Tv Shows"
+              }
               data={airingToday.data?.results}
             />
             <RowSlider
-              title={"On Air Tv Shows"}
+              title={
+                language === Language.ko
+                  ? "방영중인 TV 프로그램"
+                  : "On Air Tv Shows"
+              }
               data={onAir.data?.results} //
             />
             <RowSlider
-              title={"Popular Tv Shows"}
+              title={
+                language === Language.ko
+                  ? "인기있는 TV 프로그램"
+                  : "Popular Tv Shows"
+              }
               data={popular.data?.results}
             />
           </Sliders>

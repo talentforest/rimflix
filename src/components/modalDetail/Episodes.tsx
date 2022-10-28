@@ -1,5 +1,5 @@
-import { useState } from "react";
-import { ISeason } from "../../api/api";
+import { useContext, useState } from "react";
+import { ISeason, Language } from "../../api/api";
 import {
   posterSizes,
   sizeImagePath,
@@ -14,6 +14,7 @@ import styled from "styled-components";
 import Loading from "../common/Loading";
 import device from "../../theme/mediaQueries";
 import useTvDetailQuery from "../../hook/query/useTvDetailQuery";
+import { LanguageContext } from "../../context/LanguageContext";
 
 interface PropsType {
   seasons: ISeason[];
@@ -22,6 +23,7 @@ interface PropsType {
 }
 
 const Episodes = ({ seasons, seasonNumber, setSeasonNumber }: PropsType) => {
+  const { language } = useContext(LanguageContext);
   const [episodesCount, setEpisodesCount] = useState(10);
   const { seasonDetail, seasonDetailLoading } = useTvDetailQuery(seasonNumber);
 
@@ -73,7 +75,9 @@ const Episodes = ({ seasons, seasonNumber, setSeasonNumber }: PropsType) => {
           <>
             <span>{changeDateSeperator(seasonDetail?.air_date)}</span>
             <span className="willBeAired">
-              This Tv Show is going to be aired.
+              {language === Language.ko
+                ? "방송 예정인 프로그램입니다."
+                : "This Tv Show is going to be aired."}
             </span>
           </>
         )}
@@ -103,7 +107,7 @@ const Episodes = ({ seasons, seasonNumber, setSeasonNumber }: PropsType) => {
                   {episode.runtime && (
                     <span>
                       <AccessTime />
-                      {convertRunningTime(episode.runtime)}
+                      {convertRunningTime(episode.runtime, language)}
                     </span>
                   )}
                 </div>

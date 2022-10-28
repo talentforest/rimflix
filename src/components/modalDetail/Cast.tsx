@@ -1,17 +1,20 @@
-import { IGuestStar } from "../../api/api";
+import { IGuestStar, Language } from "../../api/api";
 import { profileSizes, sizeImagePath } from "../../utils/sizeImagePath";
-import styled from "styled-components";
 import { Person } from "@mui/icons-material";
 import { Info } from "../Modal";
+import { useContext } from "react";
+import { LanguageContext } from "../../context/LanguageContext";
+import styled from "styled-components";
 
 interface PropsType {
   cast: IGuestStar[];
 }
 
 const Cast = ({ cast }: PropsType) => {
+  const { language } = useContext(LanguageContext);
   return (
     <Info $column="column">
-      <h5>Cast</h5>
+      <h5>{language === Language.ko ? "출연진" : "Cast"}</h5>
       <CastList>
         {cast?.slice(0, 10)?.map((item) => (
           <Actor key={item.id}>

@@ -1,5 +1,5 @@
 import { Link } from "react-router-dom";
-import { IDetail } from "../api/api";
+import { IDetail, Language } from "../api/api";
 import {
   backdropSizes,
   posterSizes,
@@ -7,18 +7,20 @@ import {
 } from "../utils/sizeImagePath";
 import { Clear, Info, PlayCircle } from "@mui/icons-material";
 import { Button } from "../theme/buttonStyle";
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import device from "../theme/mediaQueries";
 import styled from "styled-components";
 import useGenresQuery from "../hook/query/useGenresQuery";
 import VideoPlayer from "./common/VideoPlayer";
 import useFindPath from "../hook/useFindPath";
+import { LanguageContext } from "../context/LanguageContext";
 
 interface PropsType {
   data: IDetail;
 }
 
 const Banner = ({ data }: PropsType) => {
+  const { language } = useContext(LanguageContext);
   const [play, setPlay] = useState(false);
   const { homePath, tvHomePath } = useFindPath();
   const { allGenres } = useGenresQuery(data?.name ? "tv" : "movie");
@@ -63,13 +65,15 @@ const Banner = ({ data }: PropsType) => {
               <>
                 <Btns>
                   <Button onClick={onPlayClick} $color="pink">
-                    Play Trailer <PlayCircle />
+                    {language === Language.ko ? "트레일러" : "Play Trailer"}
+                    <PlayCircle />
                   </Button>
                   <Button
                     as={Link}
                     to={data?.name ? `/tv/${data?.id}` : `/movie/${data?.id}`}
                   >
-                    More Info <Info />
+                    {language === Language.ko ? "상세정보" : "More Info"}{" "}
+                    <Info />
                   </Button>
                 </Btns>
               </>

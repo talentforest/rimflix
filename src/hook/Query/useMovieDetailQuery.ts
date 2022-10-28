@@ -1,3 +1,4 @@
+import { useContext } from "react";
 import { useQuery } from "react-query";
 import {
   getCollection,
@@ -11,15 +12,17 @@ import {
   IGetMovieTvResult,
   IKeywords,
 } from "../../api/api";
+import { LanguageContext } from "../../context/LanguageContext";
 import useFindPath from "../useFindPath";
 
 const useMovieDetailQuery = (detail?: IDetail) => {
   const { moviePath } = useFindPath();
+  const { language } = useContext(LanguageContext);
 
   const { data: collection, isLoading: collectionIsLoading } =
     useQuery<ICollection>(
-      ["details", "collection", detail?.belongs_to_collection?.id],
-      () => getCollection(detail?.belongs_to_collection?.id),
+      ["details", "collection", detail?.belongs_to_collection?.id, language],
+      () => getCollection(detail?.belongs_to_collection?.id, language),
       {
         enabled: !!detail?.belongs_to_collection?.id && moviePath,
       }
@@ -27,8 +30,8 @@ const useMovieDetailQuery = (detail?: IDetail) => {
 
   const { data: recommendation, isLoading: recommendationLoading } =
     useQuery<IGetMovieTvResult>(
-      ["recommendation", "movie", +detail?.id],
-      () => getRecommendation("movie", +detail?.id),
+      ["recommendation", "movie", +detail?.id, language],
+      () => getRecommendation("movie", +detail?.id, language),
       {
         enabled: !!detail?.id && moviePath,
       }
@@ -36,16 +39,16 @@ const useMovieDetailQuery = (detail?: IDetail) => {
 
   const { data: similar, isLoading: similarLoading } =
     useQuery<IGetMovieTvResult>(
-      ["similar", "movie", detail?.id],
-      () => getSimilar("movie", +detail?.id),
+      ["similar", "movie", detail?.id, language],
+      () => getSimilar("movie", +detail?.id, language),
       {
         enabled: !!detail?.id && moviePath,
       }
     );
 
   const { data: crew, isLoading: crewLoading } = useQuery<ICastCrew>(
-    ["crew", detail?.id],
-    () => getCrews("movie", +detail?.id),
+    ["crew", detail?.id, language],
+    () => getCrews("movie", +detail?.id, language),
     {
       enabled: !!detail?.id && moviePath,
     }

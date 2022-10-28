@@ -1,6 +1,9 @@
 import { motion } from "framer-motion";
-import styled from "styled-components";
+import { useContext } from "react";
+import { LanguageContext } from "../../context/LanguageContext";
 import useFindPath from "../../hook/useFindPath";
+import styled from "styled-components";
+import { Language } from "../../api/api";
 
 interface ICategoryProps {
   firstDataLength?: number;
@@ -17,8 +20,8 @@ const Category = ({
   category,
   setCategory,
 }: ICategoryProps) => {
+  const { language } = useContext(LanguageContext);
   const { moviePath } = useFindPath();
-
   const firstCategoryName = moviePath ? "Collection" : "Seasons";
 
   const onCategoryClick = (name: string) => {
@@ -37,7 +40,7 @@ const Category = ({
           animate={animated(firstCategoryName)}
           $selected={category === firstCategoryName}
         >
-          <span>{firstCategoryName}</span>
+          <span>{language === Language.ko ? "시즌" : firstCategoryName}</span>
         </CategoryBtn>
       )}
       {!!secondDataLength && (
@@ -46,7 +49,7 @@ const Category = ({
           animate={animated("Similar")}
           $selected={category === "Similar"}
         >
-          <span>Similar</span>
+          <span>{language === Language.ko ? "비슷한 콘텐츠" : "Similar"}</span>
         </CategoryBtn>
       )}
       {!!thirdDataLength && (
@@ -55,7 +58,9 @@ const Category = ({
           animate={animated("Recommended")}
           $selected={category === "Recommended"}
         >
-          <span>How about this?</span>
+          <span>
+            {language === Language.ko ? "추천 콘텐츠" : "How about this?"}
+          </span>
         </CategoryBtn>
       )}
     </Categories>

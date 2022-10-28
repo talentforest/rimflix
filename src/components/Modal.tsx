@@ -1,8 +1,10 @@
 import { motion, useViewportScroll } from "framer-motion";
 import { v4 as uuidv4 } from "uuid";
-import { IDetail } from "../api/api";
+import { IDetail, Language } from "../api/api";
 import { Clear, Theaters } from "@mui/icons-material";
 import { changeDateSeperator } from "../utils/changeDateSeperator";
+import { useContext } from "react";
+import { LanguageContext } from "../context/LanguageContext";
 import styled from "styled-components";
 import device from "../theme/mediaQueries";
 import VideoPlayer from "./common/VideoPlayer";
@@ -20,6 +22,7 @@ interface PropsType {
 }
 
 const Modal = ({ detail, onCloseClick }: PropsType) => {
+  const { language } = useContext(LanguageContext);
   const { scrollY } = useViewportScroll();
   const { moviePath, tvPath } = useFindPath();
 
@@ -78,14 +81,19 @@ const Modal = ({ detail, onCloseClick }: PropsType) => {
             <RunTime runtime={runtime || episode_run_time[0]} />
           </RateTime>
           <Info $column="column">
-            <h5>Overview</h5>
-            <p>{overview || "There is no information"}</p>
+            <h5>{language === Language.ko ? "줄거리" : "Overview"}</h5>
+            <p>
+              {overview ||
+                (language === Language.ko
+                  ? "제공된 정보가 없습니다."
+                  : "There is no information")}
+            </p>
           </Info>
           {moviePath && <MovieDetail detail={detail} />}
           {tvPath && <TvDetail detail={detail} />}
           {homepage && (
             <HomePage href={`${homepage}`} target="_blank" rel="noreferrer">
-              Official Pages
+              {language === Language.ko ? "공식 홈페이지" : "Official Pages"}
             </HomePage>
           )}
         </DetailContainer>
