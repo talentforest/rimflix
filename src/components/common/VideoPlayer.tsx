@@ -1,11 +1,9 @@
 import { MovieCreation, VolumeOff, VolumeUp } from "@mui/icons-material";
 import { useState } from "react";
-import { useQuery } from "react-query";
-import { getTrailer, IGetVideo } from "../../api/api";
 import { backdropSizes, sizeImagePath } from "../../utils/sizeImagePath";
 import ReactPlayer from "react-player/lazy";
 import styled from "styled-components";
-import useFindPath from "../../hook/useFindPath";
+import useTrailerQuery from "../../hook/query/useTrailerQuery";
 
 interface PropsType {
   videoId: number;
@@ -15,41 +13,17 @@ interface PropsType {
 
 const VideoPlayer = ({ videoId, backdropPath, title }: PropsType) => {
   const [volume, setVolume] = useState(true);
-  const { homePath, moviePath, tvPath } = useFindPath();
-
-  const { data: movieTrailer, isLoading: movieTrailerLoading } =
-    useQuery<IGetVideo>(
-      ["movieTrailer", videoId],
-      () => getTrailer("movie", videoId),
-      {
-        enabled: (homePath || moviePath) && !!videoId,
-      }
-    );
-
-  const { data: tvTrailer, isLoading: tvTrailerLoading } = useQuery<IGetVideo>(
-    ["tvTrailer", videoId],
-    () => getTrailer("tv", videoId),
-    {
-      enabled: tvPath && !!videoId,
-    }
-  );
+  const { trailer, trailerLoading } = useTrailerQuery(videoId);
 
   const handleVolume = () => {
     setVolume((prev) => !prev);
   };
 
-  const tvResults = tvTrailer?.results;
-  const movieResults = movieTrailer?.results;
-
-  return !movieTrailerLoading &&
-    !tvTrailerLoading &&
-    (tvResults?.length || movieResults?.length) ? (
+  return !trailerLoading && trailer.results?.length ? (
     <>
       <Trailer
         url={`https://www.youtube.com/watch?v=${
-          tvPath
-            ? tvResults[tvResults.length - 1]?.key
-            : movieResults[movieResults.length - 1]?.key
+          trailer.results[trailer.results.length - 1]?.key
         }`}
         playing={true}
         muted={volume ? true : false}
