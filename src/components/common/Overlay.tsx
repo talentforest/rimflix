@@ -1,4 +1,5 @@
 import { motion } from "framer-motion";
+import { useEffect } from "react";
 import styled from "styled-components";
 
 interface PropsType {
@@ -6,6 +7,20 @@ interface PropsType {
 }
 
 const Overlay = ({ onCloseClick }: PropsType) => {
+  useEffect(() => {
+    document.body.style.cssText = `
+      position: fixed; 
+      top: -${window.scrollY}px;
+      overflow-y: scroll;
+      width: 100%;
+    `;
+    return () => {
+      const scrollY = document.body.style.top;
+      document.body.style.cssText = "";
+      window.scrollTo(0, parseInt(scrollY || "0", 10) * -1);
+    };
+  }, []);
+
   return (
     <OverlayBox
       onClick={onCloseClick}
