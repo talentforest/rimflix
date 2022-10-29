@@ -34,7 +34,7 @@ const Box = styled(motion.svg)`
   margin-right: 10px;
   cursor: pointer;
   path {
-    stroke: #ff8686;
+    stroke: ${(props) => props.theme.pink};
     stroke-width: 1px;
   }
   @media ${device.tablet} {

@@ -8,7 +8,7 @@ const Footer = () => {
   const { language } = useContext(LanguageContext);
   return (
     <Foot>
-      {language === Language.ko ? "림플릭스 코리아" : "Rimflix Korea"}
+      {language === Language.ko ? "림플릭스 코리아" : "Rimflix"}
       <span>
         {language === Language.ko
           ? "보고싶은 영화를 찾아보세요."
