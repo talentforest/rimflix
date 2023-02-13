@@ -1,5 +1,4 @@
-const API_KEY = "99e273822f064935075b9432f6ea349e";
-const BASE_PATH = "https://api.themoviedb.org/3";
+const BASE_PATH = 'https://api.themoviedb.org/3';
 
 export interface IGetMovieTvResult {
   dates?: {
@@ -151,64 +150,64 @@ export interface IKeyword {
 }
 
 export enum Language {
-  ko = "ko",
-  en = "en-US",
+  ko = 'ko',
+  en = 'en-US',
 }
 
 // Movie Lists Api
 export function getNowPlayingMovies(language: string) {
   return fetch(
-    `${BASE_PATH}/movie/now_playing?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/movie/now_playing?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
 export function getPopularMovies(language: string) {
   return fetch(
-    `${BASE_PATH}/movie/popular?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/movie/popular?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
 export function getTopRatedMovies(language: string) {
   return fetch(
-    `${BASE_PATH}/movie/top_rated?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/movie/top_rated?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
 export function getUpcomingMovies(language: string) {
   return fetch(
-    `${BASE_PATH}/movie/upcoming?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/movie/upcoming?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
 // Tv show Lists Api
 export function getTopRatedTvShows(language: string) {
   return fetch(
-    `${BASE_PATH}/tv/top_rated?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/tv/top_rated?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
 export function getPopularTvShows(language: string) {
   return fetch(
-    `${BASE_PATH}/tv/popular?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/tv/popular?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
 export function getAiringTodayTvShows(language: string) {
   return fetch(
-    `${BASE_PATH}/tv/airing_today?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/tv/airing_today?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
 export function getOnAirTvShows(language: string) {
   return fetch(
-    `${BASE_PATH}/tv/on_the_air?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/tv/on_the_air?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
 // Keyword 언어 지원 없음
 export function getKeyword(category: string, movieId: number) {
   return fetch(
-    `${BASE_PATH}/${category}/${movieId}/keywords?api_key=${API_KEY}`
+    `${BASE_PATH}/${category}/${movieId}/keywords?api_key=${process.env.REACT_APP_API_KEY}`
   ).then((response) => response.json());
 }
 
@@ -219,14 +218,14 @@ export function getTrailer(
   language: string
 ) {
   return fetch(
-    `${BASE_PATH}/${category}/${movieId}/videos?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/${category}/${movieId}/videos?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
 // Genres
 export function getGenres(category: string, language: string) {
   return fetch(
-    `${BASE_PATH}/genre/${category}/list?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/genre/${category}/list?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
@@ -237,7 +236,7 @@ export function getSearch(
   language: string
 ) {
   return fetch(
-    `${BASE_PATH}/search/${category}?api_key=${API_KEY}&query=${query}}&page=1&include_adult=false&language=${language}`
+    `${BASE_PATH}/search/${category}?api_key=${process.env.REACT_APP_API_KEY}&query=${query}}&page=1&include_adult=false&language=${language}`
   ).then((response) => response.json());
 }
 
@@ -248,14 +247,14 @@ export function getDetail(
   language: string
 ) {
   return fetch(
-    `${BASE_PATH}/${category}/${contents_id}?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/${category}/${contents_id}?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
 // Movie Detail
 export function getCollection(collectionId: number, language: string) {
   return fetch(
-    `${BASE_PATH}/collection/${collectionId}?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/collection/${collectionId}?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
@@ -266,7 +265,7 @@ export function getSeasonDetail(
   language: string
 ) {
   return fetch(
-    `${BASE_PATH}/tv/${tv_id}/season/${season_number}?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/tv/${tv_id}/season/${season_number}?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
@@ -277,7 +276,7 @@ export function getEpisodeDetail(
   language: string
 ) {
   return fetch(
-    `${BASE_PATH}/tv/${tv_id}/season/${season_number}/episode/${episode_number}?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/tv/${tv_id}/season/${season_number}/episode/${episode_number}?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
@@ -288,7 +287,7 @@ export function getRecommendation(
   language: string
 ) {
   return fetch(
-    `${BASE_PATH}/${category}/${contents_id}/recommendations?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/${category}/${contents_id}/recommendations?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
@@ -298,7 +297,7 @@ export function getSimilar(
   language: string
 ) {
   return fetch(
-    `${BASE_PATH}/${category}/${contents_id}/similar?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/${category}/${contents_id}/similar?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
@@ -308,7 +307,7 @@ export function getCrews(
   language: string
 ) {
   return fetch(
-    `${BASE_PATH}/${category}/${contents_id}/credits?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/${category}/${contents_id}/credits?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }
 
@@ -318,6 +317,6 @@ export function getTvSeasonCrews(
   language: string
 ) {
   return fetch(
-    `${BASE_PATH}/tv/${tv_id}/season/${season_number}/credits?api_key=${API_KEY}&language=${language}`
+    `${BASE_PATH}/tv/${tv_id}/season/${season_number}/credits?api_key=${process.env.REACT_APP_API_KEY}&language=${language}`
   ).then((response) => response.json());
 }

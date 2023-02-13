@@ -1,10 +1,9 @@
-import React from "react";
-import ReactDOM from "react-dom/client";
-import App from "./App";
-import { createGlobalStyle, ThemeProvider } from "styled-components";
-import { theme } from "./theme/theme";
-import { QueryClient, QueryClientProvider } from "react-query";
-import { RecoilRoot } from "recoil";
+import ReactDOM from 'react-dom/client';
+import App from './App';
+import { createGlobalStyle, ThemeProvider } from 'styled-components';
+import { theme } from './theme/theme';
+import { QueryClient, QueryClientProvider } from 'react-query';
+import { RecoilRoot } from 'recoil';
 
 const GlobalStyle = createGlobalStyle`
 html, body, div, span, applet, object, iframe,
@@ -79,7 +78,7 @@ a {
 const client = new QueryClient();
 
 const root = ReactDOM.createRoot(
-  document.getElementById("root") as HTMLElement
+  document.getElementById('root') as HTMLElement
 );
 root.render(
   <RecoilRoot>

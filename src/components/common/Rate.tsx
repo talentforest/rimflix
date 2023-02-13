@@ -1,5 +1,5 @@
-import { Star } from "@mui/icons-material";
-import styled from "styled-components";
+import { Star } from '@mui/icons-material';
+import styled from 'styled-components';
 
 interface PropsType {
   rate: number;
@@ -11,7 +11,8 @@ const Rate = ({ rate }: PropsType) => {
 
   return (
     <Box>
-      <Star /> {cuttedRate}
+      <Star />
+      {cuttedRate}
     </Box>
   );
 };
@@ -25,9 +26,9 @@ const Box = styled.div`
   background-color: transparent;
   svg {
     color: ${(props) => props.theme.yellow};
-    width: 16px;
-    height: 16px;
-    margin-right: 3px;
+    width: 12px;
+    height: 12px;
+    margin-right: 2px;
   }
 `;
 

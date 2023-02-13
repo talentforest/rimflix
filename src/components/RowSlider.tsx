@@ -237,6 +237,9 @@ const Row = styled(motion.div)`
     grid-template-columns: repeat(5, 1fr);
   }
   @media ${device.desktop} {
+    grid-template-columns: repeat(6, 1fr);
+  }
+  @media ${device.desktopXl} {
     grid-template-columns: repeat(7, 1fr);
   }
 `;

@@ -56,7 +56,7 @@ const ContentsBox = ({ contents, genres }: PropsType) => {
       $height={searchPath}
     >
       <Image
-        src={sizeImagePath(posterSizes.w185, poster_path)}
+        src={sizeImagePath(posterSizes.w342, poster_path)}
         alt={`${title || name} poster`}
       />
       <Info variants={infoVariants}>
@@ -184,7 +184,7 @@ const Genres = styled.ul`
   }
   @media ${device.tablet} {
     > li {
-      font-size: 11px;
+      font-size: 10px;
     }
   }
 `;
@@ -194,9 +194,7 @@ const ExtraInfo = styled.div`
   display: flex;
   justify-content: space-between;
   align-items: center;
-  font-size: 13px;
-  @media ${device.tablet} {
-  }
+  font-size: 12px;
 `;
 
 export default ContentsBox;

@@ -1,35 +1,42 @@
-import { useContext } from "react";
-import styled from "styled-components";
-import { Language } from "../api/api";
-import { LanguageContext } from "../context/LanguageContext";
-import Languages from "./Languages";
+import { useContext } from 'react';
+import styled from 'styled-components';
+import { Language } from '../api/api';
+import LanguageBtns from '../components/common/LanguageBtns';
+import { LanguageContext } from '../context/LanguageContext';
 
 const Footer = () => {
   const { language } = useContext(LanguageContext);
+
   return (
-    <Foot>
-      {language === Language.ko ? "림플릭스 코리아" : "Rimflix"}
-      <span>
-        {language === Language.ko
-          ? "보고싶은 영화를 찾아보세요."
-          : "Find a movie you want to watch."}
-      </span>
-      <span>Copyright &copy; rimflix All right reserved</span>
-      <Languages />
-    </Foot>
+    <FooterBox>
+      <LanguageBtns />
+      <Detail>
+        <span>
+          {language === Language.ko
+            ? '림플릭스 코리아 | 보고싶은 영화를 찾아보세요.'
+            : 'Rimflix | Find a movie you want to watch.'}
+        </span>
+        <span>Copyright &copy; rimflix All right reserved</span>
+      </Detail>
+    </FooterBox>
   );
 };
 
-const Foot = styled.footer`
+const FooterBox = styled.footer`
   width: 100%;
   background-color: ${(props) => props.theme.black.darker};
   color: ${(props) => props.theme.white.darker};
   font-size: 10px;
-  padding: 20px 45px;
+  padding: 40px 45px 100px;
   margin-top: 50px;
+`;
+const Detail = styled.div`
+  display: flex;
+  flex-direction: column;
+  margin-top: 25px;
   > span {
-    display: block;
-    margin-top: 10px;
+    font-size: 12px;
+    margin-bottom: 10px;
   }
 `;
 

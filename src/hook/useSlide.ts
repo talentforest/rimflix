@@ -1,5 +1,6 @@
 import { useState } from 'react';
 import { IDetail } from '../api/api';
+import { deviceSizes } from '../theme/mediaQueries';
 import useWindowSize from './useWindowSize';
 
 const useSlide = (data: IDetail[]) => {
@@ -14,6 +15,8 @@ const useSlide = (data: IDetail[]) => {
     offset = 3;
   } else if (windowSize.width <= 1023) {
     offset = 5;
+  } else if (windowSize.width <= +deviceSizes.desktopXl) {
+    offset = 6;
   }
 
   const toggleLeaving = () => setLeaving((prev) => !prev);

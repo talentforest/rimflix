@@ -1,31 +1,31 @@
-import { useContext, useEffect } from "react";
-import { useLocation, useNavigate } from "react-router-dom";
-import { useRecoilState } from "recoil";
-import { searchState } from "../data/searchAtom";
-import { Container } from "./MyList";
-import device from "../theme/mediaQueries";
-import styled from "styled-components";
-import Loading from "../components/common/Loading";
-import Overlay from "../components/common/Overlay";
-import Modal from "../components/Modal";
-import useDetailQuery from "../hook/query/useDetailQuery";
-import useFindPath from "../hook/useFindPath";
-import useSearchQuery from "../hook/query/useSearchQuery";
-import Title from "../components/common/Title";
-import ContentsBox from "../components/common/ContentsBox";
-import useGenresQuery from "../hook/query/useGenresQuery";
-import { Language } from "../api/api";
-import { LanguageContext } from "../context/LanguageContext";
+import { Suspense, useContext, useEffect } from 'react';
+import { useLocation, useNavigate } from 'react-router-dom';
+import { useRecoilState } from 'recoil';
+import { searchState } from '../data/searchAtom';
+import { Container } from './MyList';
+import device from '../theme/mediaQueries';
+import styled from 'styled-components';
+import Loading from '../components/common/Loading';
+import Overlay from '../components/common/Overlay';
+import Modal from '../components/Modal';
+import useDetailQuery from '../hook/query/useDetailQuery';
+import useFindPath from '../hook/useFindPath';
+import useSearchQuery from '../hook/query/useSearchQuery';
+import Title from '../components/common/Title';
+import ContentsBox from '../components/common/ContentsBox';
+import useGenresQuery from '../hook/query/useGenresQuery';
+import { Language } from '../api/api';
+import { LanguageContext } from '../context/LanguageContext';
 
 const Search = () => {
   const { language } = useContext(LanguageContext);
   const [searchQuery, setSearchQuery] = useRecoilState(searchState);
   const { movieDetail, tvDetail } = useDetailQuery();
-  const { findGenres } = useGenresQuery(tvDetail ? "tv" : "movie");
+  const { findGenres } = useGenresQuery(tvDetail ? 'tv' : 'movie');
   const { moviePath, tvPath } = useFindPath();
   const { search } = useLocation();
   const navigate = useNavigate();
-  const searchKeyword = search?.split("=")[1];
+  const searchKeyword = search?.split('=')[1];
 
   const {
     searchMovies,
@@ -55,12 +55,12 @@ const Search = () => {
   );
 
   return searchMoviesLoading && searchTvShowsLoading ? (
-    <Loading screenSize="entire" />
+    <Loading screenSize='entire' />
   ) : (
     <Container>
       <Title
         title={`${
-          language === Language.ko ? "영화 검색결과" : "Movies Result"
+          language === Language.ko ? '영화 검색결과' : 'Movies Result'
         } (${moviesWithPoster?.length})`}
       />
       <ResultBox>
@@ -77,14 +77,14 @@ const Search = () => {
         ) : (
           <span>
             {language === Language.ko
-              ? "검색된 결과가 없습니다."
-              : "No Search results found"}
+              ? '검색된 결과가 없습니다.'
+              : 'No Search results found'}
           </span>
         )}
       </ResultBox>
       <Title
         title={`${
-          language === Language.ko ? "TV 프로그램 검색결과" : "TV Shows Result"
+          language === Language.ko ? 'TV 프로그램 검색결과' : 'TV Shows Result'
         }  (${tvsWithPoster?.length})`}
       />
       <ResultBox>
@@ -101,17 +101,21 @@ const Search = () => {
         ) : (
           <span>
             {language === Language.ko
-              ? "검색된 결과가 없습니다."
-              : "No Search results found"}
+              ? '검색된 결과가 없습니다.'
+              : 'No Search results found'}
           </span>
         )}
       </ResultBox>
       {(movieDetail || tvDetail) && <Overlay onCloseClick={onCloseClick} />}
       {moviePath && movieDetail && (
-        <Modal detail={movieDetail} onCloseClick={onCloseClick} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Modal detail={movieDetail} onCloseClick={onCloseClick} />
+        </Suspense>
       )}
       {tvPath && tvDetail && (
-        <Modal detail={tvDetail} onCloseClick={onCloseClick} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Modal detail={tvDetail} onCloseClick={onCloseClick} />
+        </Suspense>
       )}
     </Container>
   );

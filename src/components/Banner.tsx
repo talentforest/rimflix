@@ -33,7 +33,6 @@ const Banner = ({ data }: IBannerProps) => {
   }, [homePath, tvHomePath]);
 
   const onPlayClick = () => setPlay((prev) => !prev);
-  console.log(sizeImagePath(posterSizes.w780, data.poster_path));
 
   return (
     data && (
@@ -66,15 +65,18 @@ const Banner = ({ data }: IBannerProps) => {
               </Genres>
               <p>{data.overview}</p>
               <Btns>
-                <Button onClick={onPlayClick} $color='pink'>
-                  {language === Language.ko ? '트레일러' : 'Play Trailer'}
-                  <PlayCircle />
-                </Button>
+                {language === Language.en && (
+                  <Button onClick={onPlayClick} $color='pink'>
+                    Play Trailer
+                    <PlayCircle />
+                  </Button>
+                )}
                 <Button
                   as={Link}
                   to={data?.name ? `/tv/${data?.id}` : `/movie/${data?.id}`}
                 >
-                  {language === Language.ko ? '상세정보' : 'More Info'} <Info />
+                  {language === Language.ko ? '상세정보' : 'Movie Info'}
+                  <Info />
                 </Button>
               </Btns>
             </PosterInfo>

@@ -1,16 +1,16 @@
-import { useRecoilValue } from "recoil";
-import { useNavigate } from "react-router-dom";
-import { myListMovieState, myListTvState } from "../data/myListAtoms";
-import device from "../theme/mediaQueries";
-import styled from "styled-components";
-import Overlay from "../components/common/Overlay";
-import Modal from "../components/Modal";
-import useDetailQuery from "../hook/query/useDetailQuery";
-import MyListContents from "../components/MyListContents";
-import Title from "../components/common/Title";
-import { useContext } from "react";
-import { LanguageContext } from "../context/LanguageContext";
-import { Language } from "../api/api";
+import { useRecoilValue } from 'recoil';
+import { useNavigate } from 'react-router-dom';
+import { myListMovieState, myListTvState } from '../data/myListAtoms';
+import device from '../theme/mediaQueries';
+import styled from 'styled-components';
+import Overlay from '../components/common/Overlay';
+import useDetailQuery from '../hook/query/useDetailQuery';
+import MyListContents from '../components/MyListContents';
+import Title from '../components/common/Title';
+import React, { Suspense, useContext } from 'react';
+import { LanguageContext } from '../context/LanguageContext';
+import { Language } from '../api/api';
+const Modal = React.lazy(() => import('../components/Modal'));
 
 const MyList = () => {
   const { language } = useContext(LanguageContext);
@@ -20,16 +20,16 @@ const MyList = () => {
   const navigate = useNavigate();
 
   const onCloseClick = () => {
-    return navigate("/myList");
+    return navigate('/myList');
   };
 
   return (
     <Container>
-      <Title title={language === Language.ko ? "나의 영화" : "My Movies"} />
+      <Title title={language === Language.ko ? '나의 영화' : 'My Movies'} />
       {myListMovies.length === 0 ? (
         <Empty>
           {language === Language.ko
-            ? "저장된 영화가 없습니다."
+            ? '저장된 영화가 없습니다.'
             : "It's still empty."}
         </Empty>
       ) : (
@@ -37,19 +37,19 @@ const MyList = () => {
           {myListMovies.map((myListMovie) => (
             <MyListContents
               key={myListMovie.id}
-              category="movie"
+              category='movie'
               myList={myListMovie}
             />
           ))}
         </List>
       )}
       <Title
-        title={language === Language.ko ? "나의 TV 프로그램" : "My Tv Show"}
+        title={language === Language.ko ? '나의 TV 프로그램' : 'My Tv Show'}
       />
       {myListTvs.length === 0 ? (
         <Empty>
           {language === Language.ko
-            ? "저장된 TV 프로그램이 없습니다."
+            ? '저장된 TV 프로그램이 없습니다.'
             : "It's still empty."}
         </Empty>
       ) : (
@@ -57,7 +57,7 @@ const MyList = () => {
           {myListTvs.map((myListTv) => (
             <MyListContents
               key={myListTv.id}
-              category="tv"
+              category='tv'
               myList={myListTv} //
             />
           ))}
@@ -65,9 +65,15 @@ const MyList = () => {
       )}
       {(movieDetail || tvDetail) && <Overlay onCloseClick={onCloseClick} />}
       {movieDetail && (
-        <Modal detail={movieDetail} onCloseClick={onCloseClick} />
+        <Suspense fallback={<div>Loading...</div>}>
+          <Modal detail={movieDetail} onCloseClick={onCloseClick} />
+        </Suspense>
       )}
-      {tvDetail && <Modal detail={tvDetail} onCloseClick={onCloseClick} />}
+      {tvDetail && (
+        <Suspense fallback={<div>Loading...</div>}>
+          <Modal detail={tvDetail} onCloseClick={onCloseClick} />
+        </Suspense>
+      )}
     </Container>
   );
 };

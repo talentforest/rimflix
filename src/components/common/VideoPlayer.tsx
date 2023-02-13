@@ -1,9 +1,9 @@
-import { MovieCreation, VolumeOff, VolumeUp } from "@mui/icons-material";
-import { useState } from "react";
-import { backdropSizes, sizeImagePath } from "../../utils/sizeImagePath";
-import ReactPlayer from "react-player/lazy";
-import styled from "styled-components";
-import useTrailerQuery from "../../hook/query/useTrailerQuery";
+import { MovieCreation, VolumeOff, VolumeUp } from '@mui/icons-material';
+import { useState } from 'react';
+import { backdropSizes, sizeImagePath } from '../../utils/sizeImagePath';
+import ReactPlayer from 'react-player/lazy';
+import styled from 'styled-components';
+import useTrailerQuery from '../../hook/query/useTrailerQuery';
 
 interface PropsType {
   videoId: number;
@@ -14,10 +14,7 @@ interface PropsType {
 const VideoPlayer = ({ videoId, backdropPath, title }: PropsType) => {
   const [volume, setVolume] = useState(true);
   const { trailer, trailerLoading } = useTrailerQuery(videoId);
-
-  const handleVolume = () => {
-    setVolume((prev) => !prev);
-  };
+  const handleVolume = () => setVolume((prev) => !prev);
 
   return !trailerLoading && trailer.results?.length ? (
     <>
@@ -29,12 +26,12 @@ const VideoPlayer = ({ videoId, backdropPath, title }: PropsType) => {
         muted={volume ? true : false}
         controls={false}
         loop={true}
-        width="100%"
-        height="100%"
+        width='100%'
+        height='100%'
         config={{
           youtube: {
             playerVars: {
-              origin: "https://localhost:3000",
+              origin: 'https://localhost:3000',
             },
           },
         }}
@@ -48,7 +45,7 @@ const VideoPlayer = ({ videoId, backdropPath, title }: PropsType) => {
         <BackdropImg
           src={sizeImagePath(backdropSizes.original, backdropPath)}
           alt={`${title} backdrop`}
-          loading="lazy"
+          loading='lazy'
         />
       ) : (
         <MovieCreation />
