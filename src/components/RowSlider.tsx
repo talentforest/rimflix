@@ -1,13 +1,13 @@
-import { useRef, useState } from "react";
-import { AnimatePresence, motion } from "framer-motion";
-import { IDetail } from "../api/api";
-import { ArrowBackIosNew, ArrowForwardIos, Circle } from "@mui/icons-material";
-import useSlide from "../hook/useSlide";
-import device from "../theme/mediaQueries";
-import styled from "styled-components";
-import useGenresQuery from "../hook/query/useGenresQuery";
-import useFindPath from "../hook/useFindPath";
-import ContentsBox from "./common/ContentsBox";
+import { useRef, useState } from 'react';
+import { AnimatePresence, motion } from 'framer-motion';
+import { IDetail } from '../api/api';
+import { ArrowBackIosNew, ArrowForwardIos, Circle } from '@mui/icons-material';
+import useSlide from '../hook/useSlide';
+import device from '../theme/mediaQueries';
+import styled from 'styled-components';
+import useGenresQuery from '../hook/query/useGenresQuery';
+import useFindPath from '../hook/useFindPath';
+import ContentsBox from './common/ContentsBox';
 
 const rowVariants = {
   hidden: (back: boolean) => ({
@@ -32,7 +32,7 @@ const RowSlider = ({ title, data }: PropsType) => {
   const [touchPosition, setTouchPosition] = useState({ x: 0, y: 0 });
   const { tvPath } = useFindPath();
   const { allGenresLoading, findGenres } = useGenresQuery(
-    tvPath ? "tv" : "movie"
+    tvPath ? 'tv' : 'movie'
   );
   const {
     offset,
@@ -55,8 +55,8 @@ const RowSlider = ({ title, data }: PropsType) => {
       y: event.changedTouches[0].pageY,
     });
 
-    backRef.current.style.visibility = "visible";
-    forwardRef.current.style.visibility = "visible";
+    backRef.current.style.visibility = 'visible';
+    forwardRef.current.style.visibility = 'visible';
   };
 
   const onTouchEnd = (event: React.TouchEvent<HTMLDivElement>) => {
@@ -70,8 +70,8 @@ const RowSlider = ({ title, data }: PropsType) => {
         increaseIndex();
       }
     }
-    backRef.current.style.visibility = "hidden";
-    forwardRef.current.style.visibility = "hidden";
+    backRef.current.style.visibility = 'hidden';
+    forwardRef.current.style.visibility = 'hidden';
   };
 
   return (
@@ -82,7 +82,7 @@ const RowSlider = ({ title, data }: PropsType) => {
           {slideNumArr.map((slideNum: number) => (
             <Circle
               key={slideNum}
-              className={slideNum === index + 1 ? "mark" : ""}
+              className={slideNum === index + 1 ? 'mark' : ''}
             />
           ))}
         </SlideMark>
@@ -97,10 +97,10 @@ const RowSlider = ({ title, data }: PropsType) => {
           >
             <Row
               variants={rowVariants}
-              initial="hidden"
-              animate="visible"
-              exit="exit"
-              transition={{ type: "tween", duration: 1 }}
+              initial='hidden'
+              animate='visible'
+              exit='exit'
+              transition={{ type: 'tween', duration: 1 }}
               key={index}
               custom={back}
             >
@@ -185,7 +185,6 @@ const Sliders = styled.div`
   @media ${device.tablet} {
     overflow: visible;
     height: 26vw;
-    width: 100%;
   }
   @media ${device.desktop} {
     height: 20vw;
@@ -227,7 +226,7 @@ const Slider = styled.div`
 const Row = styled(motion.div)`
   position: absolute;
   display: grid;
-  gap: 0 5px;
+  gap: 0 8px;
   padding: 0 5px;
   width: 100%;
   height: 100%;
@@ -238,7 +237,7 @@ const Row = styled(motion.div)`
     grid-template-columns: repeat(5, 1fr);
   }
   @media ${device.desktop} {
-    grid-template-columns: repeat(6, 1fr);
+    grid-template-columns: repeat(7, 1fr);
   }
 `;
 

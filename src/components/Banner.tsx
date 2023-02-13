@@ -1,29 +1,29 @@
-import { Link } from "react-router-dom";
-import { IDetail, Language } from "../api/api";
+import { Link } from 'react-router-dom';
+import { IDetail, Language } from '../api/api';
 import {
   backdropSizes,
   posterSizes,
   sizeImagePath,
-} from "../utils/sizeImagePath";
-import { Clear, Info, PlayCircle } from "@mui/icons-material";
-import { Button } from "../theme/buttonStyle";
-import { useContext, useEffect, useState } from "react";
-import device from "../theme/mediaQueries";
-import styled from "styled-components";
-import useGenresQuery from "../hook/query/useGenresQuery";
-import VideoPlayer from "./common/VideoPlayer";
-import useFindPath from "../hook/useFindPath";
-import { LanguageContext } from "../context/LanguageContext";
+} from '../utils/sizeImagePath';
+import { Clear, Info, PlayCircle } from '@mui/icons-material';
+import { Button } from '../theme/buttonStyle';
+import { useContext, useEffect, useState } from 'react';
+import { LanguageContext } from '../context/LanguageContext';
+import device from '../theme/mediaQueries';
+import styled from 'styled-components';
+import useGenresQuery from '../hook/query/useGenresQuery';
+import VideoPlayer from './common/VideoPlayer';
+import useFindPath from '../hook/useFindPath';
 
-interface PropsType {
+interface IBannerProps {
   data: IDetail;
 }
 
-const Banner = ({ data }: PropsType) => {
-  const { language } = useContext(LanguageContext);
+const Banner = ({ data }: IBannerProps) => {
   const [play, setPlay] = useState(false);
+  const { language } = useContext(LanguageContext);
   const { homePath, tvHomePath } = useFindPath();
-  const { allGenres } = useGenresQuery(data?.name ? "tv" : "movie");
+  const { allGenres } = useGenresQuery(data?.name ? 'tv' : 'movie');
   const contentsGenres = allGenres?.genres
     ?.filter((item) => data?.genre_ids?.includes(item.id))
     .slice(0, 3);
@@ -32,9 +32,8 @@ const Banner = ({ data }: PropsType) => {
     if (!homePath || !tvHomePath) return setPlay(false);
   }, [homePath, tvHomePath]);
 
-  const onPlayClick = () => {
-    setPlay((prev) => !prev);
-  };
+  const onPlayClick = () => setPlay((prev) => !prev);
+  console.log(sizeImagePath(posterSizes.w780, data.poster_path));
 
   return (
     data && (
@@ -47,10 +46,14 @@ const Banner = ({ data }: PropsType) => {
                   backdropSizes.original,
                   data.backdrop_path
                 )}
-                media="(min-width: 768px)"
+                media='(min-width: 1023px)'
+              />
+              <source
+                srcSet={sizeImagePath(posterSizes.w780, data.poster_path)}
+                media='(min-width: 650px)'
               />
               <img
-                src={sizeImagePath(posterSizes.original, data.poster_path)}
+                src={sizeImagePath(posterSizes.w500, data.poster_path)}
                 alt={`${data.title || data.name}poster`}
               />
             </Poster>
@@ -62,21 +65,18 @@ const Banner = ({ data }: PropsType) => {
                 ))}
               </Genres>
               <p>{data.overview}</p>
-              <>
-                <Btns>
-                  <Button onClick={onPlayClick} $color="pink">
-                    {language === Language.ko ? "트레일러" : "Play Trailer"}
-                    <PlayCircle />
-                  </Button>
-                  <Button
-                    as={Link}
-                    to={data?.name ? `/tv/${data?.id}` : `/movie/${data?.id}`}
-                  >
-                    {language === Language.ko ? "상세정보" : "More Info"}{" "}
-                    <Info />
-                  </Button>
-                </Btns>
-              </>
+              <Btns>
+                <Button onClick={onPlayClick} $color='pink'>
+                  {language === Language.ko ? '트레일러' : 'Play Trailer'}
+                  <PlayCircle />
+                </Button>
+                <Button
+                  as={Link}
+                  to={data?.name ? `/tv/${data?.id}` : `/movie/${data?.id}`}
+                >
+                  {language === Language.ko ? '상세정보' : 'More Info'} <Info />
+                </Button>
+              </Btns>
             </PosterInfo>
           </>
         ) : (
@@ -195,7 +195,7 @@ const PosterInfo = styled.div`
       display: block;
       font-size: 16px;
       line-height: 1.4;
-      width: 70%;
+      width: 80%;
       text-align: center;
     }
   }

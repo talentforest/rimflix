@@ -1,19 +1,19 @@
-import { Link, useMatch } from "react-router-dom";
-import { motion, useAnimation, useViewportScroll } from "framer-motion";
-import { useContext, useEffect } from "react";
-import { Language } from "../api/api";
-import { LanguageContext } from "../context/LanguageContext";
-import LogoBox from "./LogoBox";
-import SearchInput from "../components/common/SearchInput";
-import styled from "styled-components";
-import device from "../theme/mediaQueries";
+import { Link, useMatch } from 'react-router-dom';
+import { motion, useAnimation, useViewportScroll } from 'framer-motion';
+import { useContext, useEffect } from 'react';
+import { Language } from '../api/api';
+import { LanguageContext } from '../context/LanguageContext';
+import LogoBox from './LogoBox';
+import SearchInput from '../components/common/SearchInput';
+import styled from 'styled-components';
+import device from '../theme/mediaQueries';
 
 const navBoxVariants = {
   top: {
-    backgroundColor: "rgba(0, 0, 0, 0)",
+    backgroundColor: 'rgba(0, 0, 0, 0)',
   },
   scroll: {
-    backgroundColor: "rgba(0, 0, 0, 1)",
+    backgroundColor: 'rgba(0, 0, 0, 1)',
   },
 };
 
@@ -22,44 +22,44 @@ function Header() {
   const { scrollY } = useViewportScroll();
   const navBoxAnimation = useAnimation();
 
-  const homeMatch = useMatch("/");
-  const movieMatch = useMatch("/movie/*");
-  const tvMatch = useMatch("/tv/*");
-  const myListMatch = useMatch("/myList/*");
+  const homeMatch = useMatch('/');
+  const movieMatch = useMatch('/movie/*');
+  const tvMatch = useMatch('/tv/*');
+  const myListMatch = useMatch('/myList/*');
 
   useEffect(() => {
     scrollY.onChange(() => {
       if (scrollY.get() > 50) {
-        navBoxAnimation.start("scroll");
+        navBoxAnimation.start('scroll');
       } else {
-        navBoxAnimation.start("top");
+        navBoxAnimation.start('top');
       }
     });
   }, [scrollY, navBoxAnimation]);
 
   return (
-    <Nav variants={navBoxVariants} animate={navBoxAnimation} initial={"top"}>
+    <Nav variants={navBoxVariants} animate={navBoxAnimation} initial={'top'}>
       <Col>
-        <Link to="/">
+        <Link to='/' aria-label='rimflix'>
           <LogoBox />
         </Link>
         <Items>
-          <Link to="/">
+          <Link to='/'>
             <Item>
-              {language === Language.ko ? "영화" : "Movies"}{" "}
-              {(homeMatch || movieMatch) && <Circle layoutId="circle" />}
+              {language === Language.ko ? '영화' : 'Movies'}{' '}
+              {(homeMatch || movieMatch) && <Circle layoutId='circle' />}
             </Item>
           </Link>
-          <Link to="/tv ">
+          <Link to='/tv '>
             <Item>
-              {language === Language.ko ? "TV 프로그램" : "Tv Shows "}
-              {tvMatch && <Circle layoutId="circle" />}
+              {language === Language.ko ? 'TV 프로그램' : 'Tv Shows '}
+              {tvMatch && <Circle layoutId='circle' />}
             </Item>
           </Link>
-          <Link to="/myList">
+          <Link to='/myList'>
             <Item>
-              {language === Language.ko ? "나의 리스트" : "My List"}{" "}
-              {myListMatch && <Circle layoutId="circle" />}
+              {language === Language.ko ? '나의 리스트' : 'My List'}{' '}
+              {myListMatch && <Circle layoutId='circle' />}
             </Item>
           </Link>
         </Items>

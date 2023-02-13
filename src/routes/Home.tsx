@@ -17,7 +17,7 @@ const Home = () => {
   const { movieDetail } = useDetailQuery();
   const navigate = useNavigate();
 
-  const bannerData = nowPlaying?.data?.results[0];
+  const bannerData = nowPlaying?.data?.results[3];
   const exceptBannerData = nowPlaying?.data?.results?.slice(1);
 
   const onCloseClick = () => {

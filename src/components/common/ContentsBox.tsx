@@ -1,18 +1,18 @@
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { posterSizes, sizeImagePath } from "../../utils/sizeImagePath";
-import { IDetail, IGenres } from "../../api/api";
-import { changeDateSeperator } from "../../utils/changeDateSeperator";
-import { useRecoilValue } from "recoil";
-import { searchState } from "../../data/searchAtom";
-import { cutLetter } from "../../utils/cutLetter";
-import { bigVariants, infoVariants } from "../../utils/variants";
-import InfoBox from "./InfoBox";
-import Rate from "./Rate";
-import styled from "styled-components";
-import device, { deviceSizes } from "../../theme/mediaQueries";
-import useFindPath from "../../hook/useFindPath";
-import useWindowSize from "../../hook/useWindowSize";
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { posterSizes, sizeImagePath } from '../../utils/sizeImagePath';
+import { IDetail, IGenres } from '../../api/api';
+import { changeDateSeperator } from '../../utils/changeDateSeperator';
+import { useRecoilValue } from 'recoil';
+import { searchState } from '../../data/searchAtom';
+import { cutLetter } from '../../utils/cutLetter';
+import { bigVariants, infoVariants } from '../../utils/variants';
+import InfoBox from './InfoBox';
+import Rate from './Rate';
+import styled from 'styled-components';
+import device, { deviceSizes } from '../../theme/mediaQueries';
+import useFindPath from '../../hook/useFindPath';
+import useWindowSize from '../../hook/useWindowSize';
 
 interface PropsType {
   contents: IDetail;
@@ -51,12 +51,12 @@ const ContentsBox = ({ contents, genres }: PropsType) => {
       key={id}
       onClick={() => onBoxClicked()}
       variants={width >= +deviceSizes.tablet ? bigVariants : {}}
-      whileHover="hover"
-      initial="normal"
+      whileHover='hover'
+      initial='normal'
       $height={searchPath}
     >
       <Image
-        src={sizeImagePath(posterSizes.w342, poster_path)}
+        src={sizeImagePath(posterSizes.w185, poster_path)}
         alt={`${title || name} poster`}
       />
       <Info variants={infoVariants}>
@@ -78,8 +78,6 @@ const ContentsBox = ({ contents, genres }: PropsType) => {
 const Box = styled(motion.div)<{ $height: boolean }>`
   position: relative;
   border-radius: 5px;
-  height: 100%;
-  width: 100%;
   z-index: 1;
   cursor: pointer;
   &:nth-child(3n + 1) {
@@ -138,8 +136,8 @@ const Box = styled(motion.div)<{ $height: boolean }>`
 
 const Image = styled.img`
   width: 100%;
-  height: 100%;
-  border-radius: 5px;
+  height: auto;
+  border-radius: 3px;
 `;
 
 const Info = styled(motion.div)`

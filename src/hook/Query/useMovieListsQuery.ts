@@ -1,21 +1,21 @@
-import { useContext } from "react";
-import { useQuery } from "react-query";
+import { useContext } from 'react';
+import { useQuery } from 'react-query';
 import {
   getNowPlayingMovies,
   getPopularMovies,
   getTopRatedMovies,
   getUpcomingMovies,
   IGetMovieTvResult,
-} from "../../api/api";
-import { LanguageContext } from "../../context/LanguageContext";
-import useFindPath from "../useFindPath";
+} from '../../api/api';
+import { LanguageContext } from '../../context/LanguageContext';
+import useFindPath from '../useFindPath';
 
 const useMovieListsQuery = () => {
   const { language } = useContext(LanguageContext);
   const { homePath } = useFindPath();
 
   const nowPlaying = useQuery<IGetMovieTvResult>(
-    ["movies", "nowPlaying", language],
+    ['movies', 'nowPlaying', language],
     () => getNowPlayingMovies(language),
     {
       enabled: homePath,
@@ -23,7 +23,7 @@ const useMovieListsQuery = () => {
   );
 
   const topRated = useQuery<IGetMovieTvResult>(
-    ["movies", "topRated", language],
+    ['movies', 'topRated', language],
     () => getTopRatedMovies(language),
     {
       enabled: homePath,
@@ -31,7 +31,7 @@ const useMovieListsQuery = () => {
   );
 
   const upcoming = useQuery<IGetMovieTvResult>(
-    ["movies", "upcoming", language],
+    ['movies', 'upcoming', language],
     () => getUpcomingMovies(language),
     {
       enabled: homePath,
@@ -39,7 +39,7 @@ const useMovieListsQuery = () => {
   );
 
   const popular = useQuery<IGetMovieTvResult>(
-    ["movies", "popular", language],
+    ['movies', 'popular', language],
     () => getPopularMovies(language),
     {
       enabled: homePath,

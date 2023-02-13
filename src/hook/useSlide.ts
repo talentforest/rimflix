@@ -1,6 +1,6 @@
-import { useState } from "react";
-import { IDetail } from "../api/api";
-import useWindowSize from "./useWindowSize";
+import { useState } from 'react';
+import { IDetail } from '../api/api';
+import useWindowSize from './useWindowSize';
 
 const useSlide = (data: IDetail[]) => {
   const [back, setBack] = useState(false);
@@ -9,8 +9,8 @@ const useSlide = (data: IDetail[]) => {
 
   const { windowSize } = useWindowSize();
 
-  let offset = 6;
-  if (windowSize.width < 768) {
+  let offset = 7;
+  if (windowSize.width < 650) {
     offset = 3;
   } else if (windowSize.width <= 1023) {
     offset = 5;

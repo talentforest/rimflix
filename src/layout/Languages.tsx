@@ -1,11 +1,11 @@
-import { Language } from "../api/api";
-import { useContext } from "react";
-import { LanguageContext } from "../context/LanguageContext";
-import { motion } from "framer-motion";
-import styled from "styled-components";
+import { Language } from '../api/api';
+import { useContext } from 'react';
+import { LanguageContext } from '../context/LanguageContext';
+import { motion } from 'framer-motion';
+import styled from 'styled-components';
 
 const spring = {
-  type: "tween",
+  type: 'tween',
   stiffness: 700,
   damping: 30,
   duration: 0.3,
@@ -54,8 +54,8 @@ const Buttons = styled.div<{ $language: string }>`
   background-color: ${(props) => props.theme.white.lighter};
   > div {
     position: absolute;
-    left: ${(props) => (props.$language === Language.ko ? "0" : "auto")};
-    right: ${(props) => (props.$language === Language.en ? "0" : "auto")};
+    left: ${(props) => (props.$language === Language.ko ? '0' : 'auto')};
+    right: ${(props) => (props.$language === Language.en ? '0' : 'auto')};
     width: 48%;
     height: 80%;
     margin: 3px;
@@ -72,7 +72,7 @@ const Button = styled.button<{ $selected: boolean }>`
   border: none;
   background-color: transparent;
   font-weight: 700;
-  color: ${(props) => (props.$selected ? props.theme.white.lighter : "#aaa")};
+  color: ${(props) => (props.$selected ? props.theme.white.lighter : '#000')};
 `;
 
 export default Languages;
