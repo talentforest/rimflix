@@ -9,15 +9,23 @@ import useGenresQuery from '../hook/query/useGenresQuery';
 import useFindPath from '../hook/useFindPath';
 import ContentsBox from './common/ContentsBox';
 
+const value =
+  window.innerWidth < 650
+    ? 40
+    : window.innerWidth < 1023
+    ? 160 //
+    : window.innerWidth < 1280
+    ? 70
+    : 0;
 const rowVariants = {
   hidden: (back: boolean) => ({
-    x: back ? -window.outerWidth + 50 : window.outerWidth - 50,
+    x: back ? -window.outerWidth + value : window.outerWidth - value,
   }),
   visible: {
     x: 0,
   },
   exit: (back: boolean) => ({
-    x: back ? window.outerWidth - 50 : -window.outerWidth + 50,
+    x: back ? window.outerWidth - value : -window.outerWidth + value,
   }),
 };
 
@@ -34,6 +42,7 @@ const RowSlider = ({ title, data }: PropsType) => {
   const { allGenresLoading, findGenres } = useGenresQuery(
     tvPath ? 'tv' : 'movie'
   );
+
   const {
     offset,
     back,
@@ -75,7 +84,7 @@ const RowSlider = ({ title, data }: PropsType) => {
   };
 
   return (
-    <Container>
+    <Section>
       <Header>
         <h2>{title}</h2>
         <SlideMark>
@@ -119,15 +128,13 @@ const RowSlider = ({ title, data }: PropsType) => {
         </Slider>
         <ArrowForwardIos ref={forwardRef} onClick={increaseIndex} />
       </Sliders>
-    </Container>
+    </Section>
   );
 };
 
-const Container = styled.section`
-  > header {
-    > div {
-      visibility: visible;
-    }
+const Section = styled.section`
+  > div {
+    visibility: visible;
   }
   @media ${device.tablet} {
     > header {

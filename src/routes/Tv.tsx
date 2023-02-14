@@ -16,12 +16,10 @@ const Tv = () => {
   const { top, popular, onAir, airingToday } = useTvListsQuery();
   const { tvDetail } = useDetailQuery();
   const navigate = useNavigate();
-  const bannerData = top.data?.results[0];
+  const bannerData = popular.data?.results[0];
   const exceptBannerData = top.data?.results.slice(1);
 
-  const onCloseClick = () => {
-    return navigate('/tv');
-  };
+  const onCloseClick = () => navigate('/tv');
 
   return (
     <>
@@ -41,7 +39,7 @@ const Tv = () => {
                   ? '높은 평점을 받은 TV 프로그램'
                   : 'Top Ranked Tv Shows'
               }
-              data={exceptBannerData} //
+              data={exceptBannerData}
             />
             <RowSlider
               title={
@@ -57,7 +55,7 @@ const Tv = () => {
                   ? '방영중인 TV 프로그램'
                   : 'On Air Tv Shows'
               }
-              data={onAir.data?.results} //
+              data={onAir.data?.results}
             />
             <RowSlider
               title={

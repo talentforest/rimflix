@@ -51,7 +51,7 @@ const Modal = ({ detail }: PropsType) => {
   };
 
   return (
-    <ModalBox style={{ top: scrollY.get() + 100 }} layoutId={`${id}${uuidv4}`}>
+    <ModalBox style={{ top: scrollY.get() + 85 }} layoutId={`${id}${uuidv4}`}>
       <VideoContainer>
         <VideoPlayer
           videoId={id}
@@ -68,15 +68,13 @@ const Modal = ({ detail }: PropsType) => {
           <Theaters />
           <span>{changeDateSeperator(release_date || first_air_date)}</span>
         </ReleaseDate>
-        <Box>
-          <RateTime>
-            <Rate rate={vote_average} />
-            <RunTime runtime={runtime || episode_run_time[0]} />
-          </RateTime>
-          {keyword?.keywords?.length !== 0 && (
-            <Keywords keywords={keyword?.keywords} />
-          )}
-        </Box>
+        <RateTime>
+          <Rate rate={vote_average} />
+          <RunTime runtime={runtime || episode_run_time[0]} />
+        </RateTime>
+        {keyword?.keywords?.length !== 0 && (
+          <Keywords keywords={keyword?.keywords} />
+        )}
         <Info $column='column'>
           <h5>{language === Language.ko ? '줄거리' : 'Overview'}</h5>
           <p>
@@ -86,29 +84,18 @@ const Modal = ({ detail }: PropsType) => {
                 : 'There is no information')}
           </p>
         </Info>
-        {moviePath && <MovieDetail detail={detail} />}
-        {tvPath && <TvDetail detail={detail} />}
         {homepage && (
           <HomePage href={`${homepage}`} target='_blank' rel='noreferrer'>
             {language === Language.ko ? '공식 홈페이지' : 'Official Pages'}
           </HomePage>
         )}
+        {moviePath && <MovieDetail detail={detail} />}
+        {tvPath && <TvDetail detail={detail} />}
       </DetailContainer>
     </ModalBox>
   );
 };
 
-const Box = styled.div`
-  display: flex;
-  justify-content: space-between;
-  align-items: flex-start;
-  > div {
-    width: 35%;
-  }
-  > section {
-    width: 65%;
-  }
-`;
 const ModalBox = styled(motion.div)`
   box-shadow: 1px 2px 10px rgba(235, 235, 235, 0.3);
   z-index: 5;
@@ -117,7 +104,7 @@ const ModalBox = styled(motion.div)`
   left: 0;
   right: 0;
   width: 88vw;
-  height: 80vh;
+  height: 70vh;
   margin: 0 auto;
   border-radius: 15px;
   overflow: scroll;
@@ -156,7 +143,6 @@ const VideoContainer = styled.section`
     }
   }
 `;
-
 const DetailContainer = styled.section`
   padding: 20px;
   display: flex;
@@ -167,7 +153,7 @@ const DetailContainer = styled.section`
   }
   > h3 {
     color: ${(props) => props.theme.white.lighter};
-    font-size: 26px;
+    font-size: 22px;
     font-weight: 700;
     padding-bottom: 10px;
     display: block;
@@ -209,6 +195,8 @@ const RateTime = styled.div`
 
 export const Info = styled.section<{ $column?: string }>`
   display: flex;
+  width: 100%;
+  overflow: scroll;
   flex-wrap: wrap;
   gap: 5px;
   flex-direction: ${(props) => (props.$column ? 'column' : 'row')};

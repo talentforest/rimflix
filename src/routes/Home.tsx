@@ -38,13 +38,13 @@ const Home = () => {
               title={
                 language === Language.ko ? '현재 상영중인 영화' : 'Now Playing'
               }
-              data={exceptBannerData} //
+              data={exceptBannerData}
             />
             <RowSlider
               title={
                 language === Language.ko ? '지금 있기있는 영화' : 'Popular Now'
               }
-              data={popular.data?.results} //
+              data={popular.data?.results}
             />
             <RowSlider
               title={
@@ -77,7 +77,7 @@ const Home = () => {
   );
 };
 
-export const Sliders = styled.section`
+export const Sliders = styled.main`
   position: relative;
   margin-top: -10vh;
 `;

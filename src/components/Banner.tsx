@@ -34,9 +34,9 @@ const Banner = ({ data }: IBannerProps) => {
 
   useEffect(() => {
     const imageList = [
-      sizeImagePath(backdropSizes.original, data.backdrop_path),
-      sizeImagePath(posterSizes.original, data.poster_path),
-      sizeImagePath(posterSizes.w780, data.poster_path),
+      sizeImagePath(backdropSizes?.original, data?.backdrop_path),
+      sizeImagePath(posterSizes?.original, data?.poster_path),
+      sizeImagePath(posterSizes?.w780, data?.poster_path),
     ];
     imageList.forEach((image) => {
       const img = new Image();
@@ -54,17 +54,17 @@ const Banner = ({ data }: IBannerProps) => {
             <Poster>
               <source
                 srcSet={sizeImagePath(
-                  backdropSizes.original,
+                  backdropSizes?.original,
                   data.backdrop_path
                 )}
                 media='(min-width: 1023px)'
               />
               <source
-                srcSet={sizeImagePath(posterSizes.original, data.poster_path)}
+                srcSet={sizeImagePath(posterSizes?.original, data.poster_path)}
                 media='(min-width: 650px)'
               />
               <img
-                src={sizeImagePath(posterSizes.w500, data.poster_path)}
+                src={sizeImagePath(posterSizes?.w500, data.poster_path)}
                 alt={`${data.title || data.name}poster`}
               />
             </Poster>

@@ -76,7 +76,7 @@ const ContentsBox = ({ contents, genres }: PropsType) => {
   );
 };
 
-const Box = styled(motion.div)<{ $height: boolean }>`
+const Box = styled(motion.li)<{ $height: boolean }>`
   position: relative;
   border-radius: 5px;
   z-index: 1;

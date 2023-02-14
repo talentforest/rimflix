@@ -39,6 +39,7 @@ export const CastList = styled.ul`
   display: flex;
   gap: 0 10px;
   overflow: scroll;
+  width: fit-content;
 `;
 
 export const Actor = styled.li`

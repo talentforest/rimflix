@@ -1,8 +1,8 @@
-import { Favorite, FavoriteBorder } from "@mui/icons-material";
-import { Button } from "../../theme/buttonStyle";
-import { IMyList } from "../../data/myListAtoms";
-import useAddMyList from "../../hook/useAddMyList";
-import styled from "styled-components";
+import { Favorite, FavoriteBorder } from '@mui/icons-material';
+import { Button } from '../../theme/buttonStyle';
+import { IMyList } from '../../data/myListAtoms';
+import useAddMyList from '../../hook/useAddMyList';
+import styled from 'styled-components';
 
 interface PropsType {
   contentInfo: IMyList;
@@ -16,12 +16,12 @@ const MyListButton = ({ contentInfo, simpleBtn }: PropsType) => {
 
   return like ? (
     <MyFavarite onClick={onDeleteClick}>
-      {!simpleBtn && "My List"}
+      {!simpleBtn && 'My List'}
       <Favorite />
     </MyFavarite>
   ) : (
     <MyFavarite onClick={onAddClick}>
-      {!simpleBtn && "Add My List"}
+      {!simpleBtn && 'Add My List'}
       <FavoriteBorder />
     </MyFavarite>
   );
@@ -30,6 +30,7 @@ const MyListButton = ({ contentInfo, simpleBtn }: PropsType) => {
 const MyFavarite = styled(Button)`
   background-color: #ffaa9f;
   border: none;
+  border: 1px solid red;
   > svg {
     height: 18px;
     width: 18px;
