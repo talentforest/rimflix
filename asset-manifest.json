@@ -1,7 +1,7 @@
 {
   "files": {
-    "main.js": "/rimflix/static/js/main.32d80c01.js",
-    "static/js/158.abe35265.chunk.js": "/rimflix/static/js/158.abe35265.chunk.js",
+    "main.js": "/rimflix/static/js/main.5755eb00.js",
+    "static/js/158.b7f2d2e5.chunk.js": "/rimflix/static/js/158.b7f2d2e5.chunk.js",
     "static/js/843.9a6f81df.chunk.js": "/rimflix/static/js/843.9a6f81df.chunk.js",
     "reactPlayerYouTube.js": "/rimflix/static/js/reactPlayerYouTube.51d9fea5.chunk.js",
     "reactPlayerSoundCloud.js": "/rimflix/static/js/reactPlayerSoundCloud.16a0ee93.chunk.js",
@@ -18,8 +18,8 @@
     "reactPlayerPreview.js": "/rimflix/static/js/reactPlayerPreview.8bbee70a.chunk.js",
     "static/js/181.e23db1a8.chunk.js": "/rimflix/static/js/181.e23db1a8.chunk.js",
     "index.html": "/rimflix/index.html",
-    "main.32d80c01.js.map": "/rimflix/static/js/main.32d80c01.js.map",
-    "158.abe35265.chunk.js.map": "/rimflix/static/js/158.abe35265.chunk.js.map",
+    "main.5755eb00.js.map": "/rimflix/static/js/main.5755eb00.js.map",
+    "158.b7f2d2e5.chunk.js.map": "/rimflix/static/js/158.b7f2d2e5.chunk.js.map",
     "843.9a6f81df.chunk.js.map": "/rimflix/static/js/843.9a6f81df.chunk.js.map",
     "reactPlayerYouTube.51d9fea5.chunk.js.map": "/rimflix/static/js/reactPlayerYouTube.51d9fea5.chunk.js.map",
     "reactPlayerSoundCloud.16a0ee93.chunk.js.map": "/rimflix/static/js/reactPlayerSoundCloud.16a0ee93.chunk.js.map",
@@ -37,6 +37,6 @@
     "181.e23db1a8.chunk.js.map": "/rimflix/static/js/181.e23db1a8.chunk.js.map"
   },
   "entrypoints": [
-    "static/js/main.32d80c01.js"
+    "static/js/main.5755eb00.js"
   ]
 }
