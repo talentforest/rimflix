@@ -1,10 +1,10 @@
-import { IGuestStar, Language } from "../../api/api";
-import { profileSizes, sizeImagePath } from "../../utils/sizeImagePath";
-import { Person } from "@mui/icons-material";
-import { Info } from "../Modal";
-import { useContext } from "react";
-import { LanguageContext } from "../../context/LanguageContext";
-import styled from "styled-components";
+import { IGuestStar, Language } from '../../api/api';
+import { profileSizes, sizeImagePath } from '../../utils/sizeImagePath';
+import { Person } from '@mui/icons-material';
+import { Info } from '../Modal';
+import { useContext } from 'react';
+import { LanguageContext } from '../../context/LanguageContext';
+import styled from 'styled-components';
 
 interface PropsType {
   cast: IGuestStar[];
@@ -13,8 +13,8 @@ interface PropsType {
 const Cast = ({ cast }: PropsType) => {
   const { language } = useContext(LanguageContext);
   return (
-    <Info $column="column">
-      <h5>{language === Language.ko ? "출연진" : "Cast"}</h5>
+    <Info $column='column'>
+      <h5>{language === Language.ko ? '출연진' : 'Cast'}</h5>
       <CastList>
         {cast?.slice(0, 10)?.map((item) => (
           <Actor key={item.id}>
@@ -38,7 +38,6 @@ const Cast = ({ cast }: PropsType) => {
 export const CastList = styled.ul`
   display: flex;
   gap: 0 10px;
-  width: 100%;
   overflow: scroll;
 `;
 
@@ -47,9 +46,9 @@ export const Actor = styled.li`
   flex-direction: column;
   gap: 5px;
   padding: 10px;
-  width: 110px;
+  width: 120px;
   font-size: 14px;
-  border-radius: 5px;
+  border-radius: 2px;
   background-color: ${(props) => props.theme.black.lighter};
   img {
     border-radius: 5px;

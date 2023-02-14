@@ -1,12 +1,11 @@
-import { IDetail } from "../api/api";
-import { Info } from "./Modal";
-import { useState } from "react";
-import Cast from "./modalDetail/Cast";
-import useMovieDetailQuery from "../hook/query/useMovieDetailQuery";
-import AdditionalContents from "./modalDetail/AdditionalContents";
-import Category from "./modalDetail/Category";
-import Keywords from "./modalDetail/Keywords";
-import styled from "styled-components";
+import { IDetail } from '../api/api';
+import { Info } from './Modal';
+import { useState } from 'react';
+import Cast from './modalDetail/Cast';
+import useMovieDetailQuery from '../hook/query/useMovieDetailQuery';
+import AdditionalContents from './modalDetail/AdditionalContents';
+import Category from './modalDetail/Category';
+import styled from 'styled-components';
 
 interface PropsType {
   detail: IDetail;
@@ -15,7 +14,7 @@ interface PropsType {
 const MovieDetail = ({ detail }: PropsType) => {
   const { belongs_to_collection } = detail;
   const [category, setCategory] = useState(
-    belongs_to_collection ? "Collection" : "Similar"
+    belongs_to_collection ? 'Collection' : 'Similar'
   );
 
   const {
@@ -26,17 +25,13 @@ const MovieDetail = ({ detail }: PropsType) => {
     similar,
     similarLoading,
     crew,
-    keyword,
   } = useMovieDetailQuery(detail);
 
   return (
     <>
-      {keyword?.keywords?.length !== 0 && (
-        <Keywords keywords={keyword?.keywords} />
-      )}
       {crew?.cast?.length !== 0 && <Cast cast={crew?.cast} />}
       {!recommendationLoading && !similarLoading && !collectionIsLoading && (
-        <Info $column="column">
+        <Info $column='column'>
           <Category
             firstDataLength={Object.keys(belongs_to_collection ?? {})?.length}
             secondDataLength={similar?.results?.length ?? 0}
@@ -45,14 +40,13 @@ const MovieDetail = ({ detail }: PropsType) => {
             setCategory={setCategory}
           />
           <List>
-            {category === "Collection" && belongs_to_collection && (
+            {category === 'Collection' && belongs_to_collection && (
               <AdditionalContents data={collection.parts} />
             )}
-
-            {category === "Similar" && similar && (
+            {category === 'Similar' && similar && (
               <AdditionalContents data={similar.results.slice(0, 9)} />
             )}
-            {category === "Recommended" && recommendation && (
+            {category === 'Recommended' && recommendation && (
               <AdditionalContents data={recommendation.results.slice(0, 9)} />
             )}
           </List>

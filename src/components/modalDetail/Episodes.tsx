@@ -1,20 +1,20 @@
-import { useContext, useState } from "react";
-import { ISeason, Language } from "../../api/api";
+import { useContext, useState } from 'react';
+import { ISeason, Language } from '../../api/api';
 import {
   posterSizes,
   sizeImagePath,
   stillSizes,
-} from "../../utils/sizeImagePath";
-import { convertRunningTime } from "../../utils/convertRunningTime";
-import { AccessTime, Image } from "@mui/icons-material";
-import { changeDateSeperator } from "../../utils/changeDateSeperator";
-import { checkScheduledAir } from "../../utils/checkScheduledAir";
-import Rate from "../common/Rate";
-import styled from "styled-components";
-import Loading from "../common/Loading";
-import device from "../../theme/mediaQueries";
-import useTvDetailQuery from "../../hook/query/useTvDetailQuery";
-import { LanguageContext } from "../../context/LanguageContext";
+} from '../../utils/sizeImagePath';
+import { convertRunningTime } from '../../utils/convertRunningTime';
+import { AccessTime, Image } from '@mui/icons-material';
+import { changeDateSeperator } from '../../utils/changeDateSeperator';
+import { checkScheduledAir } from '../../utils/checkScheduledAir';
+import Rate from '../common/Rate';
+import styled from 'styled-components';
+import Loading from '../common/Loading';
+import device from '../../theme/mediaQueries';
+import useTvDetailQuery from '../../hook/query/useTvDetailQuery';
+import { LanguageContext } from '../../context/LanguageContext';
 
 interface PropsType {
   seasons: ISeason[];
@@ -39,7 +39,7 @@ const Episodes = ({ seasons, seasonNumber, setSeasonNumber }: PropsType) => {
 
   const episodes = seasonDetail?.episodes;
   const exceptNoneInfoEpisodes = episodes?.filter(
-    (episode) => episode.still_path || episode.overview !== ""
+    (episode) => episode.still_path || episode.overview !== ''
   );
 
   const viewEpisode =
@@ -63,7 +63,7 @@ const Episodes = ({ seasons, seasonNumber, setSeasonNumber }: PropsType) => {
           <img
             src={sizeImagePath(posterSizes.w342, seasonDetail?.poster_path)}
             alt={`${seasonDetail?.name} poster`}
-            loading="lazy"
+            loading='lazy'
           />
         ) : (
           <Image />
@@ -74,17 +74,17 @@ const Episodes = ({ seasons, seasonNumber, setSeasonNumber }: PropsType) => {
         ) : (
           <>
             <span>{changeDateSeperator(seasonDetail?.air_date)}</span>
-            <span className="willBeAired">
+            <span className='willBeAired'>
               {language === Language.ko
-                ? "방송 예정인 프로그램입니다."
-                : "This Tv Show is going to be aired."}
+                ? '방송 예정인 프로그램입니다.'
+                : 'This Tv Show is going to be aired.'}
             </span>
           </>
         )}
         <p>{seasonDetail?.overview}</p>
       </BasicInfo>
       {seasonDetailLoading ? (
-        <Loading screenSize="part" />
+        <Loading height={80} />
       ) : (
         viewEpisode && (
           <EpisodeList>
@@ -95,7 +95,7 @@ const Episodes = ({ seasons, seasonNumber, setSeasonNumber }: PropsType) => {
                   <StillImg
                     src={sizeImagePath(stillSizes.w185, episode.still_path)}
                     alt={`${episode.name} ${episode.episode_number} still`}
-                    loading="lazy"
+                    loading='lazy'
                   />
                 ) : (
                   <AlternateImg>

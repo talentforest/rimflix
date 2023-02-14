@@ -1,20 +1,20 @@
-import { CircularProgress } from "@mui/material";
-import styled from "styled-components";
+import { CircularProgress } from '@mui/material';
+import styled from 'styled-components';
 interface PropsType {
-  screenSize: string;
+  height: number;
 }
 
-const Loading = ({ screenSize }: PropsType) => {
+const Loading = ({ height }: PropsType) => {
   return (
-    <LoadingBox $screenSize={screenSize}>
+    <LoadingBox $height={height}>
       <CircularProgress />
     </LoadingBox>
   );
 };
 
-const LoadingBox = styled.div<{ $screenSize: string }>`
+const LoadingBox = styled.div<{ $height: number }>`
   width: 100%;
-  min-height: ${(props) => (props.$screenSize === "entire" ? "80vh" : "100%")};
+  min-height: ${(props) => `${props.$height}vh`};
   display: flex;
   justify-content: center;
   align-items: center;

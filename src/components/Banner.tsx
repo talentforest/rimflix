@@ -7,13 +7,13 @@ import {
 } from '../utils/sizeImagePath';
 import { Clear, Info, PlayCircle } from '@mui/icons-material';
 import { Button } from '../theme/buttonStyle';
-import { useContext, useEffect, useState } from 'react';
+import { lazy, Suspense, useContext, useEffect, useState } from 'react';
 import { LanguageContext } from '../context/LanguageContext';
 import device from '../theme/mediaQueries';
 import styled from 'styled-components';
 import useGenresQuery from '../hook/query/useGenresQuery';
-import VideoPlayer from './common/VideoPlayer';
 import useFindPath from '../hook/useFindPath';
+const VideoPlayer = lazy(() => import('./common/VideoPlayer'));
 
 interface IBannerProps {
   data: IDetail;
@@ -32,6 +32,18 @@ const Banner = ({ data }: IBannerProps) => {
     if (!homePath || !tvHomePath) return setPlay(false);
   }, [homePath, tvHomePath]);
 
+  useEffect(() => {
+    const imageList = [
+      sizeImagePath(backdropSizes.original, data.backdrop_path),
+      sizeImagePath(posterSizes.original, data.poster_path),
+      sizeImagePath(posterSizes.w780, data.poster_path),
+    ];
+    imageList.forEach((image) => {
+      const img = new Image();
+      img.src = image;
+    });
+  }, []);
+
   const onPlayClick = () => setPlay((prev) => !prev);
 
   return (
@@ -48,7 +60,7 @@ const Banner = ({ data }: IBannerProps) => {
                 media='(min-width: 1023px)'
               />
               <source
-                srcSet={sizeImagePath(posterSizes.w780, data.poster_path)}
+                srcSet={sizeImagePath(posterSizes.original, data.poster_path)}
                 media='(min-width: 650px)'
               />
               <img
@@ -84,11 +96,13 @@ const Banner = ({ data }: IBannerProps) => {
         ) : (
           <Video>
             <Clear onClick={onPlayClick} />
-            <VideoPlayer
-              videoId={data?.id}
-              backdropPath={data?.backdrop_path}
-              title={data?.title || data?.name}
-            />
+            <Suspense fallback={<div>loading...</div>}>
+              <VideoPlayer
+                videoId={data?.id}
+                backdropPath={data?.backdrop_path}
+                title={data?.title || data?.name}
+              />
+            </Suspense>
           </Video>
         )}
       </Container>
@@ -97,6 +111,7 @@ const Banner = ({ data }: IBannerProps) => {
 };
 
 const Container = styled.section`
+  border: 3px solid red;
   position: relative;
   display: flex;
   flex-direction: column;
@@ -107,7 +122,6 @@ const Container = styled.section`
     height: 85vh;
   }
 `;
-
 const Video = styled.div`
   position: relative;
   width: 100%;

@@ -1,4 +1,4 @@
-import { Suspense, useContext, useEffect } from 'react';
+import { lazy, Suspense, useContext, useEffect } from 'react';
 import { useLocation, useNavigate } from 'react-router-dom';
 import { useRecoilState } from 'recoil';
 import { searchState } from '../data/searchAtom';
@@ -7,7 +7,6 @@ import device from '../theme/mediaQueries';
 import styled from 'styled-components';
 import Loading from '../components/common/Loading';
 import Overlay from '../components/common/Overlay';
-import Modal from '../components/Modal';
 import useDetailQuery from '../hook/query/useDetailQuery';
 import useFindPath from '../hook/useFindPath';
 import useSearchQuery from '../hook/query/useSearchQuery';
@@ -16,6 +15,7 @@ import ContentsBox from '../components/common/ContentsBox';
 import useGenresQuery from '../hook/query/useGenresQuery';
 import { Language } from '../api/api';
 import { LanguageContext } from '../context/LanguageContext';
+const Modal = lazy(() => import('../components/Modal'));
 
 const Search = () => {
   const { language } = useContext(LanguageContext);
@@ -55,7 +55,7 @@ const Search = () => {
   );
 
   return searchMoviesLoading && searchTvShowsLoading ? (
-    <Loading screenSize='entire' />
+    <Loading height={100} />
   ) : (
     <Container>
       <Title
@@ -109,12 +109,12 @@ const Search = () => {
       {(movieDetail || tvDetail) && <Overlay onCloseClick={onCloseClick} />}
       {moviePath && movieDetail && (
         <Suspense fallback={<div>Loading...</div>}>
-          <Modal detail={movieDetail} onCloseClick={onCloseClick} />
+          <Modal detail={movieDetail} />
         </Suspense>
       )}
       {tvPath && tvDetail && (
         <Suspense fallback={<div>Loading...</div>}>
-          <Modal detail={tvDetail} onCloseClick={onCloseClick} />
+          <Modal detail={tvDetail} />
         </Suspense>
       )}
     </Container>

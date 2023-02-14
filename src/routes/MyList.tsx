@@ -7,10 +7,10 @@ import Overlay from '../components/common/Overlay';
 import useDetailQuery from '../hook/query/useDetailQuery';
 import MyListContents from '../components/MyListContents';
 import Title from '../components/common/Title';
-import React, { Suspense, useContext } from 'react';
+import { Suspense, lazy, useContext } from 'react';
 import { LanguageContext } from '../context/LanguageContext';
 import { Language } from '../api/api';
-const Modal = React.lazy(() => import('../components/Modal'));
+const Modal = lazy(() => import('../components/Modal'));
 
 const MyList = () => {
   const { language } = useContext(LanguageContext);
@@ -66,12 +66,12 @@ const MyList = () => {
       {(movieDetail || tvDetail) && <Overlay onCloseClick={onCloseClick} />}
       {movieDetail && (
         <Suspense fallback={<div>Loading...</div>}>
-          <Modal detail={movieDetail} onCloseClick={onCloseClick} />
+          <Modal detail={movieDetail} />
         </Suspense>
       )}
       {tvDetail && (
         <Suspense fallback={<div>Loading...</div>}>
-          <Modal detail={tvDetail} onCloseClick={onCloseClick} />
+          <Modal detail={tvDetail} />
         </Suspense>
       )}
     </Container>

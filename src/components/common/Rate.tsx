@@ -26,9 +26,9 @@ const Box = styled.div`
   background-color: transparent;
   svg {
     color: ${(props) => props.theme.yellow};
-    width: 12px;
-    height: 12px;
-    margin-right: 2px;
+    width: 16px;
+    height: 16px;
+    margin-right: 3px;
   }
 `;
 

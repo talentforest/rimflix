@@ -3,13 +3,13 @@ import { Sliders } from './Home';
 import Banner from '../components/Banner';
 import Loading from '../components/common/Loading';
 import Overlay from '../components/common/Overlay';
-import Modal from '../components/Modal';
 import RowSlider from '../components/RowSlider';
 import useTvListsQuery from '../hook/query/useTvListsQuery';
 import useDetailQuery from '../hook/query/useDetailQuery';
-import { Suspense, useContext } from 'react';
+import { lazy, Suspense, useContext } from 'react';
 import { LanguageContext } from '../context/LanguageContext';
 import { Language } from '../api/api';
+const Modal = lazy(() => import('../components/Modal'));
 
 const Tv = () => {
   const { language } = useContext(LanguageContext);
@@ -30,7 +30,7 @@ const Tv = () => {
       onAir.isLoading &&
       airingToday.isLoading &&
       !bannerData ? (
-        <Loading screenSize='entire' />
+        <Loading height={100} />
       ) : (
         <>
           <Banner data={bannerData} />
@@ -71,7 +71,7 @@ const Tv = () => {
           {tvDetail && (
             <Suspense fallback={<div>Loading...</div>}>
               <Overlay onCloseClick={onCloseClick} />
-              <Modal detail={tvDetail} onCloseClick={onCloseClick} />
+              <Modal detail={tvDetail} />
             </Suspense>
           )}
         </>

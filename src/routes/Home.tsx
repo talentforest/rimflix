@@ -1,23 +1,23 @@
-import { useNavigate } from 'react-router-dom';
-import React, { Suspense, useContext } from 'react';
+import { Suspense, lazy, useContext } from 'react';
 import { LanguageContext } from '../context/LanguageContext';
 import Banner from '../components/Banner';
 import RowSlider from '../components/RowSlider';
 import Loading from '../components/common/Loading';
 import useMovieListsQuery from '../hook/query/useMovieListsQuery';
-import Overlay from '../components/common/Overlay';
 import styled from 'styled-components';
 import useDetailQuery from '../hook/query/useDetailQuery';
 import { Language } from '../api/api';
-const Modal = React.lazy(() => import('../components/Modal'));
+import { useNavigate } from 'react-router-dom';
+import Overlay from '../components/common/Overlay';
+const Modal = lazy(() => import('../components/Modal'));
 
 const Home = () => {
+  const navigate = useNavigate();
   const { language } = useContext(LanguageContext);
   const { nowPlaying, topRated, upcoming, popular } = useMovieListsQuery();
   const { movieDetail } = useDetailQuery();
-  const navigate = useNavigate();
 
-  const bannerData = nowPlaying?.data?.results?.[3];
+  const bannerData = nowPlaying?.data?.results[2];
   const exceptBannerData = nowPlaying?.data?.results?.slice(1);
 
   const onCloseClick = () => navigate('/');
@@ -29,7 +29,7 @@ const Home = () => {
       upcoming.isLoading &&
       popular.isLoading &&
       !bannerData ? (
-        <Loading screenSize='entire' />
+        <Loading height={100} />
       ) : (
         <>
           <Banner data={bannerData} />
@@ -64,10 +64,12 @@ const Home = () => {
             />
           </Sliders>
           {movieDetail && (
-            <Suspense fallback={<Load>Loading...</Load>}>
+            <>
               <Overlay onCloseClick={onCloseClick} />
-              <Modal detail={movieDetail} onCloseClick={onCloseClick} />
-            </Suspense>
+              <Suspense fallback={<Loading height={20} />}>
+                <Modal detail={movieDetail} />
+              </Suspense>
+            </>
           )}
         </>
       )}
@@ -75,10 +77,6 @@ const Home = () => {
   );
 };
 
-const Load = styled.div`
-  font-size: 40px;
-  border: 1px solid red;
-`;
 export const Sliders = styled.section`
   position: relative;
   margin-top: -10vh;

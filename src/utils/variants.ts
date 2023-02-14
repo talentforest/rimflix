@@ -5,7 +5,7 @@ const normal = {
 const transition = {
   delay: 0.2,
   duration: 0.3,
-  type: "tween",
+  type: 'tween',
 };
 
 export const smallVariants = {
@@ -16,7 +16,6 @@ export const smallVariants = {
     transition,
   },
 };
-
 export const bigVariants = {
   normal,
   hover: {
@@ -25,7 +24,6 @@ export const bigVariants = {
     transition,
   },
 };
-
 export const infoVariants = {
   normal: {
     opacity: 0,
