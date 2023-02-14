@@ -58,6 +58,7 @@ const ContentsBox = ({ contents, genres }: PropsType) => {
       <Image
         src={sizeImagePath(posterSizes.w342, poster_path)}
         alt={`${title || name} poster`}
+        loading='lazy'
       />
       <Info variants={infoVariants}>
         <h1>{cutLetter(title || name, 26)}</h1>
