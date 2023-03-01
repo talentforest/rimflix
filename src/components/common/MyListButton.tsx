@@ -15,22 +15,24 @@ const MyListButton = ({ contentInfo, simpleBtn }: PropsType) => {
   });
 
   return like ? (
-    <MyFavarite onClick={onDeleteClick}>
+    <FavBtn onClick={onDeleteClick}>
       {!simpleBtn && 'My List'}
       <Favorite />
-    </MyFavarite>
+    </FavBtn>
   ) : (
-    <MyFavarite onClick={onAddClick}>
+    <FavBtn onClick={onAddClick}>
       {!simpleBtn && 'Add My List'}
       <FavoriteBorder />
-    </MyFavarite>
+    </FavBtn>
   );
 };
 
-const MyFavarite = styled(Button)`
+const FavBtn = styled(Button)`
   background-color: #ffaa9f;
   border: none;
-  border: 1px solid red;
+  width: fit-content;
+  height: 40px;
+  margin: 10px 0;
   > svg {
     height: 18px;
     width: 18px;

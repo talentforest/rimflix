@@ -158,12 +158,6 @@ const DetailContainer = styled.section`
     padding-bottom: 10px;
     display: block;
   }
-  > button {
-    margin: 10px 0;
-    width: fit-content;
-    height: 30px;
-    padding: 5px;
-  }
   @media ${device.desktop} {
     > p {
       font-size: 16px;

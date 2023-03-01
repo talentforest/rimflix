@@ -32,18 +32,6 @@ const Banner = ({ data }: IBannerProps) => {
     if (!homePath || !tvHomePath) return setPlay(false);
   }, [homePath, tvHomePath]);
 
-  useEffect(() => {
-    const imageList = [
-      sizeImagePath(backdropSizes?.original, data?.backdrop_path),
-      sizeImagePath(posterSizes?.original, data?.poster_path),
-      sizeImagePath(posterSizes?.w780, data?.poster_path),
-    ];
-    imageList.forEach((image) => {
-      const img = new Image();
-      img.src = image;
-    });
-  }, []);
-
   const onPlayClick = () => setPlay((prev) => !prev);
 
   return (
@@ -64,7 +52,7 @@ const Banner = ({ data }: IBannerProps) => {
                 media='(min-width: 650px)'
               />
               <img
-                src={sizeImagePath(posterSizes?.w500, data.poster_path)}
+                src={sizeImagePath(posterSizes?.w780, data.poster_path)}
                 alt={`${data.title || data.name}poster`}
               />
             </Poster>
@@ -72,7 +60,10 @@ const Banner = ({ data }: IBannerProps) => {
               <h1>{data.title || data.name}</h1>
               <Genres>
                 {contentsGenres?.map((genre) => (
-                  <li key={genre.id}>{genre.name}</li>
+                  <li key={genre.id}>
+                    {genre.name}
+                    <span>▪︎</span>
+                  </li>
                 ))}
               </Genres>
               <p>{data.overview}</p>
@@ -230,7 +221,19 @@ const PosterInfo = styled.div`
 
 const Genres = styled.ul`
   display: flex;
-  gap: 12px;
+  gap: 6px;
+  li {
+    font-size: 14px;
+    color: ${({ theme }) => theme.pink};
+    span {
+      margin-left: 5px;
+    }
+    &:last-child {
+      span {
+        display: none;
+      }
+    }
+  }
   @media ${device.tablet} {
     margin-bottom: 10px;
     font-size: 20px;

@@ -1,4 +1,4 @@
-import styled from "styled-components";
+import styled from 'styled-components';
 
 export const Button = styled.button<{ $color?: string }>`
   display: flex;
@@ -11,7 +11,7 @@ export const Button = styled.button<{ $color?: string }>`
   font-size: 14px;
   font-weight: 700;
   color: #333;
-  background-color: ${(props) => (props.$color ? props.theme.pink : "#fff")};
+  background-color: ${(props) => (props.$color ? props.theme.pink : '#fff')};
   border-radius: 5px;
   svg {
     width: 20px;
