@@ -3,10 +3,13 @@ import { motion, useAnimation, useViewportScroll } from 'framer-motion';
 import { useContext, useEffect } from 'react';
 import { Language } from '../api/api';
 import { LanguageContext } from '../context/LanguageContext';
+import { FavoriteBorder, Movie, PhotoFilter, Tv } from '@mui/icons-material';
+import { deviceSizes } from '../theme/mediaQueries';
 import LogoBox from './LogoBox';
 import SearchInput from '../components/common/SearchInput';
 import styled from 'styled-components';
 import device from '../theme/mediaQueries';
+import useWindowSize from '../hook/useWindowSize';
 
 const navBoxVariants = {
   top: {
@@ -20,6 +23,7 @@ const navBoxVariants = {
 function Header() {
   const { language } = useContext(LanguageContext);
   const { scrollY } = useViewportScroll();
+  const { windowSize } = useWindowSize();
   const navBoxAnimation = useAnimation();
 
   const homeMatch = useMatch('/');
@@ -46,26 +50,58 @@ function Header() {
         </Link>
         <Items>
           <Link to='/'>
-            <Item>
-              {language === Language.ko ? '영화' : 'Movies'}{' '}
+            <Item $match={!!(homeMatch || movieMatch)}>
+              {windowSize.width > +deviceSizes.tablet ? (
+                language === Language.ko ? (
+                  '영화'
+                ) : (
+                  'Movies'
+                )
+              ) : (
+                <Movie />
+              )}
               {(homeMatch || movieMatch) && <Circle layoutId='circle' />}
             </Item>
           </Link>
           <Link to='/tv '>
-            <Item>
-              {language === Language.ko ? 'TV 프로그램' : 'Tv Shows '}
+            <Item $match={!!tvMatch}>
+              {windowSize.width > +deviceSizes.tablet ? (
+                language === Language.ko ? (
+                  'TV 프로그램'
+                ) : (
+                  'Tv Shows '
+                )
+              ) : (
+                <Tv />
+              )}
               {tvMatch && <Circle layoutId='circle' />}
             </Item>
           </Link>
           <Link to='/myList'>
-            <Item>
-              {language === Language.ko ? '나의 리스트' : 'My List'}{' '}
+            <Item $match={!!myListMatch}>
+              {windowSize.width > +deviceSizes.tablet ? (
+                language === Language.ko ? (
+                  '나의 리스트'
+                ) : (
+                  'My List'
+                )
+              ) : (
+                <FavoriteBorder />
+              )}
               {myListMatch && <Circle layoutId='circle' />}
             </Item>
           </Link>
           <Link to='/photocard'>
-            <Item>
-              {language === Language.ko ? '포토카드' : 'Photo Card'}{' '}
+            <Item $match={!!photocardMatch}>
+              {windowSize.width > +deviceSizes.tablet ? (
+                language === Language.ko ? (
+                  '포토카드'
+                ) : (
+                  'Photo Card'
+                )
+              ) : (
+                <PhotoFilter />
+              )}
               {photocardMatch && <Circle layoutId='circle' />}
             </Item>
           </Link>
@@ -102,9 +138,10 @@ const Col = styled.div`
 const Items = styled.div`
   display: flex;
   align-items: center;
+  margin-left: 5px;
 `;
 
-const Item = styled.div`
+const Item = styled.div<{ $match: boolean }>`
   color: ${(props) => props.theme.white.darker};
   transition: color 0.3s ease-in-out;
   position: relative;
@@ -115,6 +152,9 @@ const Item = styled.div`
   flex-direction: column;
   &:hover {
     color: ${(props) => props.theme.white.lighter};
+  }
+  svg {
+    fill: ${({ $match, theme }) => ($match ? theme.pink : theme.white)};
   }
   @media ${device.tablet} {
     margin-right: 20px;
