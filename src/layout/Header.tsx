@@ -26,6 +26,7 @@ function Header() {
   const movieMatch = useMatch('/movie/*');
   const tvMatch = useMatch('/tv/*');
   const myListMatch = useMatch('/myList/*');
+  const photocardMatch = useMatch('/photocard/*');
 
   useEffect(() => {
     scrollY.onChange(() => {
@@ -60,6 +61,12 @@ function Header() {
             <Item>
               {language === Language.ko ? '나의 리스트' : 'My List'}{' '}
               {myListMatch && <Circle layoutId='circle' />}
+            </Item>
+          </Link>
+          <Link to='/photocard'>
+            <Item>
+              {language === Language.ko ? '포토카드' : 'Photo Card'}{' '}
+              {photocardMatch && <Circle layoutId='circle' />}
             </Item>
           </Link>
         </Items>

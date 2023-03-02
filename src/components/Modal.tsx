@@ -96,7 +96,7 @@ const Modal = ({ detail }: PropsType) => {
   );
 };
 
-const ModalBox = styled(motion.div)`
+export const ModalBox = styled(motion.div)`
   box-shadow: 1px 2px 10px rgba(235, 235, 235, 0.3);
   z-index: 5;
   position: absolute;

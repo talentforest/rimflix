@@ -89,7 +89,7 @@ const Empty = styled.div`
 
 export const Container = styled.main`
   padding: 60px 20px 0;
-  min-height: 80vh;
+  min-height: 100vh;
   @media ${device.tablet} {
     padding: 80px 40px 0;
   }
