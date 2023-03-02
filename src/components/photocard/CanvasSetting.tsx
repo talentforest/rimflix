@@ -1,6 +1,7 @@
 import { ChangeEvent } from 'react';
 import styled from 'styled-components';
 import { ISetting } from '../../routes/PhotoCard';
+import device from '../../theme/mediaQueries';
 import { colors } from '../../utils/variants';
 
 interface ICanvasSetting {
@@ -55,19 +56,28 @@ const CanvasSetting = ({ setting, setSetting }: ICanvasSetting) => {
 };
 
 const SettingBox = styled.div`
-  margin-top: 30px;
   width: 90%;
+  margin: 30px auto 0;
   > h5 {
     margin: 20px 0 10px;
     &:first-child {
       margin-top: 10px;
     }
   }
+  @media ${device.desktop} {
+    margin: 0;
+    width: 40%;
+  }
 `;
 const ColorSet = styled.div`
   display: flex;
   align-items: center;
   gap: 5px;
+  @media ${device.desktop} {
+    flex-direction: column;
+    align-items: flex-start;
+    gap: 5px;
+  }
 `;
 const Palette = styled.div`
   display: flex;

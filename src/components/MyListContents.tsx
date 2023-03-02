@@ -1,13 +1,13 @@
-import { Info } from "@mui/icons-material";
-import { motion } from "framer-motion";
-import { useNavigate } from "react-router-dom";
-import { IMyList } from "../data/myListAtoms";
-import { posterSizes, sizeImagePath } from "../utils/sizeImagePath";
-import MyListButton from "./common/MyListButton";
-import styled from "styled-components";
-import { infoVariants, smallVariants } from "../utils/variants";
-import device, { deviceSizes } from "../theme/mediaQueries";
-import useWindowSize from "../hook/useWindowSize";
+import { Info } from '@mui/icons-material';
+import { motion } from 'framer-motion';
+import { useNavigate } from 'react-router-dom';
+import { IMyList } from '../data/myListAtoms';
+import { posterSizes, sizeImagePath } from '../utils/sizeImagePath';
+import MyListButton from './common/MyListButton';
+import styled from 'styled-components';
+import { infoVariants, smallVariants } from '../utils/variants';
+import device, { deviceSizes } from '../theme/mediaQueries';
+import useWindowSize from '../hook/useWindowSize';
 
 interface IMyListContents {
   category: string;
@@ -34,10 +34,10 @@ const MyListContents = ({ category, myList }: IMyListContents) => {
     <Contents
       key={myList.id}
       variants={smallVariants}
-      whileHover="hover"
-      initial="normal"
+      whileHover='hover'
+      initial='normal'
     >
-      <img src={sizeImagePath(posterSizes.w342, myList.imgPath)} alt="poster" />
+      <img src={sizeImagePath(posterSizes.w342, myList.imgPath)} alt='poster' />
       {width >= +deviceSizes.tablet ? (
         <InfoBox variants={infoVariants}>
           <MyListButton contentInfo={contentInfo} simpleBtn={true} />

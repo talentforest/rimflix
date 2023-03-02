@@ -46,36 +46,40 @@ const PhotoCard = () => {
       <Desc>
         Put the image you want to make into a photo card and decorate it freely!
       </Desc>
-      <PhotoBox>
-        <Canvas
-          ref={canvasRef}
-          width={CANVAS_WIDTH}
-          height={CANVAS_HEIGHT}
-          onDoubleClick={onCanvasDoubleClick}
-          onMouseMove={onCanvasMove}
-          onMouseDown={onMouseDown}
-          onMouseUp={onMouseUp}
-          onMouseLeave={onMouseUp}
-        ></Canvas>
-        {selectedMovie.title.length === 0 ? (
-          <AddPosterBtn onClick={toggleModal}>
-            <AddCircle />
-            <span>Add Movie Poster</span>
-          </AddPosterBtn>
-        ) : (
-          <InfoBox>
-            <h1>{selectedMovie.title}</h1>
-            <AddPosterBtn onClick={toggleModal}>Reselect</AddPosterBtn>
-          </InfoBox>
-        )}
-      </PhotoBox>
-      <ModeBtns
-        mode={mode}
-        onModeClick={onModeClick}
-        setting={setting}
-        setSetting={setSetting}
-      />
-      <CanvasSetting setting={setting} setSetting={setSetting} />
+      <Section>
+        <CanvasBox>
+          <Photocard>
+            <Canvas
+              ref={canvasRef}
+              width={CANVAS_WIDTH}
+              height={CANVAS_HEIGHT}
+              onDoubleClick={onCanvasDoubleClick}
+              onMouseMove={onCanvasMove}
+              onMouseDown={onMouseDown}
+              onMouseUp={onMouseUp}
+              onMouseLeave={onMouseUp}
+            ></Canvas>
+            {selectedMovie.title.length === 0 ? (
+              <AddPosterBtn onClick={toggleModal}>
+                <AddCircle />
+                <span>Add Movie Poster</span>
+              </AddPosterBtn>
+            ) : (
+              <InfoBox>
+                <h1>{selectedMovie.title}</h1>
+                <AddPosterBtn onClick={toggleModal}>Reselect</AddPosterBtn>
+              </InfoBox>
+            )}
+          </Photocard>
+          <ModeBtns
+            mode={mode}
+            onModeClick={onModeClick}
+            setting={setting}
+            setSetting={setSetting}
+          />
+        </CanvasBox>
+        <CanvasSetting setting={setting} setSetting={setSetting} />
+      </Section>
       {modal && (
         <SearchModal
           toggleModal={toggleModal}
@@ -100,7 +104,22 @@ const Desc = styled.p`
   text-align: center;
   margin: 20px 10px 10px;
 `;
-const PhotoBox = styled.div`
+const Section = styled.section`
+  margin-top: 20px;
+  @media ${device.desktop} {
+    margin-top: 30px;
+    display: flex;
+    justify-content: center;
+    gap: 15px;
+  }
+`;
+const CanvasBox = styled.div`
+  display: flex;
+  flex-direction: column;
+  justify-content: center;
+  align-items: center;
+`;
+const Photocard = styled.div`
   background-color: #eee;
   padding: 10px;
   height: 400px;

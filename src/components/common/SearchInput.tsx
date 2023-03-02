@@ -1,14 +1,14 @@
-import { Search } from "@mui/icons-material";
-import { motion, useAnimation } from "framer-motion";
-import { useState } from "react";
-import { useNavigate } from "react-router-dom";
-import styled from "styled-components";
-import device from "../../theme/mediaQueries";
-import Overlay from "./Overlay";
+import { Search } from '@mui/icons-material';
+import { motion, useAnimation } from 'framer-motion';
+import { useState } from 'react';
+import { useNavigate } from 'react-router-dom';
+import styled from 'styled-components';
+import device from '../../theme/mediaQueries';
+import Overlay from './Overlay';
 
 const SearchInput = () => {
   const [searchOpen, setSearchOpen] = useState(false);
-  const [searchName, setSearchName] = useState("");
+  const [searchName, setSearchName] = useState('');
   const navigate = useNavigate();
   const inputAnimation = useAnimation();
 
@@ -37,7 +37,7 @@ const SearchInput = () => {
     navigate(`/search?keyword=${searchName}`);
     inputAnimation.start({ scaleX: 0 });
     setSearchOpen(false);
-    setSearchName("");
+    setSearchName('');
   };
 
   return (
@@ -48,16 +48,16 @@ const SearchInput = () => {
           component={motion.svg}
           onClick={toggleSearch}
           animate={{ x: searchOpen ? -235 : 0, scale: searchOpen ? 0.7 : 1 }}
-          transition={{ type: "linear" }}
-          fill="currentColor"
-          viewBox="0 0 20 20"
-          xmlns="http://www.w3.org/2000/svg"
+          transition={{ type: 'linear' }}
+          fill='currentColor'
+          viewBox='0 0 20 20'
+          xmlns='http://www.w3.org/2000/svg'
         />
         <Input
-          transition={{ type: "linear" }}
+          transition={{ type: 'linear' }}
           animate={inputAnimation}
           initial={{ scaleX: 0 }}
-          placeholder="Search for your movies..."
+          placeholder='Search for your movies...'
           value={searchName}
           onChange={onSearchWordChange}
         />
@@ -75,6 +75,8 @@ const Box = styled.form`
   width: 20px;
   height: 20px;
   svg {
+    width: 18px;
+    height: 18px;
     z-index: 3;
     cursor: pointer;
     margin-bottom: 2px;

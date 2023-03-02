@@ -76,9 +76,9 @@ const useCanvas = ({ canvasRef, setting, setModal }: ICanvasProps) => {
   const onMouseDown = () => setIsDrawing(true);
 
   const onMouseUp = () => {
-    const ctx = canvas.getContext('2d');
+    const ctx = canvas?.getContext('2d');
     setIsDrawing(false);
-    ctx.beginPath();
+    ctx?.beginPath();
   };
 
   const onPosterChange = (poster: string, title: string) => {
