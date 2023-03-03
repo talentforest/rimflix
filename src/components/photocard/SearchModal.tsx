@@ -3,7 +3,7 @@ import { v4 as uuidv4 } from 'uuid';
 import { ModalBox } from '../Modal';
 import { Search } from '@mui/icons-material';
 import { posterSizes, sizeImagePath } from '../../utils/sizeImagePath';
-import { ChangeEvent, useState } from 'react';
+import { FormEvent, useRef, useState } from 'react';
 import useSearchQuery from '../../hook/query/useSearchQuery';
 import { useViewportScroll } from 'framer-motion';
 import styled from 'styled-components';
@@ -17,10 +17,11 @@ const SearchModal = ({ toggleModal, onPosterChange }: ISearchModal) => {
   const [keyword, setKeyword] = useState('');
   const { scrollY } = useViewportScroll();
   const { searchMovies, searchMoviesLoading } = useSearchQuery(keyword);
+  const inputRef = useRef<HTMLInputElement>(null);
 
-  const onKeywordChange = (event: ChangeEvent<HTMLInputElement>) => {
-    const keyword = event.currentTarget.value;
-    setKeyword(keyword);
+  const onKeywordSubmit = (event: FormEvent<HTMLFormElement>) => {
+    event.preventDefault();
+    setKeyword(inputRef.current.value);
   };
 
   return (
@@ -29,15 +30,14 @@ const SearchModal = ({ toggleModal, onPosterChange }: ISearchModal) => {
       <ModalBox style={{ top: scrollY.get() + 85 }} layoutId={`${uuidv4}`}>
         <ModalTitle>Add Movie Poster</ModalTitle>
         <ModalDetail>
-          <InputBox>
+          <Form onSubmit={onKeywordSubmit}>
             <ModalInput
+              ref={inputRef}
               type='text'
               placeholder='Find a movie poster'
-              value={keyword}
-              onChange={onKeywordChange}
             />
             <Search />
-          </InputBox>
+          </Form>
           <ListBox>
             <span>
               Result{' '}
@@ -81,7 +81,7 @@ const ModalDetail = styled.section`
   align-items: center;
   margin: 10px auto;
 `;
-const InputBox = styled.div`
+const Form = styled.form`
   position: relative;
   width: 100%;
   display: flex;

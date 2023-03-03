@@ -1,20 +1,27 @@
-import { useContext } from "react";
-import { useQuery } from "react-query";
-import { getSearch, IGetMovieTvResult } from "../../api/api";
-import { LanguageContext } from "../../context/LanguageContext";
+import { useContext } from 'react';
+import { useQuery } from 'react-query';
+import { getSearch, IGetMovieTvResult } from '../../api/api';
+import { LanguageContext } from '../../context/LanguageContext';
 
 const useSearchQuery = (searchKeyword: string) => {
   const { language } = useContext(LanguageContext);
 
   const { data: searchMovies, isLoading: searchMoviesLoading } =
     useQuery<IGetMovieTvResult>(
-      ["search", "movies", searchKeyword, language],
-      () => getSearch("movie", searchKeyword, language)
+      ['search', 'movies', searchKeyword, language],
+      () => getSearch('movie', searchKeyword, language),
+      {
+        enabled: !!searchKeyword,
+      }
     );
 
   const { data: searchTvShows, isLoading: searchTvShowsLoading } =
-    useQuery<IGetMovieTvResult>(["search", "tv", searchKeyword, language], () =>
-      getSearch("tv", searchKeyword, language)
+    useQuery<IGetMovieTvResult>(
+      ['search', 'tv', searchKeyword, language],
+      () => getSearch('tv', searchKeyword, language),
+      {
+        enabled: !!searchKeyword,
+      }
     );
 
   return {

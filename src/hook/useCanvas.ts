@@ -37,7 +37,7 @@ const useCanvas = ({ canvasRef, setting, setModal }: ICanvasProps) => {
     if (mode === 'save') {
       let link = event.currentTarget;
       link.setAttribute('download', 'drawing/png');
-      let Image = canvas.toDataURL();
+      let Image = canvas?.toDataURL();
       link.setAttribute('href', Image);
     }
   };

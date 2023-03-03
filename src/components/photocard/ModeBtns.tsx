@@ -40,11 +40,11 @@ const ModeBtns = ({ mode, setting, setSetting, onModeClick }: IModeBtns) => {
         {['reset', 'draw', 'text', 'save'].map((btnName) => (
           <Btn
             key={btnName}
-            as={mode === 'save' ? 'a' : 'button'}
+            as={btnName === 'save' ? 'a' : 'button'}
             $selected={mode === btnName}
-            onClick={(event: MouseEvent<HTMLButtonElement>) =>
-              onModeClick(event, btnName as mode)
-            }
+            onClick={(
+              event: MouseEvent<HTMLButtonElement | HTMLAnchorElement>
+            ) => onModeClick(event, btnName as mode)}
           >
             {setSVG(btnName as mode)}
             <span>{btnName.toUpperCase()}</span>
@@ -79,6 +79,7 @@ const Btn = styled.button<{ $selected: boolean }>`
   border: none;
   color: ${({ $selected }) => ($selected ? '#000' : '#666')};
   background-color: ${({ $selected }) => ($selected ? '#fff' : '#aaa')};
+  font-size: 14px;
   svg {
     width: 20px;
     height: 20px;
